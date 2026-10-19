@@ -608,6 +608,7 @@ function renderDayDetail(day, days) {
     if (option.booking) block.append(element("h4", "", "Eintritt & Reservierung"), element("p", "", option.booking));
     if (option.transit) block.append(element("h4", "", "Anfahrt für diese Alternative"), element("p", "", option.transit));
     if (option.resources?.length) block.append(resourceLinks(option.resources));
+    if (option.dining) block.append(button("Sumo-Essen in Kulinarik öffnen", "button button-secondary alternative-dining-link", () => openDining(option.dining)));
     for (const id of option.places) {
       block.append(element("h4", "", places[id].name), placeContent({ id, ...places[id] }));
     }
@@ -974,6 +975,20 @@ function renderDiningList() {
     card.append(summary, body);
     list.append(card);
   }
+}
+
+function openDining(id) {
+  const entry = diningOptions.find((option) => option.id === id);
+  if (!entry) throw new Error(`Unknown dining option: ${id}`);
+  diningFilters.destination = entry.destination;
+  diningFilters.category = "all";
+  diningFilters.spontaneous = false;
+  renderDiningList();
+  setView("dining");
+  const card = $(`#dining-${id}`);
+  card.open = true;
+  card.scrollIntoView({ block: "start" });
+  $("summary", card).focus({ preventScroll: true });
 }
 
 function renderDining() {
