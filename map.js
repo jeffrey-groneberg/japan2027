@@ -43,22 +43,34 @@ export async function createPlaceMap(container, points, { popupFor, onStatus }) 
     };
     showAll();
     const markers = new Map();
-    mapped.forEach((point) => {
+    const groups = new Map();
+    for (const point of mapped) {
+      const key = point.mapGroup ?? point.coordinates.join(",");
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(point);
+    }
+    for (const group of groups.values()) {
       const markerLabel = document.createElement("span");
-      markerLabel.textContent = point.number;
-      const marker = L.marker(point.coordinates, {
+      markerLabel.textContent = group.map((point) => point.number).join("·");
+      const label = group.map((point) => `${point.number}. ${point.name}`).join(" / ");
+      const location = group.length === 1 ? group[0].coordinates : L.latLngBounds(group.map((point) => point.coordinates)).getCenter();
+      const marker = L.marker(location, {
         icon: L.divIcon({ className: "place-marker", html: markerLabel, iconSize: [32, 32], iconAnchor: [16, 16] }),
-        title: `${point.number}. ${point.name}`,
-        alt: `${point.number}. ${point.name}`,
+        title: label,
+        alt: label,
         keyboard: true,
       }).addTo(map);
-      marker.getElement().setAttribute("aria-label", `${point.number}. ${point.name}`);
-      marker.bindPopup(popupFor(point), { maxWidth: 280 });
+      marker.getElement().setAttribute("aria-label", label);
+      const popup = document.createElement("div");
+      for (const point of group) {
+        popup.append(popupFor(point));
+        markers.set(point.id, marker);
+      }
+      marker.bindPopup(popup, { maxWidth: 280, maxHeight: 240 });
       marker.on("popupopen", () => {
         marker.getPopup().getElement().querySelector(".leaflet-popup-close-button")?.setAttribute("aria-label", "Ortsinformation schließen");
       });
-      markers.set(point.id, marker);
-    });
+    }
     const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',

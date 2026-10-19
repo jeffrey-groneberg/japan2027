@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="backdrop" viewBox="0 0 320 180">
+      <rect width="320" height="180" rx="12" fill="var(--cp-bg-elevated)"/>
+      <circle cx="262" cy="42" r="25" fill="var(--cp-warning)" fill-opacity=".6"/>
+      <path d="M19 46h50m-34-9h46M213 23h38" fill="none" stroke="var(--cp-border-strong)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M18 155h284" fill="none" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="scene-shrine" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="m25 146 22-83 22 83m183 0 22-94 22 94" fill="var(--cp-success)" fill-opacity=".35" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M89 153V77h142v76" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m72 79 88-47 88 47Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M115 153v-49h90v49m-60-49v49m30-49v49M80 87h160" fill="none" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M66 64h188m-174 5v78m160-78v78M89 90h142" fill="none" stroke="var(--cp-danger)" stroke-width="9" stroke-linecap="round"/>
+      <path d="m134 166 26-13 26 13" fill="none" stroke="var(--cp-border-strong)" stroke-width="3"/>
+    </symbol>
+    <symbol id="scene-mountain" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="m28 154 86-116 91 116m-45 0 58-82 76 82" fill="var(--cp-link)" fill-opacity=".35" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="m85 77 29-39 32 41-23-9-12 10-10-11Z" fill="var(--cp-success)" fill-opacity=".45" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M157 153c-57-22 37-24-7-45" fill="none" stroke="var(--cp-warning)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M47 55v78m-17-66h34m-27 9h19m190 45v32m-12-18h24" fill="none" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+      <rect x="29" y="79" width="36" height="25" rx="6" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M37 84v12m9-12v12m10-12v12" stroke="var(--cp-surface)" stroke-width="3"/>
+    </symbol>
+    <symbol id="scene-coast" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M0 111c47-14 69 14 111 0s65-15 104 0 68 0 105-4v73H0Z" fill="var(--cp-link)" fill-opacity=".25"/>
+      <path d="M26 136h56m136 6h76m-202 22h73" stroke="var(--cp-link)" stroke-width="3" stroke-linecap="round"/>
+      <path d="m89 118 25 26h100l25-26Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M162 117V47l-53 58h53m0-50 47 50h-47" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M270 115V78m-28 0h56l-28-24Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="scene-museum" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M65 151V67h190v84" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m50 68 110-36 110 36Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="84" y="84" width="61" height="45" rx="5" fill="var(--cp-link)" fill-opacity=".2" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m107 95 20 12-20 12Z" fill="var(--cp-danger)"/>
+      <path d="M166 152V85h61v67m-47-54h33m-33 10h23m-23 10h28" stroke="var(--cp-text)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="43" cy="118" r="12" fill="var(--cp-success)" fill-opacity=".6" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M43 131v21m235-61v61m-11-47 11-14 11 14" stroke="var(--cp-text)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="m132 34 8-17 8 17-18-10h20Z" fill="var(--cp-danger)"/>
+    </symbol>
+    <symbol id="scene-nature" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="m25 152 36-99 37 99m135 0 35-111 34 111" fill="var(--cp-success)" fill-opacity=".45" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M112 149v-22m59 22v-24" stroke="var(--cp-text)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M107 120c-7-32 20-48 49-39l28-23 17 10-9 34-11 28h-51Z" fill="var(--cp-warning)" fill-opacity=".65" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="m177 61-7-19m4 8-14-5m37 20 10-22m-4 10 12-3" stroke="var(--cp-text)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="189" cy="77" r="3" fill="var(--cp-text)"/>
+      <path d="m110 104-18-8m106-5 11 3M84 163h155" fill="none" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="scene-park" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <ellipse cx="169" cy="143" rx="101" ry="25" fill="var(--cp-link)" fill-opacity=".25" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M49 145V94m-13 13 13 12 14-13m202 39V78m-14 18 14 13 17-17" fill="none" stroke="var(--cp-text)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M24 92c-19-50 68-66 64-13 38 18-37 48-64 13Zm219-12c-19-43 56-64 58-17 30 32-34 43-58 17Z" fill="var(--cp-success)" fill-opacity=".45" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M107 109h78m-69 0v21m59-21v21m-69-30h80" fill="none" stroke="var(--cp-text)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M111 147h37m43 7h27" stroke="var(--cp-link)" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="scene-aquarium" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <rect x="36" y="48" width="248" height="102" rx="26" fill="var(--cp-link)" fill-opacity=".35" stroke="var(--cp-text)" stroke-width="4"/>
+      <path d="M47 125c41-26 66 24 106 0s74-23 120 0" fill="none" stroke="var(--cp-surface)" stroke-width="3"/>
+      <path d="m89 89-22-13v29l22-13c25 26 59-4 59-4s-34-25-59 1Zm120 21 18-13v27l-18-12c-22 23-47-3-47-3s27-22 47 1Z" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="135" cy="87" r="3" fill="var(--cp-text)"/>
+      <circle cx="177" cy="108" r="3" fill="var(--cp-text)"/>
+      <path d="M65 145v-19m-8 6 8 7 8-7m166 13v-21m-9 7 9 8 9-8" fill="none" stroke="var(--cp-success)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="186" cy="72" r="5" fill="none" stroke="var(--cp-surface)" stroke-width="2"/>
+      <circle cx="200" cy="60" r="3" fill="var(--cp-surface)"/>
+    </symbol>
+    <symbol id="scene-shopping" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <rect x="49" y="63" width="222" height="88" rx="5" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M41 64h238l-15-26H56Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="m75 39-6 25m44-25-2 25m47-25v25m47-25 3 25m43-25 7 25" stroke="var(--cp-surface)" stroke-width="8"/>
+      <rect x="68" y="83" width="72" height="47" rx="7" fill="var(--cp-link)" fill-opacity=".18" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M85 97v19m-10-10h20m26-7h1m5 13h1" stroke="var(--cp-text)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M163 151V83h85v68m-43-68v68m-34-51h23m20 0h24" fill="none" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m285 115 8-12 8 12-8-4Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="2"/>
+    </symbol>
+    <symbol id="scene-arcade" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <circle cx="102" cy="85" r="45" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m102 85 0-45m0 45 45 0m-45 0 0 45m0-45-45 0m45 0 32-32m-32 32 32 32m-32-32-32 32m32-32-32-32m32 32-30 68m30-68 30 68" fill="none" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M180 151V77h88v74" fill="var(--cp-danger)" fill-opacity=".8" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m169 77 55-39 55 39Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M194 112h60m-50-20v12m39-12v12" stroke="var(--cp-surface)" stroke-width="5" stroke-linecap="round"/>
+      <rect x="202" y="128" width="44" height="23" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <circle cx="102" cy="42" r="8" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="2"/>
+      <circle cx="145" cy="85" r="8" fill="var(--cp-link)" stroke="var(--cp-text)" stroke-width="2"/>
+      <circle cx="59" cy="85" r="8" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="2"/>
+    </symbol>
+    <symbol id="scene-city" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M28 153V95h48v58m9 0V65h47v88m10 0V39h58v114m12 0V76h48v77m9 0V109h29v44" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M41 107h21m-21 17h21m37-45h20m-20 18h20m-20 18h20m36-61h31m-31 18h31m-31 18h31m-31 18h31m39-17h21m-21 18h21" stroke="var(--cp-link)" stroke-width="6"/>
+      <path d="m164 39 8-17 8 17m-66 114v-20m64 20v-25m64 25v-25" fill="none" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M42 165h108m18 0h108" stroke="var(--cp-danger)" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="scene-crossing" viewBox="0 0 320 180">
+      <use href="#scene-city"/>
+      <path d="M16 151h288v29H16Z" fill="var(--cp-bg-elevated)"/>
+      <path d="m68 178 50-24h14l-50 24m12 0 50-24h14l-50 24m14 0 50-24h14l-50 24m14 0 50-24h14l-50 24m14 0 50-24h14l-50 24" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="2"/>
+      <path d="M28 152h264" stroke="var(--cp-text)" stroke-width="3"/>
+    </symbol>
+    <symbol id="scene-flowers" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M43 131h232m-213 0v24m192-24v24M55 63h210l-14-25H69Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M74 64v67m170-67v67m-144-5 5 28h24l5-28m45 0 5 28h24l5-28" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M115 124V89m0 20-16-7m16-8 15-11m66 41V84m0 20 14-10m-14 0-16-12" fill="none" stroke="var(--cp-success)" stroke-width="4" stroke-linecap="round"/>
+      <path d="m100 89 1-19 14 8 15-8 1 19-15 6Z" fill="var(--cp-link)" fill-opacity=".7" stroke="var(--cp-text)" stroke-width="2" stroke-linejoin="round"/>
+      <path d="m182 81 14-19 14 19-14 18Z" fill="var(--cp-danger)" fill-opacity=".7" stroke="var(--cp-text)" stroke-width="2"/>
+    </symbol>
+    <symbol id="scene-float" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M158 50V11m-13 12h26m-21 12h16" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M96 143V75h128v68" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m78 77 82-41 83 41Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M123 92h74v44h-74Zm37 0v44M81 143h159" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M105 83v25m110-25v25M97 113h16m94 0h16" fill="none" stroke="var(--cp-warning)" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="115" cy="151" r="15" fill="var(--cp-text)"/><circle cx="204" cy="151" r="15" fill="var(--cp-text)"/>
+      <circle cx="115" cy="151" r="5" fill="var(--cp-warning)"/><circle cx="204" cy="151" r="5" fill="var(--cp-warning)"/>
+      <path d="m240 144 51 14" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="scene-fishing" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <ellipse cx="160" cy="132" rx="125" ry="34" fill="var(--cp-link)" fill-opacity=".3" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m63 98 25 38h144l25-38Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M78 98h164m-126-7 37-56m-29 57 37-55" stroke="var(--cp-text)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M157 36c48-28 76-17 73 37l-1 68c0 10-14 9-14 1" fill="none" stroke="var(--cp-text)" stroke-width="2"/>
+      <path d="m164 143-15-8v18l15-9c15 14 36-1 36-1s-22-16-36 0Z" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="2"/>
+      <circle cx="190" cy="142" r="2" fill="var(--cp-text)"/>
+    </symbol>
+    <symbol id="scene-sushi" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <rect x="33" y="112" width="255" height="39" rx="19" fill="var(--cp-link)" fill-opacity=".2" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M49 133h223m-193-18v35m55-35v35m55-35v35m55-35v35" stroke="var(--cp-text)" stroke-width="2"/>
+      <ellipse cx="91" cy="108" rx="35" ry="8" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="2"/>
+      <path d="M70 103V85c0-12 43-12 43 0v18Z" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M66 86c0-19 51-19 51 0Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <ellipse cx="224" cy="108" rx="35" ry="8" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="2"/>
+      <path d="M204 103V85c0-12 41-12 41 0v18Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M219 77h11v27h-11Z" fill="var(--cp-text)"/>
+    </symbol>
+    <symbol id="scene-food" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <ellipse cx="150" cy="125" rx="100" ry="26" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M75 105c4 46 23 58 76 58s72-12 76-58Z" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <ellipse cx="151" cy="104" rx="76" ry="21" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M94 102c13-14 15 13 28 0s15 13 28 0 15 13 28 0 15 13 28 0M128 72c-18-14 16-21 0-35m35 36c-18-14 16-21 0-35" fill="none" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+      <path d="m185 91 76-47m-66 52 73-43" stroke="var(--cp-text)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M44 113V80h18v33m-20-39h22" fill="var(--cp-link)" fill-opacity=".5" stroke="var(--cp-text)" stroke-width="3"/>
+    </symbol>
+    <symbol id="scene-view" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <rect x="28" y="21" width="264" height="126" rx="16" fill="var(--cp-link)" fill-opacity=".18" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M49 139V91h29v48m13 0V67h42v72m13 0V48h38v91m14 0V81h29v58m13 0V63h30v76" fill="var(--cp-text)" fill-opacity=".7"/>
+      <path d="M105 82h14m-14 15h14m39-32h13m-13 15h13m-13 15h13m77-17h12" stroke="var(--cp-warning)" stroke-width="5"/>
+      <path d="M160 23v122M30 109h261" stroke="var(--cp-text)" stroke-width="4"/>
+      <ellipse cx="160" cy="150" rx="100" ry="20" fill="var(--cp-surface)" stroke="var(--cp-text)" stroke-width="3"/>
+      <ellipse cx="153" cy="146" rx="34" ry="9" fill="var(--cp-danger)" fill-opacity=".4" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M222 145v-29m-8 0h16l-3 14h-10Z" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3"/>
+    </symbol>
+    <symbol id="scene-feast" viewBox="0 0 320 180">
+      <use href="#backdrop"/>
+      <path d="M31 42h258m-202 0v28m73-28v20m73-20v28" stroke="var(--cp-text)" stroke-width="3"/>
+      <rect x="72" y="67" width="30" height="35" rx="12" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <rect x="145" y="59" width="30" height="35" rx="12" fill="var(--cp-warning)" stroke="var(--cp-text)" stroke-width="3"/>
+      <rect x="218" y="67" width="30" height="35" rx="12" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="M45 132h230m-208 0v25m186-25v25" stroke="var(--cp-text)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M77 114h66l-8 17H85Zm103-4h45l-6 21h-33Z" fill="var(--cp-link)" fill-opacity=".4" stroke="var(--cp-text)" stroke-width="3"/>
+      <path d="m153 109 19-34m-13 36 20-32m-76 32 17-9 17 9" fill="none" stroke="var(--cp-text)" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>

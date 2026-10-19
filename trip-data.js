@@ -92,19 +92,19 @@ export const trip = {
       "title": "Shibuya & Harajuku",
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
-        "Flexibler Start in Harajuku · Takeshita-Straße · Nintendo TOKYO im Shibuya PARCO · Shibuya Crossing · Shibuya Sky nur mit passendem Zeitfenster am 5. Juli",
+        "Flexibler Start in Harajuku · Takeshita-Straße · Nintendo TOKYO und offizielles Pokémon Center SHIBUYA im Shibuya PARCO · Shibuya Crossing · Shibuya Sky nur mit passendem Zeitfenster am 5. Juli",
         "Anfahrt: JR Yamanote ab Komagome über Ikebukuro und Shinjuku nach Harajuku, danach eine Station bis Shibuya"
       ]
     },
     {
       "date": "2027-07-06",
       "destination": "tokyo",
-      "title": "DisneySea",
+      "title": "teamLab & Odaiba",
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
-        "Ganzer Tag · Tickets datumsgenau vorab online (~10.000 ¥ / ~56 € Erw., ~6.000 ¥ / ~34 € Kind)",
-        "Kürzere Wartezeit: Disney Premier Access in der Disney-App, pro Attraktion ~1.500–2.500 ¥ (~8–14 €) p. P.",
-        "Anfahrt: JR Yamanote bis Tokyo Station, JR Keiyo-Linie bis Maihama, Disney-Monorail, zusammen ~60 Min, ~1.000 ¥ (~6 €) · Taxi ~9.000–11.000 ¥ (~50–62 €)"
+        "teamLab Planets in Toyosu zum bestätigten Zeitfenster am 6. Juli · Mittagspause · Odaiba-Promenade nur nach Energie",
+        "Miraikan ist regulär dienstags geschlossen und wird heute nicht als Museumsbesuch eingeplant",
+        "Anfahrt: Namboku Line bis Iidabashi, Yurakucho Line bis Toyosu, Yurikamome bis Shin-Toyosu; für Odaiba auf der Yurikamome weiterfahren"
       ]
     },
     {
@@ -125,18 +125,19 @@ export const trip = {
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
         "Seilbahn + leichte Wanderung (~1,5 Std.) zum Gipfel, Picknick · früh starten wegen der Hitze",
-        "Anfang Juli ist oft noch Regenzeit: bei Regen einfach mit dem teamLab-Tag (Fr 9.7) tauschen",
+        "Bei bestätigtem Ghibli-Ticket den Museumstag statt der Bergtour wählen; keine spontane Regenalternative ohne Reservierung",
         "Anfahrt: JR Yamanote bis Shinjuku ~20 Min, Keio-Linie bis Takaosanguchi, zusammen ~75 Min, ~700 ¥ (~4 €) · Seilbahn ~490 ¥ (~3 €) pro Fahrt · Taxi unrentabel (~20.000 ¥ / ~112 €)"
       ]
     },
     {
       "date": "2027-07-09",
       "destination": "tokyo",
-      "title": "teamLab & Odaiba",
+      "title": "DisneySea",
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
-        "teamLab Planets (Zeitfenster vorab, ~3.800 ¥ / ~21 € Erw.) · Miraikan-Wissenschaftsmuseum · Odaiba-Promenade",
-        "Anfahrt: Namboku-Linie bis Iidabashi, Yurakucho-Linie bis Toyosu ~35 Min, 1 Station Yurikamome bis Shin-Toyosu, zusammen ~450 ¥ (~3 €) · Taxi ~4.500–5.500 ¥ (~25–31 €)"
+        "Ganzer DisneySea-Tag am Freitag nach vier vollen Tagen zur Eingewöhnung · drei gemeinsame Wunschattraktionen, Shows und Pausen",
+        "Datiertes Parkticket für den 9. Juli vorab sichern; Premier Access ist eine optionale Zusatzleistung, keine Attraktionsgarantie",
+        "Anfahrt: JR Yamanote bis Tokyo Station, JR Keiyo Line bis Maihama, danach Disney Resort Line bis Tokyo DisneySea Station"
       ]
     },
     {
@@ -187,7 +188,7 @@ export const trip = {
       "base": "Kyoto · 11.–15. Juli · ab Wohnung RESI STAY Fuyacho im Zentrum (~5 Min zu Fuß zur Keihan-Station Kiyomizu-Gojo, ~8 Min zu Hankyu Kyoto-Kawaramachi)",
       "activities": [
         "Über den Berg von Kurama nach Kibune ~1,5–2 Std. mit vielen Stufen · Kurama-dera ~500 ¥ (~3 €) Eintritt · unten das kühle Bachtal von Kibune mit Schrein",
-        "Abends Gion Matsuri Yoiyama (14.–16.7.): autofreie Straßen um Shijo-Karasuma, beleuchtete Festwagen, Essensstände — sehr voll, Kinder an die Hand",
+        "Abends optional eine kurze Gion-Matsuri-Runde um Shijo-Karasuma: traditioneller Yoiyama-Zeitraum 14.–16. Juli, aber Programm 2027 noch prüfen; autofreie Straßen und Essensstände sind für den 14. nicht zugesagt",
         "Anfahrt: Keihan ab Kiyomizu-Gojo bis Demachiyanagi ~10 Min, Eizan-Bahn bis Kurama ~30 Min, zusammen ~700 ¥ (~4 €) · zurück ab Kibuneguchi · Taxi ~7.000 ¥ (~39 €)"
       ]
     },
@@ -220,7 +221,7 @@ export const trip = {
       "base": "Osaka · 15.–20. Juli · ab Wohnung Montana Flat Yebisu (Metro Ebisucho ~3 Min, Bahnhof Shin-Imamiya ~6 Min, Namba eine Station; 24-Std.-Supermarkt Tamade ums Eck)",
       "activities": [
         "Schattiger Waldweg (2,7 km) zum Wasserfall · nachmittags Umeda Sky Building (~2.000 ¥ / ~11 € Erw.)",
-        "Alternative: An diesem Vormittag zieht in Kyoto der große Gion-Matsuri-Umzug (Yamaboko Junko) durch die Stadt — Hankyu ab Umeda bis Kyoto-Kawaramachi ~45 Min, ~410 ¥ (~2 €)",
+        "Alternative STATT Minoh: Der Gion-Matsuri-Umzug in Kyoto findet traditionell am 17. Juli statt; Programm, Route und Zeiten für 2027 noch prüfen. Die Anreise ab Osaka umfasst zusätzlich zur Zugfahrt Metro und Fußwege",
         "Anfahrt Minoo: Midosuji-Linie bis Umeda, Hankyu bis Mino-o (Umstieg Ishibashi), zusammen ~45 Min, ~520 ¥ (~3 €) · Taxi unrentabel (~9.000 ¥ / ~51 €)"
       ]
     },
@@ -728,6 +729,13 @@ export const trip = {
       "deadline": "~Apr 2027",
       "title": "Nintendo Museum (Uji)",
       "details": "Nintendo Museum (Uji): Losverfahren öffnet rund 3 Monate vorher. Der schwerste Programmpunkt — gleich zum Öffnen teilnehmen."
+    },
+    {
+      "id": "task-7",
+      "deadline": "10.06.2027 · 03:00 MESZ",
+      "title": "Optional: Ghibli Museum reservieren",
+      "details": "Nur für die Alternative am 8. Juli: Nach aktueller Regel starten Juli-Tickets am 10. Juni um 10:00 Uhr JST, also 03:00 Uhr MESZ. Auf der offiziellen Museums-Ticketseite zum Lawson-Verkauf gehen. Öffnungskalender und dann geltende Regeln prüfen; nur mit bestätigtem Zeitfenster planen. Ohne Ticket bleibt Mount Takao vorgesehen.",
+      "resources": ["ghibliTickets"]
     },
     {
       "id": "task-4",

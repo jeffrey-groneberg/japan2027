@@ -1,15 +1,18 @@
 import { trip } from "./trip-data.js";
 import {
   STORAGE_KEY, buildCalendar, countdown, defaultState, destinationName,
-  destinations, entriesForDay, filterDays, formatDate, parseState, googleMapsURL, placesForDay,
+  destinations, entriesForDay, festivalMapsURL, festivalsForDay, filterDays, filterDining, formatDate, parseState, googleMapsURL, placesForDay,
 } from "./lib.js";
 import { bases, dayGuides, places, railGuide, resources } from "./guide-data.js";
 import { createPlaceMap } from "./map.js";
 import { linkAudit } from "./link-audit.js";
 import { alternatives, foodByPlace, foodMapsURL, foodStops } from "./extras.js";
+import { placeFigure, placeThumbnail } from "./poi-visuals.js";
+import { diningBookingLabels, diningCategoryLabels, diningOptions } from "./dining-data.js";
+import { festivalOptions, festivalStatusLabels, fireworksContext } from "./festival-data.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
-const views = ["itinerary", "travel", "stays", "bases", "checklist"];
+const views = ["itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
 const accommodationTransportNote = "Die Anfahrten im Tagesplan beziehen sich weiterhin auf die ursprünglichen Hauptunterkünfte; eine andere Auswahl ändert sie nicht automatisch.";
 const mapContexts = new Map();
 let mapsPermitted = false;
@@ -20,6 +23,7 @@ let state = defaultState(trip);
 let currentView = "itinerary";
 let selectedDate = trip.startDate;
 let filters = { destination: "all", query: "", savedOnly: false };
+const diningFilters = { destination: "all", category: "all", spontaneous: false };
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -99,10 +103,14 @@ function foodRecommendation(id) {
     element("p", "food-children", `Für Kinder: ${food.children}`),
     element("p", "food-practical", food.practical),
   );
+  section.append(culinaryLinks(food));
+  return section;
+}
+
+function culinaryLinks(food) {
   const links = element("div", "food-links");
   links.append(linkWithStatus("Offizielle Infos", food.url), linkWithStatus(`${food.name} in Google Maps`, foodMapsURL(food)));
-  section.append(links);
-  return section;
+  return links;
 }
 
 function announce(message) {
@@ -160,6 +168,11 @@ function setView(view, updateLocation = true) {
     tab.tabIndex = selected ? 0 : -1;
     $(`#panel-${id}`).hidden = !selected;
   }
+  const rail = $(".planner-tabs");
+  const activeTab = $(`#tab-${view}`);
+  const tabEnd = activeTab.offsetLeft + activeTab.offsetWidth;
+  if (activeTab.offsetLeft < rail.scrollLeft) rail.scrollLeft = activeTab.offsetLeft;
+  else if (tabEnd > rail.scrollLeft + rail.clientWidth) rail.scrollLeft = tabEnd - rail.clientWidth;
   document.title = `${$(`#tab-${view}`).textContent.trim()} · Japan & Vietnam 2027`;
   requestAnimationFrame(() => {
     for (const context of mapContexts.values()) {
@@ -339,17 +352,17 @@ function mapIsVisible(context) {
     && !context.element.closest("[hidden], details:not([open])");
 }
 
-function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen") {
+function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen", introduction) {
   const content = element("div", "poi-content");
+  content.append(placeFigure(point, linkWithStatus));
+  if (introduction) content.append(element("p", "agenda-context", introduction));
   content.append(element("p", "place-description", point.description));
   if (point.verificationNote) content.append(element("p", "place-verification", point.verificationNote));
   if (point.resource) content.append(resourceLinks([point.resource]));
   const actions = element("div", "place-actions");
   if (point.coordinates) {
-    actions.append(
-      button(mapLabel, "text-button", () => showOnMap(point.id)),
-      linkWithStatus(`${point.name} in Google Maps`, googleMapsURL(point)),
-    );
+    if (showOnMap) actions.append(button(mapLabel, "text-button", () => showOnMap(point.id)));
+    actions.append(linkWithStatus(`${point.name} in Google Maps`, googleMapsURL(point)));
   } else actions.append(element("p", "link-caveat", "Für diesen Ort ist kein genauer Kartenpunkt bestätigt."));
   content.append(actions, foodRecommendation(point.id));
   return content;
@@ -366,7 +379,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
   const mappedPoints = points.filter((point) => Array.isArray(point.coordinates));
   section.append(heading, element("p", "places-intro", showList
     ? "Eine Nummer antippen oder einen Ort für Details aufklappen."
-    : "Alle Stopps gemeinsam. Die Nummern entsprechen dem Tagesablauf; sie sind keine berechnete Geh- oder Bahnroute."));
+    : "Alle Stopps gemeinsam. Die Nummern entsprechen dem Tagesablauf; Stopps im selben Gebäude teilen sich einen Marker. Das ist keine berechnete Geh- oder Bahnroute."));
   const mapShell = element("div", "map-shell");
   const showAll = button("Alle Stopps zeigen", "text-button map-show-all", () => context.map.showAll());
   showAll.hidden = true;
@@ -588,14 +601,28 @@ function renderDayDetail(day, days) {
   alternativesPanel.append(element("p", "alternatives-intro", "Wenn ihr schneller fertig seid oder Lust auf etwas anderes habt: Diese Ideen ersetzen einen Programmpunkt oder füllen freie Zeit – kein zusätzliches Pflichtprogramm."));
   for (const option of alternatives[day.date] ?? []) {
     const block = element("details", "alternative-option");
-    block.append(element("summary", "", option.title), element("p", "alternative-when", option.when), element("p", "", option.text));
+    const summary = element("summary");
+    if (option.places.length) summary.append(placeThumbnail({ id: option.places[0], ...places[option.places[0]] }));
+    summary.append(element("span", "alternative-title", option.title), graphic("icon-chevron"));
+    block.append(summary, element("p", "alternative-when", option.when), element("p", "", option.text));
+    if (option.booking) block.append(element("h4", "", "Eintritt & Reservierung"), element("p", "", option.booking));
+    if (option.transit) block.append(element("h4", "", "Anfahrt für diese Alternative"), element("p", "", option.transit));
+    if (option.resources?.length) block.append(resourceLinks(option.resources));
     for (const id of option.places) {
-      block.append(linkWithStatus(`${places[id].name} in Google Maps`, googleMapsURL(places[id])), resourceLinks([places[id].resource]));
+      block.append(element("h4", "", places[id].name), placeContent({ id, ...places[id] }));
     }
     alternativesPanel.append(block);
   }
   if (guide) {
     planPanel.append(element("p", "day-summary", guide.summary));
+    for (const event of festivalsForDay(day.date)) {
+      const note = element("div", "festival-day-note");
+      note.append(
+        button(`Festoption: ${event.title}`, "text-button", () => openFestival(event.id)),
+        element("span", "festival-status", festivalStatusLabels[event.dateStatus]),
+      );
+      planPanel.append(note);
+    }
     let overview;
     const revealPlace = (id) => {
       selectSection("plan");
@@ -639,15 +666,20 @@ function renderDayDetail(day, days) {
       const summary = element("summary");
       const heading = element("span", "agenda-heading");
       heading.append(element("span", "agenda-time", step.time), element("h4", "", point ? point.name : step.title));
-      summary.append(element("span", "agenda-number", number), heading, graphic("icon-chevron", "icon agenda-chevron"));
+      const numberBadge = element("span", "agenda-number", number);
+      if (point) {
+        const thumbnail = placeThumbnail(point);
+        thumbnail.append(numberBadge);
+        summary.append(thumbnail);
+      } else summary.append(numberBadge);
+      summary.append(heading, graphic("icon-chevron", "icon agenda-chevron"));
       const body = element("div", "agenda-body");
-      if (showContext) body.append(element("p", "agenda-context", step.text));
       if (point) {
         body.append(
           element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`),
-          placeContent(point, showOnMap, "Auf Tageskarte zeigen"),
+          placeContent(point, showOnMap, "Auf Tageskarte zeigen", showContext ? step.text : undefined),
         );
-      }
+      } else if (showContext) body.append(element("p", "agenda-context", step.text));
       disclosure.append(summary, body);
       item.append(disclosure);
       agenda.append(item);
@@ -658,12 +690,13 @@ function renderDayDetail(day, days) {
       correction.append(element("h4", "", "Gut zu wissen"), element("p", "", guide.correction));
       planPanel.append(correction);
     }
-    if (guide.booking) {
+    if (guide.booking || guide.tip) {
       const booking = element("details", "day-booking-note");
-      booking.append(element("summary", "", "Vorher klären oder buchen"), element("p", "", guide.booking));
+      booking.append(element("summary", "", guide.tip ? "Praktische Tipps & Buchung" : "Vorher klären oder buchen"));
+      if (guide.booking) booking.append(element("p", "", guide.booking));
+      if (guide.tip) booking.append(element("p", "day-tip", guide.tip));
       planPanel.append(booking);
     }
-    if (guide.tip) planPanel.append(element("p", "day-tip", guide.tip));
     if (guide.resources?.length) planPanel.append(resourceLinks(guide.resources));
     const transit = element("div", "transport-box");
     const transitHeading = element("h4");
@@ -677,7 +710,22 @@ function renderDayDetail(day, days) {
       button("Was ist JR? Bahn-ABC & Ticketkauf", "text-button", openRailGuide),
     );
     transitPanel.append(transit);
-    if (day.destination !== "reise") planPanel.append(button(`Einkaufen bei unserer Basis in ${destinationName(day.destination)}`, "button button-secondary base-shortcut", () => openBase(day.destination)));
+    if (day.destination !== "reise") {
+      const shortcuts = element("div", "day-shortcuts");
+      shortcuts.append(button(`Einkaufen bei unserer Basis in ${destinationName(day.destination)}`, "button button-secondary base-shortcut", () => openBase(day.destination)));
+      if (["tokyo", "kyoto", "osaka"].includes(day.destination)) {
+        shortcuts.append(button(`Abendideen in ${destinationName(day.destination)}`, "button button-secondary base-shortcut", () => {
+          diningFilters.destination = day.destination;
+          diningFilters.category = "all";
+          diningFilters.spontaneous = false;
+          renderDiningList();
+          setView("dining");
+          $("#planner").scrollIntoView({ block: "start" });
+          $("#tab-dining").focus({ preventScroll: true });
+        }));
+      }
+      planPanel.append(shortcuts);
+    }
   }
   if (day.base !== "Anreise" && day.base !== "Rückreise") {
     const base = element("details", "base-note");
@@ -838,6 +886,7 @@ function renderChecklist() {
     const label = element("label", "check-title", task.title);
     label.htmlFor = input.id;
     copy.append(label, element("p", "", task.details));
+    if (task.resources?.length) copy.append(resourceLinks(task.resources));
     if (destinationsForTask[task.id]) {
       const link = element("a", "check-link", labelsForTask[task.id]);
       link.href = `#view=${destinationsForTask[task.id]}&day=${selectedDate}`;
@@ -859,6 +908,154 @@ function renderChecklist() {
     $("#checklist-items").append(row);
   }
   updateChecklistProgress();
+}
+
+function renderDiningList() {
+  const entries = filterDining(diningOptions, diningFilters);
+  $("#dining-results").textContent = `${entries.length} ${entries.length === 1 ? "Abendidee" : "Abendideen"}`;
+  $("#dining-spontaneous").checked = diningFilters.spontaneous;
+  for (const control of document.querySelectorAll("[data-dining-destination]")) {
+    control.setAttribute("aria-pressed", String(control.dataset.diningDestination === diningFilters.destination));
+  }
+  for (const control of document.querySelectorAll("[data-dining-category]")) {
+    control.setAttribute("aria-pressed", String(control.dataset.diningCategory === diningFilters.category));
+  }
+  const list = $("#dining-list");
+  list.replaceChildren();
+  if (!entries.length) {
+    const empty = element("div", "dining-empty");
+    empty.append(
+      element("h3", "", "Für diese Auswahl ist kein passender Spontantipp bestätigt."),
+      element("p", "", "Andere Buchungsarten oder eine andere Kategorie zeigen mehr Ideen. Ein freier Tisch wird dadurch nicht zugesagt."),
+      button("Alle Buchungsarten anzeigen", "button button-secondary", () => {
+        diningFilters.spontaneous = false;
+        diningFilters.category = "all";
+        renderDiningList();
+        $("#dining-spontaneous").focus({ preventScroll: true });
+      }),
+    );
+    list.append(empty);
+    return;
+  }
+  for (const entry of entries) {
+    const card = element("details", "dining-option");
+    card.id = `dining-${entry.id}`;
+    card.name = "dining-options";
+    card.dataset.destination = entry.destination;
+    const visual = { id: entry.id, name: entry.name, category: entry.category, kind: diningCategoryLabels[entry.category] };
+    const summary = element("summary");
+    const copy = element("span", "dining-summary-copy");
+    copy.append(
+      element("span", "dining-name", entry.name),
+      element("span", "dining-location", `${destinationName(entry.destination)} · ${diningCategoryLabels[entry.category]}`),
+      element("span", "dining-booking", diningBookingLabels[entry.booking]),
+    );
+    if (entry.walkIn && entry.booking !== "walk-in") copy.append(element("span", "dining-walk-in", "Auch spontan versuchbar"));
+    summary.append(placeThumbnail(visual), copy, graphic("icon-chevron", "icon dining-chevron"));
+    const body = element("div", "dining-body");
+    body.append(
+      placeFigure(visual, linkWithStatus),
+      element("h3", "", "Das macht den Abend besonders"),
+      element("p", "", entry.why),
+      element("h3", "", "Mit den Kids"),
+      element("p", "food-children", entry.children),
+      element("h3", "", "Spontan oder reservieren?"),
+      element("p", "", entry.bookingNote),
+      element("h3", "", "Wo & welcher Zugang?"),
+      element("p", "dining-address", entry.location),
+      element("p", "", entry.practical),
+      element("p", "food-practical", entry.accessNote),
+      culinaryLinks(entry),
+    );
+    if (entry.bookingUrl) body.append(linkWithStatus("Offizielle Tischreservierung", entry.bookingUrl));
+    const sources = element("div", "resource-links");
+    for (const source of entry.sources.filter((source) => source.url !== entry.url)) sources.append(linkWithStatus(source.label, source.url));
+    if (sources.children.length) body.append(sources);
+    card.append(summary, body);
+    list.append(card);
+  }
+}
+
+function renderDining() {
+  for (const id of ["all", "tokyo", "kyoto", "osaka"]) {
+    const control = button(id === "all" ? "Alle Städte" : destinationName(id), "filter-button", () => {
+      diningFilters.destination = id;
+      renderDiningList();
+    });
+    control.dataset.diningDestination = id;
+    $("#dining-destinations").append(control);
+  }
+  for (const [id, label] of [["all", "Alle Erlebnisse"], ...Object.entries(diningCategoryLabels)]) {
+    const control = button(label, "filter-button", () => {
+      diningFilters.category = id;
+      renderDiningList();
+    });
+    control.dataset.diningCategory = id;
+    $("#dining-categories").append(control);
+  }
+  $("#dining-spontaneous").addEventListener("change", (event) => {
+    diningFilters.spontaneous = event.target.checked;
+    renderDiningList();
+  });
+  renderDiningList();
+}
+
+function openFestival(id) {
+  setView("festivals");
+  const card = $(`#festival-${id}`);
+  card.open = true;
+  card.scrollIntoView({ block: "start" });
+  $("summary", card).focus({ preventScroll: true });
+}
+
+function renderFestivals() {
+  const list = $("#festival-list");
+  for (const event of festivalOptions) {
+    const card = element("details", "festival-option");
+    card.id = `festival-${event.id}`;
+    card.name = "festival-options";
+    const visual = { id: event.id, name: event.title, kind: event.category === "park-show" ? "Freizeitpark" : "Sommerfest" };
+    const summary = element("summary");
+    const copy = element("span", "festival-summary-copy");
+    const location = `${destinationName(event.destination)}${event.fromDestination ? ` · ab ${destinationName(event.fromDestination)}` : ""}`;
+    copy.append(
+      element("span", "festival-date", `${formatDate(event.proposedDates[0], { day: "numeric", month: "long" })} · ${location}`),
+      element("span", "festival-name", event.title),
+      element("span", "festival-status", festivalStatusLabels[event.dateStatus]),
+    );
+    summary.append(placeThumbnail(visual), copy, graphic("icon-chevron", "icon festival-chevron"));
+    const body = element("div", "festival-body");
+    const detail = element("div", "festival-copy");
+    detail.append(
+      element("h3", "", "Warum es sich lohnt"),
+      element("p", "", event.why),
+      element("h3", "", "Termin & Verlässlichkeit"),
+      element("p", "", event.when),
+      element("h3", "", "Mit den Kids"),
+      element("p", "", event.children),
+      element("h3", "", "So passt es in den Tag"),
+      element("p", "", event.planAdvice),
+      element("p", "festival-logistics", event.logistics),
+    );
+    const links = element("div", "food-links");
+    links.append(
+      linkWithStatus("Offizielles Programm prüfen", event.url),
+      linkWithStatus("Ort / Festgebiet in Google Maps", festivalMapsURL(event)),
+    );
+    detail.append(links);
+    const sources = element("div", "resource-links");
+    for (const source of event.sources.filter((source) => source.url !== event.url)) sources.append(linkWithStatus(source.label, source.url));
+    if (sources.children.length) detail.append(sources);
+    body.append(placeFigure(visual, linkWithStatus), detail);
+    card.append(summary, body);
+    list.append(card);
+  }
+  const context = $("#fireworks-context");
+  for (const event of fireworksContext) {
+    const item = element("div", "fireworks-note");
+    item.append(element("h3", "", event.title), element("p", "", event.text), linkWithStatus("Veranstalterseite", event.url));
+    context.append(item);
+  }
 }
 
 function downloadCalendar() {
@@ -926,6 +1123,8 @@ function initialize() {
   renderTravel();
   renderStays();
   renderBases();
+  renderDining();
+  renderFestivals();
   renderChecklist();
   renderItinerary();
   bindEvents();
