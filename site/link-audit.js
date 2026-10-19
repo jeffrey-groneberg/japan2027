@@ -2421,6 +2421,156 @@ export const linkAudit = {
     "finalUrl": "https://commons.wikimedia.org/wiki/File:Nishiki_ichiba_kyoto.jpg",
     "pageTitle": "File:Nishiki ichiba kyoto.jpg - Wikimedia Commons",
     "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://en.eigamura.com/": {
+    "label": "UZUMASA Kyoto Village: offizielle Übersicht",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:40+00:00",
+    "finalUrl": "https://en.eigamura.com/",
+    "pageTitle": "UZUMASA KYOTO VILLAGE [Formula] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://en.eigamura.com/attraction/karakuri/": {
+    "label": "UZUMASA: Ninja Escape Room & versteckte Mechanismen",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:40+00:00",
+    "finalUrl": "https://en.eigamura.com/attraction/karakuri/",
+    "pageTitle": "Ninja Escape Room | UZUMASA KYOTO VILLAGE [Formula] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://en.eigamura.com/attraction/meiro/": {
+    "label": "UZUMASA: 3D Ninja Fort",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:40+00:00",
+    "finalUrl": "https://en.eigamura.com/attraction/meiro/",
+    "pageTitle": "3D Maze the Ninja Fort | UZUMASA KYOTO VILLAGE [Formula] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://en.eigamura.com/hours-tickets/": {
+    "label": "UZUMASA: Öffnung, Tickets & Attraktionspass",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:40+00:00",
+    "finalUrl": "https://en.eigamura.com/hours-tickets/",
+    "pageTitle": "Business Hours & Fees| UZUMASA KYOTO VILLAGE [Official] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://en.eigamura.com/access/": {
+    "label": "UZUMASA: offizielle Anreise",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:41+00:00",
+    "finalUrl": "https://en.eigamura.com/access/",
+    "pageTitle": "Access| UZUMASA KYOTO VILLAGE [Official] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://www.google.com/maps/search/?api=1&query=35.016452%2C135.708023": {
+    "label": "Google Maps: UZUMASA Kyoto Village · Ninja-Haus",
+    "kind": "map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:41+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=35.016452,135.708023&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; Zielname beziehungsweise abgeglichene Koordinaten bleiben im Google-Maps-Parameter erhalten."
+  },
+  "https://en.eigamura.com/shop-food/": {
+    "label": "Kulinarik: UZUMASA Kyoto Village · Familienpause in der Edo-Kulisse",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:41+00:00",
+    "finalUrl": "https://en.eigamura.com/shop-food/",
+    "pageTitle": "Food Shop | UZUMASA KYOTO VILLAGE [Official] - UZUMASA KYOTO VILLAGE",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://www.google.com/maps/search/?api=1&query=UZUMASA+KYOTO+VILLAGE+10+Higashi+Hachiokacho+Kyoto": {
+    "label": "Google Maps: UZUMASA Kyoto Village · Familienpause in der Edo-Kulisse",
+    "kind": "food-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:41+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=UZUMASA+KYOTO+VILLAGE+10+Higashi+Hachiokacho+Kyoto&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; Zielname beziehungsweise abgeglichene Koordinaten bleiben im Google-Maps-Parameter erhalten."
+  },
+  "https://hirakuza.net/osaka/": {
+    "label": "HIRAKUZA Osaka · Sumo-Show mit Bento",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:42+00:00",
+    "finalUrl": "https://hirakuza.net/osaka/",
+    "pageTitle": "THE SUMO HALL HIRAKUZA OSAKA",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://www.google.com/maps/search/?api=1&query=THE+SUMO+HALL+HIRAKUZA+OSAKA+Namba+Parks+8F+2-10-70+Nambanaka+Osaka": {
+    "label": "Google Maps: HIRAKUZA Osaka · Sumo-Show mit Bento",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:42+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=THE+SUMO+HALL+HIRAKUZA+OSAKA+Namba+Parks+8F+2-10-70+Nambanaka+Osaka&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; Zielname beziehungsweise abgeglichene Koordinaten bleiben im Google-Maps-Parameter erhalten."
+  },
+  "https://ars-hirakuza.triplabo.com/home?lang=en": {
+    "label": "HIRAKUZA Osaka · Sumo-Show mit Bento: Reservierung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:42+00:00",
+    "finalUrl": "https://ars-hirakuza.triplabo.com/home?lang=en",
+    "pageTitle": "Triplabo | Book Your Tickets, Passes and Things To Do",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://hirakuza.net/osaka/shows/": {
+    "label": "Show, Bento & Kinderangebot",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:42+00:00",
+    "finalUrl": "https://hirakuza.net/osaka/shows/",
+    "pageTitle": "Shows | THE SUMO HALL HIRAKUZA OSAKA",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://hirakuza.net/osaka/faq/": {
+    "label": "Reservierung, Laufzeit & Abgrenzung zum Profi-Sumo",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:42+00:00",
+    "finalUrl": "https://hirakuza.net/osaka/faq/",
+    "pageTitle": "FAQ | THE SUMO HALL HIRAKUZA OSAKA",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://hirakuza.net/osaka/calendar/": {
+    "label": "Spielplan prüfen",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:43+00:00",
+    "finalUrl": "https://hirakuza.net/osaka/calendar/",
+    "pageTitle": "Calendar | THE SUMO HALL HIRAKUZA OSAKA",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://hirakuza.net/osaka/access/": {
+    "label": "Offizielle Anreise",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:50:43+00:00",
+    "finalUrl": "https://hirakuza.net/osaka/access/",
+    "pageTitle": "Access | THE SUMO HALL HIRAKUZA OSAKA",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Öffnung, Programm, Tickets und Plätze für Juli 2027 bleiben separat zu bestätigen."
   }
 };
 export const retiredLinks = [

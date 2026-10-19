@@ -77,6 +77,12 @@ The people planning and taking the trip described in the supplied itinerary.
   2027 announcements must be distinguished from traditional annual rules.
   Keep festival options genuinely optional, give family crowd/exit guidance
   and do not silently change the stays or fixed park day to chase an event.
+- UZUMASA Kyoto Village is explicitly selected as a Ninja alternative replacing
+  the 13 July Nara day. Include the hidden-mechanism house and physical ninja
+  maze with separate ticket/safety/transit facts; never stack both day trips.
+- Include HIRAKUZA Osaka as a family Sumo dinner experience linked from
+  18 July and Kulinarik. Identify it as an English-language entertainment show,
+  not professional Grand Sumo, and preserve the child-bento/reservation caveats.
 - Availability findings apply to the exact offered dates and room categories.
   An expired flight offer does not establish that a route does not exist;
   distinguish an official route announcement from a confirmed dated booking.

@@ -46,7 +46,7 @@ control restores the complete map extent. There is no separate places/map tab.
 Previous/next-day navigation stays in the day header. Nothing is removed from
 calendar exports. Automated checks bound the default Shibuya day-card
 height below 950px desktop and 1250px at 390px mobile.
-Forty-seven attributed sightseeing and shopping points have matching
+Forty-eight attributed sightseeing and shopping points have matching
 coordinate-based Google Maps links and optional interactive OpenStreetMap
 background maps. A separate Bases & Shopping panel covers groceries and
 leisure shopping for all four bases. Never imply that the exact Tokyo private
@@ -67,7 +67,7 @@ explicit map action; their privacy consequence and OSM attribution are visible.
 Label source estimates as
 October 2026 planning data. Publishing on GitHub Pages makes the itinerary
 public. Selection of a different lodging does not recalculate source transit.
-All 238 current external URL targets were checked individually on
+All 253 current external URL targets were checked individually on
 19 October 2026. The thirteen originally fetch-restricted pages were then
 verified by loaded DOM in visible browser canvases, as the user requested.
 One additional fetch-blocked Disney restaurant page was also DOM-verified.
@@ -87,8 +87,8 @@ UI, budget functionality, print feature, metadata/disclaimer footer and the
 entire footer. This supersedes earlier surface notes about source/print.
 Keep only the immediately relevant map consent and OSM attribution.
 Every day now includes optional alternatives, shown in the local Alternatives
-tab rather than appending a long default column. Every one of the 47 places
-has one of 32 local food recommendations, including why it is worthwhile,
+tab rather than appending a long default column. Every one of the 48 places
+has one of 33 local food recommendations, including why it is worthwhile,
 child-aware options/caveats, practical access restrictions, official links
 and named Google Maps searches. Food recommendations live as nested
 disclosures directly inside the matching POI.
@@ -105,6 +105,14 @@ filterable by city, experience/view/casual category and verified walk-in access.
 Mandatory booking and our recommendation to book are not the same state.
 A per-day dinner shortcut opens the selected Japanese city; the main tab rail
 reveals the active tab horizontally without forcing a vertical page jump.
+The panel now contains eight options. HIRAKUZA Osaka uses a dedicated Sumo
+scene and is linked directly from the 18 July alternative; its copy states
+that it is an English entertainment show rather than official Grand Sumo.
+
+UZUMASA Kyoto Village is an alternative replacing Nara on 13 July. Its
+dedicated ninja illustration, direct official links, exact map point, park-food
+advice, separate attraction-ticket rules and physical maze restrictions sit
+inside the expanded alternative; the two distant day trips are never stacked.
 
 Feste & Feuerwerk holds five optional, date-qualified proposals, also linked
 from their relevant days. None has an explicitly confirmed 2027 programme.

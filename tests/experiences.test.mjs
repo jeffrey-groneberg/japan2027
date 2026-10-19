@@ -7,7 +7,7 @@ import { diningOptions, diningBookingLabels, diningCategoryLabels } from "../sit
 import { festivalOptions, festivalStatusLabels, fireworksContext } from "../site/festival-data.js";
 import { photosByPlace } from "../site/poi-photos.js";
 import { buildCalendar, festivalMapsURL, festivalsForDay, filterDays, filterDining, placesForDay } from "../site/lib.js";
-import { foodMapsURL } from "../site/extras.js";
+import { alternatives, foodMapsURL } from "../site/extras.js";
 import { linkAudit } from "../site/link-audit.js";
 
 test("DisneySea moves to Friday without changing the zoo, Ghibli alternative or departure dates", () => {
@@ -51,11 +51,51 @@ test("dining highlights cover only the requested cities with explicit child and 
 test("spontaneous dining uses verified walk-in rules and does not include reservation-only cafes", () => {
   const spontaneous = filterDining(diningOptions, { spontaneous: true });
   assert.ok(spontaneous.length >= 2);
-  assert.deepEqual(spontaneous.map(({ id }) => id).sort(), ["kyoto-ramen-koji", "sky-buffet-51"]);
+  assert.deepEqual(spontaneous.map(({ id }) => id).sort(), ["hirakuza-osaka", "kyoto-ramen-koji", "sky-buffet-51"]);
   assert.deepEqual(filterDining(diningOptions, { destination: "kyoto", spontaneous: true }).map(({ id }) => id), ["kyoto-ramen-koji"]);
   assert.deepEqual(filterDining(diningOptions, { destination: "tokyo", category: "view", spontaneous: true }), []);
   assert.equal(filterDining(diningOptions, { destination: "osaka" }).some(({ destination }) => destination !== "osaka"), false);
   assert.ok(diningOptions.filter(({ id }) => id.startsWith("pokemon-cafe")).every(({ booking }) => booking === "required"));
+});
+
+test("UZUMASA replaces Nara as a complete ninja day and keeps child safety explicit", () => {
+  const option = alternatives["2027-07-13"].find(({ places: ids }) => ids.includes("uzumasa"));
+  assert.ok(option);
+  assert.match(option.title, /statt Nara/);
+  assert.match(option.text, /Nicht anschließend noch nach Nara/);
+  assert.match(option.text, /feste Schuhe/);
+  assert.match(option.booking, /getrennte Leistungen/);
+  assert.match(option.transit, /Uzumasa Tenjingawa/);
+  assert.deepEqual(option.resources, ["uzumasaNinja", "uzumasaMaze", "uzumasaTickets", "uzumasaAccess"]);
+  assert.deepEqual(places.uzumasa.coordinates, [35.016452, 135.708023]);
+  assert.match(places.uzumasa.description, /Geheimtüren/);
+  assert.deepEqual(placesForDay("2027-07-13").map(({ id }) => id), ["nara", "todaiji"]);
+  assert.deepEqual(filterDays(trip.days, { query: "Ninja-Haus" }).map(({ date }) => date), ["2027-07-13"]);
+  const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT")
+    .find((entry) => entry.includes("DTSTART;VALUE=DATE:20270713"));
+  assert.match(event, /Alternative: UZUMASA Ninja-Haus statt Nara/);
+  assert.match(event, /Kulinarik: UZUMASA Kyoto Village/);
+});
+
+test("HIRAKUZA is an honest family sumo dinner show, not a professional tournament claim", () => {
+  const entry = diningOptions.find(({ id }) => id === "hirakuza-osaka");
+  assert.ok(entry);
+  assert.equal(entry.destination, "osaka");
+  assert.equal(entry.booking, "recommended");
+  assert.equal(entry.walkIn, true);
+  assert.match(entry.why, /kein offizielles Profi-Turnier/);
+  assert.match(entry.children, /3 bis 12/);
+  assert.match(entry.bookingNote, /drei Tage vor der Show/);
+  assert.match(entry.accessNote, /touristische Entertainment-Show/);
+  assert.equal(entry.bookingUrl, "https://ars-hirakuza.triplabo.com/home?lang=en");
+  const option = alternatives["2027-07-18"].find(({ dining }) => dining === entry.id);
+  assert.ok(option);
+  assert.match(option.text, /kein offizielles Profi-Turnier/);
+  assert.match(option.booking, /vier Sitzplätze/);
+  assert.match(option.transit, /Namba Parks/);
+  const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT")
+    .find((calendarEntry) => calendarEntry.includes("DTSTART;VALUE=DATE:20270718"));
+  assert.match(event, /Alternative: Sumo-Show mit Abendessen/);
 });
 
 test("festivals use proposal dates with honest unconfirmed status and do not overload fixed days", () => {
@@ -101,7 +141,7 @@ test("real POI photos are local, licensed, correctly credited and complemented b
     }
   }
   const svg = await readFile(new URL("../site/assets/poi-illustrations.svg", import.meta.url), "utf8");
-  for (const scene of ["shrine", "mountain", "park", "museum", "shopping", "crossing", "food", "view", "feast"]) {
+  for (const scene of ["shrine", "mountain", "park", "museum", "shopping", "crossing", "food", "view", "feast", "ninja", "sumo"]) {
     assert.ok(svg.includes(`id="scene-${scene}"`), scene);
   }
   assert.doesNotMatch(svg, /(?:fill|stroke)="#/);

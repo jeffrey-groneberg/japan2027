@@ -224,7 +224,7 @@ test("every published official, booking and coordinate link has an honest record
     }
   }
   assert.ok(Object.keys(linkAudit).length >= 110);
-  assert.equal(Object.values(linkAudit).filter((entry) => entry.kind === "map").length, 47);
+  assert.equal(Object.values(linkAudit).filter((entry) => entry.kind === "map").length, 48);
   assert.equal(retiredLinks.length, 1);
   for (const entry of Object.values(linkAudit)) {
     assert.match(entry.checkedAt, /^\d{4}-\d{2}-\d{2}T/);

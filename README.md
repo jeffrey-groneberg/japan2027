@@ -22,7 +22,7 @@ vendored locally; optional background maps come from OpenStreetMap.
   point-to-map and popup-to-point navigation, plus an all-stops reset.
   Three day-local tabs separate the agenda, travel/tickets and alternatives;
   previous/next-day controls stay at the top.
-- Explore 47 sightseeing and shopping points with official information,
+- Explore 48 sightseeing and shopping points with official information,
   individual Google Maps links and an interactive OpenStreetMap view.
 - Find supermarkets, everyday shopping and souvenir / gaming destinations for
   each planned base, without inventing a private apartment's exact address.
@@ -30,7 +30,7 @@ vendored locally; optional background maps come from OpenStreetMap.
   Bedroom-category problems found during the browser check are called out.
 - Find alternatives for every day and a nearby culinary recommendation at
   every mapped place, with an explanation, child-aware choices and access rules.
-- Open the general **Kulinarik** section for seven family-oriented dinner
+- Open the general **Kulinarik** section for eight family-oriented dinner
   ideas in Tokyo, Kyoto and Osaka, including interactive meals and skyline
   buffets. City/category filters compose with an evidence-based
   “Nur spontan versuchbar” filter; reservation-only cafés are excluded from it.
@@ -71,9 +71,9 @@ OpenStreetMap objects. Every location records its coordinate evidence. Broad
 districts, mountains and festival areas are explicitly orientation points, not
 guaranteed entrances or current walking / transit routes.
 
-On **19 October 2026**, all **238 distinct published external URL targets** were
-checked individually, including **47 coordinate-based sightseeing Google Maps
-links**, **32 per-place culinary map searches**, the separate dinner/festival
+On **19 October 2026**, all **253 distinct published external URL targets** were
+checked individually, including **48 coordinate-based sightseeing Google Maps
+links**, **33 per-place culinary map searches**, the separate dinner/festival
 targets, and every displayed photo-source/license link. HTTP responses, redirects,
 source identity and map queries were reviewed. The original thirteen
 fetch-restricted pages were then opened in visible browser canvases and
@@ -115,6 +115,18 @@ because of its regular Tuesday closure.
 The plan warns that an existing Shibuya Sky ticket would need changing,
 not silently transferring dates.
 The same caveat applies to existing DisneySea/teamLab tickets.
+
+UZUMASA Kyoto Village is an explicit **alternative instead of Nara on
+13 July**, not another stop after Nara. The park entry and paid Ninja Escape
+Room / 3D Ninja Fort are separate products. The alternative records the
+hidden mechanisms/passages, physical maze restrictions, transit via Uzumasa
+Tenjingawa, child-aware food break and official calendar/ticket sources.
+
+HIRAKUZA Osaka is included as an **entertainment Sumo dinner**, not a claim
+of professional tournament attendance. It is available in the Kulinarik
+section and directly from the 18 July alternatives. The current operator
+rules distinguish the child bento, approximately two-hour English show,
+same-day residual tickets and the earlier purchase deadline for a full bento.
 
 Ghibli Museum is a **reserved-ticket alternative** to Mount Takao on 8 July,
 not an additional excursion or spontaneously available rainy-day substitute.
@@ -161,9 +173,9 @@ development checks and the optional publishing helper.
 | `site/app.js` | Interaction and safe text-only rendering |
 | `site/lib.js` | Filtering, dates, preference migration and calendar export |
 | `site/trip-data.js` | Imported itinerary and booking links, with user-directed daily rescheduling |
-| `site/guide-data.js` | Concrete daily plans, official sources, 47 attributed points and shopping bases |
-| `site/extras.js` | Per-day alternatives and 32 local culinary recommendations mapped to every place |
-| `site/dining-data.js` | Seven family dinner highlights, explicit booking/access rules and operator evidence |
+| `site/guide-data.js` | Concrete daily plans, official sources, 48 attributed points and shopping bases |
+| `site/extras.js` | Per-day alternatives and 33 local culinary recommendations mapped to every place |
+| `site/dining-data.js` | Eight family dinner highlights, explicit booking/access rules and operator evidence |
 | `site/festival-data.js` | Five date-qualified festival/show proposals and out-of-window fireworks context |
 | `site/poi-photos.js` | Local photo paths, Commons source, author and license for each adopted photograph |
 | `site/poi-visuals.js` | Shared photo/illustration treatment, attribution and explicit image-error states |

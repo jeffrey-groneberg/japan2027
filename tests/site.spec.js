@@ -523,10 +523,10 @@ test("DisneySea is later, teamLab is Tuesday and Miraikan is not falsely offered
 
 test("the dining rubric filters city, experience and verified spontaneous options", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=dining&day=2027-07-05");
-  await expect(page.locator("#dining-list .dining-option")).toHaveCount(7);
+  await expect(page.locator("#dining-list .dining-option")).toHaveCount(8);
   await expect(page.locator("#dining-destinations")).not.toContainText("Vietnam");
   await page.getByRole("checkbox", { name: "Nur spontan versuchbar", exact: true }).check();
-  await expect(page.locator("#dining-list .dining-option")).toHaveCount(2);
+  await expect(page.locator("#dining-list .dining-option")).toHaveCount(3);
   await expect(page.locator("#dining-pokemon-cafe-tokyo")).toHaveCount(0);
   await page.locator('[data-dining-destination="kyoto"]').click();
   await expect(page.locator("#dining-list .dining-option")).toHaveCount(1);
@@ -609,4 +609,35 @@ test("the dinner shortcut opens ideas for the selected Japanese city", async ({ 
     const rail = tab.parentElement.getBoundingClientRect();
     return rect.left >= rail.left && rect.right <= rail.right;
   })).toBe(true);
+});
+
+test("UZUMASA appears as a full-day ninja replacement rather than an addition to Nara", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-13");
+  await expect(page.locator("#day-title")).toContainText("Nara");
+  await expect(page.locator(".day-summary")).toContainText("ersetzt UZUMASA");
+  await daySection(page, "Alternativen");
+  const option = page.locator(".alternative-option").filter({ hasText: "UZUMASA Ninja-Haus statt Nara" });
+  await option.locator("> summary").click();
+  await expect(option).toContainText("Nicht anschließend noch nach Nara");
+  await expect(option).toContainText("Geheimtüren");
+  await expect(option).toContainText("Uzumasa Tenjingawa");
+  await expect(option.locator(".place-actions a")).toHaveAttribute("href", /35\.016452%2C135\.708023/);
+  await expect(option.locator(".poi-figure svg use")).toHaveAttribute("href", /poi-illustrations\.svg#scene-ninja$/);
+  await expect(option.getByRole("link", { name: "UZUMASA: Ninja Escape Room & versteckte Mechanismen" })).toHaveAttribute("href", "https://en.eigamura.com/attraction/karakuri/");
+});
+
+test("the July 18 sumo dinner alternative opens HIRAKUZA with honest family booking rules", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-18");
+  await daySection(page, "Alternativen");
+  const option = page.locator(".alternative-option").filter({ hasText: "Sumo-Show mit Abendessen" });
+  await option.locator("> summary").click();
+  await expect(option).toContainText("kein offizielles Profi-Turnier");
+  await option.getByRole("button", { name: "Sumo-Essen in Kulinarik öffnen" }).click();
+  await expect(page.locator("#panel-dining")).toBeVisible();
+  await expect(page.locator("#dining-hirakuza-osaka")).toHaveAttribute("open", "");
+  await expect(page.locator("#dining-hirakuza-osaka > summary")).toBeFocused();
+  await expect(page.locator("#dining-hirakuza-osaka")).toContainText("Kinder-Bento");
+  await expect(page.locator("#dining-hirakuza-osaka")).toContainText("keine offizielle Sumo-Veranstaltung");
+  await expect(page.locator("#dining-hirakuza-osaka .poi-figure svg use")).toHaveAttribute("href", /poi-illustrations\.svg#scene-sumo$/);
+  await expect(page.locator("#dining-hirakuza-osaka").getByRole("link", { name: "Offizielle Tischreservierung" })).toHaveAttribute("href", "https://ars-hirakuza.triplabo.com/home?lang=en");
 });
