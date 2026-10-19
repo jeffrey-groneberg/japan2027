@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+  <style>:root{--cp-danger:#dc2626;--cp-text:#242424;--cp-surface:#ffffff}</style>
+  <circle cx="25" cy="25" r="22" fill="var(--cp-danger)" stroke="var(--cp-text)" stroke-width="3"/>
+  <path d="m25 9 3.5 10.5L39 23l-10.5 3.5L25 37l-3.5-10.5L11 23l10.5-3.5Z" fill="var(--cp-surface)"/>
+</svg>
