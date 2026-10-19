@@ -44,6 +44,7 @@ if (tool === "git") {
   try {
     const result = spawnSync(process.execPath, [new URL("../scripts/publish-pages.mjs", import.meta.url).pathname], {
       encoding: "utf8",
+      timeout: 15000,
       env: {
         ...process.env,
         PATH: `${directory}:${process.env.PATH}`,
@@ -55,12 +56,6 @@ if (tool === "git") {
       },
     });
 
-    test("GitHub automatically enabling Pages after the first gh-pages push is a success, not a duplicate-creation failure", () => {
-      const result = publishWithMocks({ auto: true });
-      assert.equal(result.status, 0, result.stderr);
-      assert.equal(result.commands.some((entry) => entry.args.includes("POST")), false);
-      assert.match(result.stdout, /Publication requested|publication requested/);
-    });
     if (result.error) throw result.error;
     const commands = readFileSync(log, "utf8").trim().split("\n").map((line) => JSON.parse(line));
     return { ...result, commands };
@@ -89,6 +84,13 @@ test("updates parent their site-only commit to the current remote deployment wit
   assert.deepEqual(commit.args.slice(0, 4), ["commit-tree", tree, "-p", parent]);
   assert.ok(result.commands.some((entry) => entry.args[0] === "fetch"));
   assert.equal(result.commands.some((entry) => entry.args.includes("POST")), false);
+});
+
+test("GitHub automatically enabling Pages after the first gh-pages push is a success, not a duplicate-creation failure", () => {
+  const result = publishWithMocks({ auto: true });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.commands.some((entry) => entry.args.includes("POST")), false);
+  assert.match(result.stdout, /Publication requested|publication requested/);
 });
 
 test("uncommitted site changes and unrelated existing Pages configurations block publication", () => {
