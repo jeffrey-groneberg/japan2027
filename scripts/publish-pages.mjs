@@ -22,15 +22,41 @@ function existingPages(repo) {
   throw new Error(`Could not read GitHub Pages settings: ${result.stderr.trim()}`);
 }
 
+function checkConfiguration(pages) {
+  if (pages && (pages.build_type !== "legacy" || pages.source?.branch !== "gh-pages" || pages.source?.path !== "/")) {
+    throw new Error("This repository uses different Pages publishing settings. Review them before changing the deployed site; no settings were overwritten.");
+  }
+}
+
+function configurePages(repo) {
+  const automatic = existingPages(repo);
+  if (automatic) {
+    checkConfiguration(automatic);
+    return automatic;
+  }
+  const result = spawnSync("gh", [
+    "api", "--method", "POST", `repos/${repo}/pages`,
+    "-f", "build_type=legacy", "-f", "source[branch]=gh-pages", "-f", "source[path]=/",
+  ], { encoding: "utf8" });
+  if (result.error) throw result.error;
+  const response = JSON.parse(result.stdout);
+  if (result.status === 0) return response;
+  if (String(response.status) !== "409") {
+    throw new Error(`Could not configure GitHub Pages: ${result.stderr.trim()}`);
+  }
+  const concurrent = existingPages(repo);
+  if (!concurrent) throw new Error("GitHub reported an existing Pages site, but its configuration could not be read.");
+  checkConfiguration(concurrent);
+  return concurrent;
+}
+
 function publish() {
   if (git("status", "--porcelain", "--untracked-files=all", "--", "site")) {
     throw new Error("Commit all changes under site/ before publishing. Only committed content is deployed.");
   }
   const { nameWithOwner: repo } = JSON.parse(gh("repo", "view", "--json", "nameWithOwner"));
   const pages = existingPages(repo);
-  if (pages && (pages.build_type !== "legacy" || pages.source?.branch !== "gh-pages" || pages.source?.path !== "/")) {
-    throw new Error("This repository uses different Pages publishing settings. Review them before changing the deployed site; no settings were overwritten.");
-  }
+  checkConfiguration(pages);
   const sourceRevision = git("rev-parse", "HEAD");
   const tree = git("rev-parse", "HEAD:site");
   const remote = git("ls-remote", "--heads", "origin", "refs/heads/gh-pages");
@@ -46,10 +72,7 @@ function publish() {
   const revision = git("commit-tree", tree, ...(parent ? ["-p", parent] : []), "-m", message);
   if (!/^[a-f0-9]{40}$/.test(revision)) throw new Error("Git did not return a valid site revision.");
   git("push", "origin", `${revision}:refs/heads/gh-pages`);
-  const configuration = pages ?? JSON.parse(gh(
-    "api", "--method", "POST", `repos/${repo}/pages`,
-    "-f", "build_type=legacy", "-f", "source[branch]=gh-pages", "-f", "source[path]=/",
-  ));
+  const configuration = pages ?? configurePages(repo);
   console.log(`GitHub Pages publication requested: ${configuration.html_url}`);
   console.log("The gh-pages branch contains only site/. GitHub may take a few minutes to finish deployment.");
 }

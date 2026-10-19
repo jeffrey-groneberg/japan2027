@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T15:02:25Z",
+  "title": "Design System: Japan & Vietnam 2027",
+  "extensions": {
+    "colorMeta": {
+      "cp-danger": { "role": "primary", "displayName": "Festival Red · light" },
+      "cp-danger-dark": { "role": "primary", "displayName": "Festival Red · dark" },
+      "cp-accent": { "role": "secondary", "displayName": "Berry Accent · light" },
+      "cp-accent-dark": { "role": "secondary", "displayName": "Night Rose · dark" },
+      "cp-accent-hover": { "role": "secondary", "displayName": "Berry Hover · light" },
+      "cp-accent-hover-dark": { "role": "secondary", "displayName": "Rose Hover · dark" },
+      "cp-accent-soft": { "role": "secondary", "displayName": "Soft Berry · light" },
+      "cp-accent-soft-dark": { "role": "secondary", "displayName": "Soft Rose · dark" },
+      "cp-highlight": { "role": "secondary", "displayName": "Selection Wash · light" },
+      "cp-highlight-dark": { "role": "secondary", "displayName": "Selection Wash · dark" },
+      "cp-link": { "role": "tertiary", "displayName": "Festival Blue · light" },
+      "cp-link-dark": { "role": "tertiary", "displayName": "Festival Blue · dark" },
+      "cp-warning": { "role": "tertiary", "displayName": "Lantern Amber · light" },
+      "cp-warning-dark": { "role": "tertiary", "displayName": "Lantern Amber · dark" },
+      "cp-bg": { "role": "neutral", "displayName": "Warm Paper · light" },
+      "cp-bg-dark": { "role": "neutral", "displayName": "Warm Charcoal · dark" },
+      "cp-bg-elevated": { "role": "neutral", "displayName": "Raised Paper · light" },
+      "cp-bg-elevated-dark": { "role": "neutral", "displayName": "Recessed Charcoal · dark" },
+      "cp-surface": { "role": "neutral", "displayName": "Paper · light" },
+      "cp-surface-dark": { "role": "neutral", "displayName": "Deep Charcoal · dark" },
+      "cp-surface-soft": { "role": "neutral", "displayName": "Quiet Map Surface · light" },
+      "cp-surface-soft-dark": { "role": "neutral", "displayName": "Quiet Map Surface · dark" },
+      "cp-border": { "role": "neutral", "displayName": "Quiet Divider · light" },
+      "cp-border-dark": { "role": "neutral", "displayName": "Quiet Divider · dark" },
+      "cp-border-strong": { "role": "neutral", "displayName": "Strong Divider · light" },
+      "cp-border-strong-dark": { "role": "neutral", "displayName": "Strong Divider · dark" },
+      "cp-text": { "role": "neutral", "displayName": "Ink · light" },
+      "cp-text-dark": { "role": "neutral", "displayName": "Light Ink · dark" },
+      "cp-text-soft": { "role": "neutral", "displayName": "Secondary Ink · light" },
+      "cp-text-soft-dark": { "role": "neutral", "displayName": "Secondary Ink · dark" },
+      "cp-accent-fg": { "role": "neutral", "displayName": "Accent Foreground · light" },
+      "cp-accent-fg-dark": { "role": "neutral", "displayName": "Accent Foreground · dark" }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Festival Lettering",
+        "purpose": "Shared locally hosted Lilita One family and regular weight; individual display sizes remain contextual."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Fluid display heading for the five planner panels; phone headings have an explicit override."
+      },
+      "title": {
+        "displayName": "Display Title",
+        "purpose": "Recurring subheadings and route-related display voice; not long-form copy."
+      },
+      "body": {
+        "displayName": "Local UI Body",
+        "purpose": "Root reading baseline and inherited local UI font stack."
+      },
+      "body-detail": {
+        "displayName": "Open Practical Detail",
+        "purpose": "Repeated agenda and practical explanatory paragraphs with generous leading."
+      },
+      "label": {
+        "displayName": "Action Label",
+        "purpose": "Bold UI voice for shared buttons and primary navigation; compact local tabs remain contextual."
+      }
+    },
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Existing --ease-out custom property for the button settle and festival arrival."
+      },
+      {
+        "name": "button-state",
+        "value": "background .18s, border-color .18s, transform .18s var(--ease-out)",
+        "purpose": "Shared action transition; hover translates -1px and active translates 1px."
+      },
+      {
+        "name": "festival-arrival",
+        "value": "festival-arrival .75s var(--ease-out) both",
+        "purpose": "One desktop artwork arrival at min-width 960px and no reduced-motion preference: translateY(14px) rotate(-1deg) with clip-path inset(0 0 4% 0), settling to translateY(0) rotate(0) with inset(0 0 0 0)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce)",
+        "purpose": "Remove authored animations/transitions, use automatic scrolling, and disable Leaflet fade/zoom animation."
+      }
+    ],
+    "breakpoints": [
+      { "name": "route-density", "value": "1100px" },
+      { "name": "desktop-art-motion-min", "value": "960px" },
+      { "name": "tablet-max", "value": "800px" },
+      { "name": "phone-max", "value": "600px" },
+      { "name": "narrow-phone-max", "value": "360px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Festival Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The built red primary action, with berry hover, a small press response and explicit focus.",
+      "html": "<a class=\"ds-primary\" href=\"#planner\">Reise entdecken <svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></a>",
+      "css": ".ds-primary { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:46px; padding:15px 23px; border:1px solid var(--cp-danger); border-radius:var(--radius-control); background:var(--cp-danger); color:var(--cp-accent-fg); font-family:var(--font-body); font-size:.9rem; font-weight:700; line-height:1.3; text-decoration:none; transition:background .18s,border-color .18s,transform .18s var(--ease-out); } .ds-primary:hover { color:var(--cp-accent-fg); background:var(--cp-accent); border-color:var(--cp-accent); transform:translateY(-1px); } .ds-primary:active { transform:translateY(1px); } .ds-primary:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } .ds-icon { width:21px; height:21px; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } @media (max-width:600px) { .ds-primary { padding:13px 18px; font-size:.83rem; } } @media (prefers-reduced-motion:reduce) { .ds-primary { transition:none; } }"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "An outlined surface action, used for calendar export, map loading and other practical tasks.",
+      "html": "<button type=\"button\" class=\"ds-secondary\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"/><path d=\"M7 3v5m10-5v5M3 11h18m-13 4h2m4 0h2m-8 3h2\"/></svg>In den Kalender</button>",
+      "css": ".ds-secondary { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:46px; padding:10px 18px; border:1px solid var(--cp-border); border-radius:var(--radius-control); background:var(--cp-surface); color:var(--cp-text); font-family:var(--font-body); font-size:.9rem; font-weight:700; line-height:1.3; cursor:pointer; transition:background .18s,border-color .18s,transform .18s var(--ease-out); } .ds-secondary:hover { background:var(--cp-bg-elevated); border-color:var(--cp-border-strong); transform:translateY(-1px); } .ds-secondary:active { transform:translateY(1px); } .ds-secondary:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } .ds-secondary:disabled { opacity:.4; cursor:not-allowed; } .ds-icon { width:21px; height:21px; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } @media (max-width:600px) { .ds-secondary { min-height:40px; padding:8px 12px; font-size:.76rem; } } @media (prefers-reduced-motion:reduce) { .ds-secondary { transition:none; } }"
+    },
+    {
+      "name": "Underlined Text Action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "A low-emphasis berry action for practical shortcuts without another filled container.",
+      "html": "<button type=\"button\" class=\"ds-text-action\">Was ist JR? Bahn-ABC &amp; Ticketkauf</button>",
+      "css": ".ds-text-action { background:none; border:0; padding:10px 0; min-height:44px; color:var(--cp-accent); font-family:var(--font-body); font-size:.88rem; font-weight:700; line-height:1.6; text-decoration:underline; text-underline-offset:4px; cursor:pointer; } .ds-text-action:hover { color:var(--cp-accent-hover); } .ds-text-action:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } .ds-text-action:disabled { opacity:.4; cursor:not-allowed; }"
+    },
+    {
+      "name": "Circular SVG Action",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "The general icon-only action; theme, favorite and day-navigation controls use original SVG and named actions.",
+      "html": "<button type=\"button\" class=\"ds-icon-action\" aria-label=\"Dunkle Ansicht aktivieren\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M21 14A9 9 0 0 1 10 3a9 9 0 1 0 11 11Z\"/></svg></button>",
+      "css": ".ds-icon-action { display:inline-grid; place-items:center; background:var(--cp-surface); color:var(--cp-text); border:1px solid var(--cp-border); border-radius:50%; min-width:44px; height:44px; padding:10px; cursor:pointer; } .ds-icon-action:hover { border-color:var(--cp-border-strong); background:var(--cp-bg); } .ds-icon-action:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } .ds-icon-action:disabled { opacity:.4; cursor:not-allowed; } .ds-icon { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }"
+    },
+    {
+      "name": "Day Search Field",
+      "kind": "input",
+      "refersTo": "field-search",
+      "description": "The outlined search wrapper supplies the focus treatment; the native search input stays transparent.",
+      "html": "<label class=\"ds-search\"><svg class=\"ds-search-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m16 16 5 5\"/></svg><input type=\"search\" aria-label=\"Tagesplan durchsuchen\" placeholder=\"Was möchtest du entdecken?\" autocomplete=\"off\"></label>",
+      "css": ".ds-search { display:flex; align-items:center; gap:12px; min-height:48px; padding-inline:16px; background:var(--cp-surface); border:1px solid var(--cp-border); border-radius:var(--radius-control); } .ds-search:focus-within { outline:3px solid var(--cp-link); outline-offset:2px; } .ds-search-icon { width:21px; height:21px; flex-shrink:0; fill:none; stroke:var(--cp-text-soft); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-search input { width:100%; min-width:0; height:46px; border:0; outline:0; background:none; color:var(--cp-text); font-family:var(--font-body); font-size:.9rem; line-height:1.6; } .ds-search input::placeholder { color:var(--cp-text-soft); opacity:1; } @media (max-width:600px) { .ds-search { gap:8px; padding-inline:12px; min-height:46px; } .ds-search input { height:44px; font-size:.8rem; } }"
+    },
+    {
+      "name": "Planner and Day Tabs",
+      "kind": "nav",
+      "refersTo": "navigation-tab",
+      "description": "Five main task tabs with a red underline; four quieter day-local tabs use a selected surface. These are visual state specimens, not a second application runtime.",
+      "html": "<div class=\"ds-main-tabs\" role=\"tablist\" aria-label=\"Reiseplanung\"><button type=\"button\" role=\"tab\" aria-selected=\"true\">Reiseplan</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Flüge &amp; Anfahrt</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Unterkünfte</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Basen &amp; Einkaufen</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Checkliste</button></div><div class=\"ds-local-tabs\" role=\"tablist\" aria-label=\"Bereiche des ausgewählten Reisetags\"><button type=\"button\" role=\"tab\" aria-selected=\"true\">Tagesablauf</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Orte &amp; Karte</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Anfahrt &amp; Tickets</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Alternativen</button></div>",
+      "css": ".ds-main-tabs { display:flex; align-items:stretch; gap:24px; padding-top:8px; background:var(--cp-bg); border-bottom:1px solid var(--cp-border); overflow-x:auto; scrollbar-width:thin; } .ds-main-tabs button { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; min-height:60px; padding:12px 2px 14px; border:0; border-bottom:3px solid var(--cp-bg); background:none; color:var(--cp-text-soft); font-family:var(--font-body); font-size:.9rem; font-weight:700; line-height:1.6; white-space:nowrap; cursor:pointer; } .ds-main-tabs button:hover { color:var(--cp-text); } .ds-main-tabs [aria-selected=true] { color:var(--cp-text); border-bottom-color:var(--cp-danger); } .ds-main-tabs button:focus-visible { outline:3px solid var(--cp-link); outline-offset:-5px; } .ds-local-tabs { display:flex; gap:4px; margin-top:22px; padding:4px; background:var(--cp-bg); border-radius:12px; } .ds-local-tabs button { flex:1; min-height:44px; padding:8px 10px; border:1px solid var(--cp-bg); border-radius:8px; background:none; color:var(--cp-text-soft); font-family:var(--font-body); font-size:.74rem; font-weight:700; line-height:1.6; cursor:pointer; } .ds-local-tabs button:hover { color:var(--cp-text); } .ds-local-tabs [aria-selected=true] { background:var(--cp-surface); border-color:var(--cp-border); color:var(--cp-text); } .ds-local-tabs button:focus-visible { outline:3px solid var(--cp-link); outline-offset:-3px; } @media (max-width:1100px) { .ds-main-tabs { gap:18px; } } @media (max-width:800px) { .ds-main-tabs { gap:22px; } } @media (max-width:600px) { .ds-main-tabs button { min-height:56px; font-size:.79rem; } .ds-local-tabs { display:grid; grid-template-columns:1fr 1fr; margin-top:18px; } .ds-local-tabs button { padding:8px 5px; } }"
+    },
+    {
+      "name": "Destination Filter Pills",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "The repeated destination/base selector pairs an outlined resting state with an ink-inverted pressed state.",
+      "html": "<div class=\"ds-filters\" role=\"group\" aria-label=\"Tage nach Station filtern\"><button type=\"button\" class=\"ds-filter\" aria-pressed=\"true\">Alle Stationen</button><button type=\"button\" class=\"ds-filter\" aria-pressed=\"false\">Tokyo</button><button type=\"button\" class=\"ds-filter\" aria-pressed=\"false\">Kyoto</button><button type=\"button\" class=\"ds-filter\" aria-pressed=\"false\">Osaka</button><button type=\"button\" class=\"ds-filter\" aria-pressed=\"false\">Da Nang</button></div>",
+      "css": ".ds-filters { display:flex; flex-wrap:wrap; gap:8px; } .ds-filter { min-height:42px; padding:7px 16px; border:1px solid var(--cp-border); border-radius:30px; background:var(--cp-surface); color:var(--cp-text); font-family:var(--font-body); font-size:.8rem; font-weight:600; line-height:1.6; cursor:pointer; } .ds-filter:hover { border-color:var(--cp-border-strong); } .ds-filter[aria-pressed=true] { background:var(--cp-text); border-color:var(--cp-text); color:var(--cp-surface); } .ds-filter:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } @media (max-width:600px) { .ds-filters { gap:6px; } .ds-filter { min-height:38px; padding:6px 12px; font-size:.73rem; } }"
+    },
+    {
+      "name": "Quiet Day Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The broad, outlined selected-day surface demonstrates actual title, summary and measure without adding elevation.",
+      "html": "<article class=\"ds-day-panel\" aria-label=\"Ausgewählter Tagesplan\"><h3>Shibuya, Harajuku &amp; Meiji-Schrein</h3><p>Erst ein ruhiger Start am Schrein, dann durch Harajuku nach Shibuya – mit genug Pausen für die Kinder.</p></article>",
+      "css": ".ds-day-panel { min-width:0; padding:28px 32px; border:1px solid var(--cp-border); border-radius:var(--radius-panel); background:var(--cp-surface); color:var(--cp-text); font-family:var(--font-body); line-height:1.6; } .ds-day-panel h3 { margin:9px 0 0; max-width:28ch; color:var(--cp-text); font-family:var(--font-display); font-size:clamp(1.65rem,3vw,2rem); font-weight:400; line-height:1.2; text-wrap:balance; } .ds-day-panel p { margin:20px 0 0; max-width:65ch; font-size:.9rem; font-weight:600; line-height:1.75; } @media (max-width:800px) { .ds-day-panel { padding:24px; } .ds-day-panel h3 { font-size:1.7rem; } } @media (max-width:600px) { .ds-day-panel { padding:22px 20px; } .ds-day-panel h3 { font-size:1.8rem; } }"
+    },
+    {
+      "name": "Numbered Agenda Disclosure",
+      "kind": "custom",
+      "refersTo": "agenda-step",
+      "description": "A closed native disclosure keeps numbered chronology readable; opening reveals practical detail rather than a long default column.",
+      "html": "<div class=\"ds-agenda-row\"><details class=\"ds-agenda\" name=\"ds-agenda-points\"><summary><span class=\"ds-step-number\">1</span><span class=\"ds-step-heading\"><span class=\"ds-step-time\">Vormittag</span><span class=\"ds-step-title\">Meiji-Schrein &amp; Harajuku</span></span><svg class=\"ds-step-chevron\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\"/></svg></summary><div class=\"ds-step-body\"><p>Erst ein ruhiger Start am Schrein, dann durch Harajuku nach Shibuya – mit genug Pausen für die Kinder.</p></div></details></div>",
+      "css": ".ds-agenda-row { border:1px solid var(--cp-border); border-radius:12px; background:var(--cp-bg-elevated); color:var(--cp-text); font-family:var(--font-body); line-height:1.6; } .ds-agenda > summary { display:flex; align-items:center; gap:12px; list-style:none; padding:16px; min-height:78px; cursor:pointer; } .ds-agenda > summary::-webkit-details-marker { display:none; } .ds-agenda > summary:focus-visible { outline:3px solid var(--cp-link); outline-offset:-4px; border-radius:12px; } .ds-step-number { display:inline-grid; place-items:center; flex:0 0 28px; height:28px; border:1px solid var(--cp-border-strong); border-radius:50%; background:var(--cp-surface); font-size:.75rem; font-weight:800; } .ds-step-heading { flex:1; min-width:0; } .ds-step-time { display:block; margin-bottom:5px; color:var(--cp-text-soft); font-size:.69rem; font-weight:600; } .ds-step-title { display:block; font-size:.94rem; font-weight:700; line-height:1.4; text-wrap:pretty; } .ds-step-chevron { width:17px; height:17px; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-agenda[open] .ds-step-chevron { transform:rotate(90deg); } .ds-step-body { padding:0 18px 18px 56px; } .ds-step-body p { margin:0; max-width:70ch; font-size:.9rem; line-height:1.85; } @media (max-width:600px) { .ds-agenda > summary { padding:14px 12px; gap:10px; } .ds-step-number { flex-basis:25px; height:25px; font-size:.69rem; } .ds-step-title { font-size:.88rem; } .ds-step-body { padding:0 14px 16px; } .ds-step-body p { font-size:.86rem; } }"
+    },
+    {
+      "name": "Place Disclosure with Local Food",
+      "kind": "custom",
+      "refersTo": "place-disclosure",
+      "description": "Numbered place detail keeps its culinary recommendation inside the same collapsed item, with a dashed separator rather than a separate default card.",
+      "html": "<div class=\"ds-place-row\"><span class=\"ds-place-number\">1</span><details class=\"ds-place-detail\" name=\"ds-place-details\"><summary><h5>Takeshita Street · Harajuku</h5><p class=\"ds-place-kind\">Shopping &amp; Streetfood</p><svg class=\"ds-place-chevron\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\"/></svg></summary><div class=\"ds-food\"><h6>Unser Genuss-Tipp: AFURI Harajuku · Yuzu-Shio-Ramen</h6><p>Klare Brühe mit frischem Yuzu-Zitrusaroma statt einer schweren, cremigen Ramen-Suppe. Die Harajuku-Filiale passt direkt in euren Viertelbummel.</p><p class=\"ds-food-practical\">Die Filiale ist laut Betreiber bargeldlos. Ein kleiner Ramenladen, keine garantiert lange Familien-Sitzpause.</p></div></details></div>",
+      "css": ".ds-place-row { display:flex; align-items:start; gap:14px; padding-block:16px; border-top:1px solid var(--cp-border); color:var(--cp-text); font-family:var(--font-body); line-height:1.6; } .ds-place-number { display:inline-grid; place-items:center; flex:0 0 30px; height:30px; border:1px solid var(--cp-border-strong); border-radius:50%; background:var(--cp-bg); font-size:.76rem; font-weight:800; } .ds-place-detail { min-width:0; flex:1; } .ds-place-detail > summary { position:relative; min-height:44px; padding-right:26px; list-style:none; cursor:pointer; } .ds-place-detail > summary::-webkit-details-marker { display:none; } .ds-place-detail > summary:focus-visible { outline:3px solid var(--cp-link); outline-offset:4px; } .ds-place-detail h5 { margin:0; font-size:1rem; font-weight:700; line-height:1.5; } .ds-place-kind { margin:6px 0 0; color:var(--cp-text-soft); font-size:.71rem; } .ds-place-chevron { position:absolute; top:3px; right:0; width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-place-detail[open] .ds-place-chevron { transform:rotate(90deg); } .ds-food { margin-top:18px; padding-top:16px; border-top:1px dashed var(--cp-border-strong); } .ds-food h6 { margin:0; font-size:.89rem; font-weight:800; line-height:1.6; color:var(--cp-text); } .ds-food p { margin:10px 0 0; font-size:.81rem; line-height:1.8; } .ds-food-practical { color:var(--cp-text-soft); } @media (max-width:600px) { .ds-place-row { gap:10px; } .ds-place-number { flex-basis:26px; height:26px; font-size:.7rem; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Japanese summer-festival rhythm-arcade",
+    "overview": "“Playful, but clean” is expressed through rounded display lettering, festival red, blue and amber, and original outlined SVG scenery. Fuji, the train, torii, onigiri and suitcase belong to the same flat-vector world. The reference is a Japanese summer festival with a light rhythm-arcade influence, not copied game characters, logos or artwork.\n\nThe working interface is deliberately quieter than its illustration. Neutral surfaces, thin dividers, clear labels and compact disclosures make practical detail readable. Expression lives in lettering, drawn geometry and a few purposeful accents; it does not turn every planning row into decorative artwork.",
+    "keyCharacteristics": [
+      "Original outlined SVG festival geometry and locally hosted rounded lettering.",
+      "Festival red, blue and amber above quiet, theme-aware neutrals.",
+      "One selected day, labeled task tabs and closed-by-default detail.",
+      "Visible keyboard states and responsive desktop-to-phone reflow."
+    ],
+    "rules": [
+      {
+        "name": "The Festival Roles Rule",
+        "body": "Component colors reference the existing `--cp-*` variables; festival red, blue and amber keep their built roles instead of becoming a second hard-coded palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The Display/Detail Rule",
+        "body": "Lilita One gives headings and meaningful route/date numerals their character; the local UI stack carries controls and long practical copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Planner Rule",
+        "body": "Separate planning surfaces with the existing borders and theme-aware fills; do not infer ambient, glass or hard-offset card elevation from unused theme variables or screenshot tiles.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use the exact existing `--cp-*` variables and their light/dark assignments for every component color.",
+      "**Do** pair locally hosted Lilita One headings with the recorded local UI body stack.",
+      "**Do** keep the selected-day overview compact, with full agenda, place, food and alternative detail behind labeled tabs and native disclosures.",
+      "**Do** use original, consistent SVG icons and scenery; preserve visible focus, meaningful state and reduced-motion behavior.",
+      "**Do** keep map consent, attribution, recoverable loading states and independent place links visible where relevant."
+    ],
+    "donts": [
+      "**Don't** copy game characters, logos, artwork or music to strengthen the festival reference.",
+      "**Don't** replace the primary display face with an installed system display font or use emoji/glyphs as the icon system.",
+      "**Don't** add invented kickers, hard-offset card shadows or a synthetic color palette as inherited house style.",
+      "**Don't** restore removed budget, template/source-reference, print or footer UI on the authority of dormant selectors or stale notes.",
+      "**Don't** treat automated map fixture tiles, unused theme effects or tiny one-off artwork lettering as reusable design tokens."
+    ]
+  }
+}

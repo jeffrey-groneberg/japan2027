@@ -198,7 +198,8 @@ test("delivery previews and browser errors", async ({ page }) => {
   await plannerTop();
   await capture("mobile-itinerary");
   await daySection(page, "Alternativen");
-  await plannerTop();
+  await page.locator("#day-panel-alternatives .alternative-option > summary").first().click();
+  await page.locator("#day-panel-alternatives").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 84));
   await capture("mobile-alternatives");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-07");

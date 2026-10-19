@@ -29,6 +29,8 @@ if (tool === "git") {
   else throw new Error("Unexpected git command");
 } else if (args[0] === "repo") {
   console.log(JSON.stringify({nameWithOwner:"owner/repo"}));
+} else if (process.env.MOCK_AUTO && fs.readFileSync(process.env.MOCK_LOG,"utf8").includes('"push"')) {
+  console.log(JSON.stringify({build_type:"legacy",source:{branch:"gh-pages",path:"/"},html_url:"https://owner.github.io/repo/"}));
 } else if (args.includes("POST")) {
   console.log(JSON.stringify({html_url:"https://owner.github.io/repo/"}));
 } else if (process.env.MOCK_PAGES) {
@@ -49,7 +51,15 @@ if (tool === "git") {
         MOCK_DIRTY: options.dirty ?? "",
         MOCK_PAGES: options.pages ? JSON.stringify(options.pages) : "",
         MOCK_EXISTING: options.existing ? "1" : "",
+        MOCK_AUTO: options.auto ? "1" : "",
       },
+    });
+
+    test("GitHub automatically enabling Pages after the first gh-pages push is a success, not a duplicate-creation failure", () => {
+      const result = publishWithMocks({ auto: true });
+      assert.equal(result.status, 0, result.stderr);
+      assert.equal(result.commands.some((entry) => entry.args.includes("POST")), false);
+      assert.match(result.stdout, /Publication requested|publication requested/);
     });
     if (result.error) throw result.error;
     const commands = readFileSync(log, "utf8").trim().split("\n").map((line) => JSON.parse(line));
