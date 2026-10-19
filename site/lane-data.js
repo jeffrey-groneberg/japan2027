@@ -9,7 +9,7 @@ import {
 
 const START_OF_DAY = 8 * 60;
 const MIN_VISIBLE_SPAN = 4 * 60;
-const BUFFER_THRESHOLD = 30;
+const BUFFER_THRESHOLD = 15;
 const RETURN_BREAK_THRESHOLD = 180;
 
 function number(value) {
@@ -39,7 +39,7 @@ function timeFrom(text = "", fallback = START_OF_DAY) {
   if (/später nachmittag/i.test(text)) return 17 * 60;
   if (/früher abend/i.test(text)) return 18 * 60;
   if (/nachmittag/i.test(text)) return 15 * 60;
-  if (/mittag/i.test(text)) return 12 * 60 + 30;
+  if (/(^|[\s·/])mittags?\b/i.test(text)) return 12 * 60 + 30;
   if (/abend|spät/i.test(text)) return 18 * 60 + 30;
   if (/nacht/i.test(text)) return 20 * 60;
   if (/früh morgens|vor dem losfahren|vor der landung/i.test(text)) return 8 * 60 + 30;
@@ -297,8 +297,7 @@ function addJourneys(date, lane) {
       if (cursor === null) {
         cursor = desiredStart;
       } else if (desiredStart > cursor) {
-        insertBuffer(output, cursor, desiredStart, currentLocation);
-        cursor = desiredStart;
+        cursor = insertBuffer(output, cursor, desiredStart, currentLocation);
       }
       const inlineWalk = connection.mode === "walk" && connection.duration < 20 && block.kind !== "travel-target";
       if (inlineWalk) {
@@ -350,8 +349,11 @@ function addJourneys(date, lane) {
 
 function routeDifference(primary, lane) {
   if (lane.isPrimary) return "Vollständiger Tagesplan";
-  const primaryLocations = primary.blocks.filter(({ kind, locationId }) => kind === "activity" && locationId).map(({ locationId }) => locationId);
-  const laneLocations = lane.blocks.filter(({ kind, locationId }) => kind === "activity" && locationId).map(({ locationId }) => locationId);
+  const routeLocations = (blocks) => blocks
+    .filter(({ kind, placeId, source, locationId }) => kind === "activity" && (placeId || source === "alternative") && locationId)
+    .map(({ locationId }) => locationId);
+  const primaryLocations = routeLocations(primary.blocks);
+  const laneLocations = routeLocations(lane.blocks);
   const added = [...new Set(laneLocations.filter((id) => !primaryLocations.includes(id)))].map(locationName);
   const removed = [...new Set(primaryLocations.filter((id) => !laneLocations.includes(id)))].map(locationName);
   const changes = [];
@@ -438,7 +440,7 @@ export function buildDayLanes(date) {
     ...decorated[0].blocks.filter(({ kind, placeId }) => kind === "activity" && placeId),
     ...decorated.slice(1).flatMap((lane) => lane.blocks.filter(({ kind, placeId, source }) => kind === "activity" && placeId && source === "alternative")),
   ];
-  const uniqueMapBlocks = [...new Map(mapBlocks.map((block) => [block.placeId, block])).values()];
+  const uniqueMapBlocks = mapBlocks.filter((block, index) => mapBlocks.findIndex(({ placeId }) => placeId === block.placeId) === index);
   const mapKeyByPlace = new Map(uniqueMapBlocks.map((block) => [block.placeId, block.key]));
   for (const block of decorated.flatMap(({ blocks }) => blocks)) {
     if (block.placeId) block.mapKey = mapKeyByPlace.get(block.placeId);

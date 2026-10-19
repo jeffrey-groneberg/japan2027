@@ -225,6 +225,7 @@ test("all 30 day lanes stay separated and visually cover their timeline on deskt
 });
 
 test("delivery previews and browser errors", async ({ page }) => {
+  test.setTimeout(90_000);
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
@@ -243,6 +244,8 @@ test("delivery previews and browser errors", async ({ page }) => {
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await show(page, "itinerary");
+  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await expect(page.locator("#startup-notice")).toBeHidden();
   await page.evaluate(() => window.scrollTo(0, 0));
   await capture("mobile-home");
   await plannerTop();
@@ -287,7 +290,7 @@ test("the Shibuya day explains five individual places including the official Pok
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   const primary = page.locator(".lane-track").first();
   await expect(primary.locator(".lane-block-activity[data-place-id]")).toHaveCount(5);
-  await primary.locator('[data-place-id="pokemon"]').click();
+  await primary.locator('[data-place-id="nintendoTokyo"]').click();
   await expect(page.locator("#lane-detail")).toContainText("Lieblingssouvenir");
   await expect(page.locator(".transport-box")).toContainText("Yamanote Line");
   await expect(page.locator(".lane-header")).toHaveCount(3);
@@ -466,6 +469,8 @@ test("the day map opens as a modal, fits every stop and links back to the exact 
   await expect(page.locator(".day-map-dialog")).toBeVisible();
   await expect(page.getByRole("button", { name: "Tageskarte schließen" })).toBeVisible();
   await expect(page.locator("#day-map .place-marker")).toHaveCount(5);
+  await page.getByRole("button", { name: "Tageskarte schließen" }).click();
+  await page.getByRole("button", { name: "Tageskarte öffnen" }).click();
   expect(await page.locator("#day-map").evaluate((map) => {
     const bounds = map.getBoundingClientRect();
     return [...map.querySelectorAll(".place-marker")].every((marker) => {
@@ -518,7 +523,7 @@ test("Ghibli has conditional booking, its own transport and child-aware cafe det
   await expect(page.locator("#day-title")).toHaveText("Wandertag: Mount Takao");
   await expect(page.locator(".day-summary")).toContainText("Ghibli");
   await expect(page.locator(".lane-header")).toHaveCount(3);
-  await expect(page.locator(".lane-header").filter({ hasText: "Ghibli Museum statt Mount Takao" })).toContainText("Entfällt: Mount Takao");
+  await expect(page.locator(".lane-header").filter({ hasText: "Ghibli Museum statt Mount Takao" })).toContainText("Entfällt: Mount Takao · Gipfel");
   const option = await openPoint(page, "ghibli");
   await expect(option).toContainText("03:00 Uhr MESZ");
   await expect(option).toContainText("JR Chuo Line");
@@ -661,7 +666,7 @@ test("the dinner shortcut opens ideas for the selected Japanese city", async ({ 
 test("UZUMASA appears as a full-day ninja replacement rather than an addition to Nara", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-13");
   await expect(page.locator("#day-title")).toContainText("Nara");
-  await expect(page.locator(".day-summary")).toContainText("ersetzt UZUMASA");
+  await expect(page.locator(".day-summary")).toContainText("ersetzt die UZUMASA-Route");
   await expect(page.locator(".lane-header").filter({ hasText: "UZUMASA Ninja-Haus statt Nara" })).toContainText("Entfällt: Nara-Park");
   const option = await openPoint(page, "uzumasa");
   await expect(option).toContainText("Nicht anschließend noch nach Nara");

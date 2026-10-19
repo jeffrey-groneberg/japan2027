@@ -13,14 +13,18 @@ vendored locally; optional background maps come from OpenStreetMap.
   instructions, and keep favorite days.
 - Read concrete daily sequences, booking tips and plain-language train and
   ticket instructions instead of having to interpret rail abbreviations.
-- Scan separated, numbered points and open descriptions, official links,
-  Google Maps and culinary advice directly at the corresponding stop.
+- Compare complete daily routes side by side on a shared time axis. Activity
+  height reflects approximate duration; named train, metro, bus, taxi, flight
+  and walking blocks start from the actual preceding stop. Meals, recovery and
+  deliberate free time are visible instead of looking like missing plan data.
+- Select a numbered stop to open descriptions, official links, Google Maps and
+  culinary advice directly below the lanes.
   Compact photo thumbnails and larger, credited local photos make places
   recognizable; original Japanese-style illustrations fill clearly labeled
   gaps rather than pretending to be photographs.
-  A collapsible, complete day map sits in the agenda, with matching numbers,
-  point-to-map and popup-to-point navigation, plus an all-stops reset.
-  Three day-local tabs separate the agenda, travel/tickets and alternatives;
+  A map-pin icon opens the complete day map in a modal with a clear close
+  action, matching route numbers and point-to-map / popup-to-point navigation.
+  Two day-local tabs separate the route board from general ticket guidance;
   previous/next-day controls stay at the top.
 - Explore 48 sightseeing and shopping points with official information,
   individual Google Maps links and an interactive OpenStreetMap view.
@@ -28,8 +32,12 @@ vendored locally; optional background maps come from OpenStreetMap.
   each planned base, without inventing a private apartment's exact address.
 - Browse ten Japan accommodation options and retain a personal selection.
   Bedroom-category problems found during the browser check are called out.
-- Find alternatives for every day and a nearby culinary recommendation at
-  every mapped place, with an explanation, child-aware choices and access rules.
+- Materially different plans receive their own full route lane. Pacing-only
+  choices appear as flex notes instead of duplicate lanes. Every mapped place
+  retains a nearby culinary recommendation with child-aware access rules.
+- Vietnam contains only the three chosen excursions (Hoi An, Marble Mountains
+  and Ba Na Hills); all other resort days are intentionally simple hotel,
+  pool and beach days without invented replacement outings.
 - Open the general **Kulinarik** section for eight family-oriented dinner
   ideas in Tokyo, Kyoto and Osaka, including interactive meals and skyline
   buffets. City/category filters compose with an evidence-based
@@ -124,9 +132,10 @@ Tenjingawa, child-aware food break and official calendar/ticket sources.
 
 HIRAKUZA Osaka is included as an **entertainment Sumo dinner**, not a claim
 of professional tournament attendance. It is available in the Kulinarik
-section and directly from the 18 July alternatives. The current operator
-rules distinguish the child bento, approximately two-hour English show,
-same-day residual tickets and the earlier purchase deadline for a full bento.
+section and directly from the 18 July route. The current operator rules
+distinguish the child bento, a roughly two-hour evening block including the
+meal, the approximately 60–70 minute show, same-day residual tickets and the
+earlier purchase deadline for a full bento.
 
 Ghibli Museum is a **reserved-ticket alternative** to Mount Takao on 8 July,
 not an additional excursion or spontaneously available rainy-day substitute.

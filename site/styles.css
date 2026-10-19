@@ -301,9 +301,9 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-corner { left: 0; z-index: 7; display: flex; align-items: end; color: var(--cp-text-soft); font-size: .68rem; font-weight: 700; }
 .lane-header { min-width: 0; }
 .lane-header strong, .lane-header span { display: block; }
-.lane-header strong { color: var(--cp-accent); font-size: .7rem; }
+.lane-header strong { color: var(--cp-text); font-size: .7rem; }
 .lane-header-title { margin-top: 5px; font-size: .78rem; font-weight: 700; line-height: 1.35; }
-.lane-header-difference { display: block; margin-top: 7px; color: var(--cp-text-soft); font-size: .63rem; font-weight: 600; line-height: 1.45; }
+.lane-header-difference { display: block; margin-top: 7px; color: var(--cp-text); font-size: .63rem; font-weight: 600; line-height: 1.45; }
 .lane-header-primary { background: var(--cp-accent-soft); }
 .lane-time-axis { position: sticky; left: 0; z-index: 3; min-width: 56px; background: var(--cp-bg-elevated); border-right: 1px solid var(--cp-border); }
 .lane-time-label { position: absolute; left: 3px; color: var(--cp-text-soft); font-size: .64rem; font-variant-numeric: tabular-nums; transform: translateY(-50%); }

@@ -86,12 +86,20 @@ The latest user decision removes all template references, historical-source
 UI, budget functionality, print feature, metadata/disclaimer footer and the
 entire footer. This supersedes earlier surface notes about source/print.
 Keep only the immediately relevant map consent and OSM attribution.
-Every day now includes optional alternatives, shown in the local Alternatives
-tab rather than appending a long default column. Every one of the 48 places
+Materially different plans now appear as complete parallel route lanes on a
+shared approximate time axis. Named train, metro, bus, taxi, flight and walking
+blocks start from the actual preceding stop; pauses and deliberate free time
+fill the day rather than reading as missing data. Pacing-only choices remain
+compact flex notes instead of duplicate lanes. The day map is opened from a
+single icon in the day header and appears in a closable modal. Every one of the 48 places
 has one of 33 local food recommendations, including why it is worthwhile,
 child-aware options/caveats, practical access restrictions, official links
 and named Google Maps searches. Food recommendations live as nested
-disclosures directly inside the matching POI.
+disclosures inside the selected lane detail.
+
+Vietnam is intentionally quieter: only Hoi An, Marble Mountains and Ba Na
+Hills remain external excursions. All other resort days are simple hotel,
+pool and beach days without optional substitute outings.
 
 Current local expansion: compact POI photo thumbnails and larger credited
 archive photos inside the opened point. Twenty-nine place mappings use local

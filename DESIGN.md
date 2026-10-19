@@ -226,8 +226,9 @@ The shared page container caps at (1200px), centered with desktop side space (32
 - **Planner:** a sticky top-level tab rail stays at the viewport top and scrolls horizontally when necessary. Its seven panels, in order, are Reiseplan, Flüge & Anfahrt, Unterkünfte, Basen & Einkaufen, Kulinarik, Feste & Feuerwerk and Checkliste. Selecting a main tab adjusts only the rail's horizontal scroll to reveal it; ordinary tab selection does not force a vertical page jump.
 - **Day workspace:** the selector/detail grid uses a (300px) sidebar, reduced to (270px) at (1100px) and (230px) at (800px), alongside a flexible detail column. Below (600px), dates become a horizontal, proximity-snapping strip above the detail.
 - **Sidebar stickiness:** in the current CSS, sticky day selection at (88px) is scoped to widths of at least (960px) with no reduced-motion preference. The main tab rail is independently sticky.
-- **Day-local navigation:** Tagesablauf, Anfahrt & Tickets and Alternativen separate tasks. The three controls stay in one row, including phones. There is no separate places/map tab.
-- **Compactness:** show the day summary, closed shared-map disclosure and numbered POI thumbnails/headings first. Each POI owns its expanded figure, description, official links, navigation and food tip. Agenda summaries retain (68px) minimum height with (12px 16px) padding and (8px) between rows; phone padding remains (14px 12px), with (10px) between rows. Booking and practical-tip paragraphs share one closed disclosure. Previous/next-day buttons and the favorite control remain in the day header.
+- **Day-local navigation:** Tagesrouten and Anfahrt & Tickets separate the interactive schedule from general ticket guidance. The two controls stay in one row, including phones. There is no separate alternatives or places/map tab.
+- **Parallel route board:** each column is a complete route. Vertical position and block height encode approximate timing and duration. Blue transport blocks name the actual previous and next location; short walks become slim labeled connectors. Dashed pause/free-time blocks prevent unexplained visual gaps. Route headers state what is added and removed, so materially different lanes never appear identical.
+- **Compactness:** the lane board owns its own horizontal and vertical scrolling region, sticky route headers and sticky time axis. Selecting one activity opens its photo, description, official links, map action and food tip below the board. Booking and practical-tip paragraphs share one closed disclosure. Previous/next-day buttons, the day-map icon and favorite control remain in the day header.
 - **Evening options:** dinner choices form two equal flexible columns with a (16px) gap; at (760px) and below they become one column. Festival proposals remain a single chronological list with a (12px) gap; their expanded image/copy columns stack at the same breakpoint.
 - **Other panels:** flight rows and transport columns simplify to one column on phones; checklist deadlines move below their text. Lodging rows keep radio selection and description together.
 
@@ -305,15 +306,15 @@ Two levels of task navigation, plus direct day selection.
 - Route controls pair meaningful sequential numbers with city names and original SVG landmarks; selection highlights the control and fills its number red.
 - “Abendideen in [city]” opens that city's dinner options with category/spontaneous filters reset, scrolls to the planner and focuses Kulinarik. Day-local festival shortcuts open the matching proposal, scroll to it and focus its summary. These deliberate destination jumps are distinct from ordinary tab selection.
 
-### Numbered Disclosures
+### Parallel Day Lanes
 
-Chronology is visible; long explanations are optional.
+Chronology, travel and deliberate downtime are visible; long explanations remain optional.
 
-- Native `details`/`summary` rows separate individual POIs, plus non-place pauses or preparations, with a chronological number, timing, title and SVG chevron. They start closed and share a disclosure group. POIs show a compact thumbnail (64 × 44px), with an overlaid circular number (24 × 24px), positioned (6px) below and (5px) beyond its right edge. Non-place rows retain standalone number badges.
-- Each POI row contains its category/duration, description, official links, Google Maps target and action to focus the shared day map. Marker numbers match agenda numbers; non-place entries may create deliberate gaps.
-- Food recommendations are nested native disclosures inside their POI, separated by a dashed rule. Opening one reveals the reason, child-aware advice, practical caveat and links without bloating the default view.
+- Activity blocks carry route-specific labels such as `A1` and compact thumbnails. Transport and pause blocks use mode icons instead of activity numbers. Every rendered block stays inside its exact time slot with visible breathing room; automated desktop/mobile checks reject overlaps and unexplained gaps across all 30 days.
+- Selecting an activity renders its category/duration, description, official links, Google Maps target and action to focus the shared day map. Reused places in another lane always focus the canonical map marker.
+- Food recommendations remain native disclosures inside the selected POI detail, separated by a dashed rule. Opening one reveals the reason, child-aware advice, practical caveat and links without bloating the lane.
 - The Bases & Shopping panel retains its own numbered place disclosures and shared base map.
-- Alternatives are closed disclosures within the third day-local tab, not additional mandatory agenda items.
+- Only materially different routes become additional lanes. Pacing-only choices are compact flex notes on the relevant activity.
 
 ### Photo Postcards & Original Scenes
 
@@ -349,9 +350,9 @@ Chronological invitations with visible uncertainty, not confirmed bookings.
 
 An optional geographic aid, never the only access to a place.
 
-- A neutral consent placeholder precedes external map tiles. “OpenStreetMap-Karte laden”, “Auf Tageskarte zeigen” and the base's “Auf Karte zeigen” are explicit map actions; permission is then remembered for the current page session. Closed day-map disclosures do not silently initialize a map.
-- Vendored Leaflet supplies real controls and attribution. Accent-filled numbered markers have surface-colored borders and matching accessible place-list numbers; popups use safe DOM content, not imported HTML. Same-building points share one marker labeled with their chronology (for example, `2·3`) and a popup containing each place, instead of overlapping markers. Each place keeps its own unchanged coordinate-based Google target.
-- The complete day map is in an initially closed disclosure above the agenda. Its viewport uses `min(60vh, 500px)` with a (340px) minimum. “Alle Stopps zeigen” restores the complete extent after focusing a point; popup actions open and focus the matching agenda row. No computed walking/transit route is implied.
+- A neutral consent placeholder precedes external map tiles. “OpenStreetMap-Karte laden”, the day-header map icon, “Auf Tageskarte zeigen” and the base's “Auf Karte zeigen” are explicit map actions; permission is then remembered for the current page session.
+- Vendored Leaflet supplies real controls and attribution. Accent-filled numbered markers have surface-colored borders and matching accessible lane numbers; popups use safe DOM content, not imported HTML. Same-building points share one marker labeled with their chronology (for example, `A2·A3`) and a popup containing each place, instead of overlapping markers. Each place keeps its own unchanged coordinate-based Google target.
+- The complete day map opens as a true modal with backdrop, sticky header and explicit X close control. Opening it from the header restores the complete extent; opening it from a POI focuses that point. Popup actions close the modal and focus the matching lane block. No computed walking/transit route is implied.
 - Base maps remain (320px) high on desktop and (280px) on phones. Theme-aware controls, popup surfaces and attribution remain readable above third-party tiles.
 - Loading disables and relabels the load button. Failures explain retry or continued use of the independent place list/Google Maps links; status text remains visible.
 - Empty filtered days offer a reset action. Storage failure explains that changes may last only for the session. Status announcements and the skip link support keyboard/screen-reader use.
@@ -362,7 +363,7 @@ An optional geographic aid, never the only access to a place.
 ### Do:
 - **Do** use the exact existing `--cp-*` variables and their light/dark assignments for every component color.
 - **Do** pair locally hosted Lilita One headings with the recorded local UI body stack.
-- **Do** keep the selected-day overview compact, with full agenda, place, food and alternative detail behind labeled tabs and native disclosures.
+- **Do** keep the selected-day overview compact, with complete route lanes, explicit travel and selected place/food detail behind the two labeled day-local tabs.
 - **Do** use original, consistent SVG icons and scenery; preserve visible focus, meaningful state and reduced-motion behavior.
 - **Do** credit local archive photos with author, source, license and crop wording; explicitly label original illustrations and explain image failures without hiding independent links.
 - **Do** expose booking requirements and unconfirmed festival dates before expansion, keeping family evening choices optional.

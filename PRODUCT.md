@@ -41,8 +41,9 @@ The people planning and taking the trip described in the supplied itinerary.
 - Show individual sightseeing and shopping locations on OpenStreetMap, with
   matching coordinate-based Google Maps links.
 - Keep descriptions, official links, navigation and culinary advice directly
-  at each itinerary point. Provide a complete shared day map in the agenda,
-  not a separate places/map tab; its numbers must match the actual points.
+  at each route point. A map-pin icon opens the complete shared day map in a
+  modal, not a separate places/map tab; its numbers must match the actual lane
+  points and its close action must remain unmistakable.
 - Include both grocery / everyday shopping and souvenir / leisure shopping
   around the planned bases. Do not invent the private Tokyo apartment address.
 - Check every external link individually and disclose access restrictions
@@ -51,7 +52,10 @@ The people planning and taking the trip described in the supplied itinerary.
   Keep an immediately scannable day overview, with full detail, maps and
   transport in clearly labeled on-demand areas rather than one long column.
 - Map tiles may contact OpenStreetMap only after an explicit map-loading action.
-- Every day needs optional alternatives, without expanding the default view.
+- Show only materially different plans as complete parallel route lanes on a
+  shared approximate time axis. Put concrete transport from the preceding stop,
+  pauses and deliberate free time in the lane. Pacing-only choices become flex
+  notes instead of visually duplicate lanes.
 - The user explicitly chose a culinary recommendation for every individual
   sightseeing place or district, not only one per city. Explain what makes it
   worthwhile, what may suit children, practical access restrictions and links.
@@ -83,6 +87,9 @@ The people planning and taking the trip described in the supplied itinerary.
 - Include HIRAKUZA Osaka as a family Sumo dinner experience linked from
   18 July and Kulinarik. Identify it as an English-language entertainment show,
   not professional Grand Sumo, and preserve the child-bento/reservation caveats.
+- In Vietnam, retain only Hoi An, Marble Mountains and Ba Na Hills as external
+  excursions. All other resort days are intentionally unstructured hotel,
+  pool and beach days rather than optional replacement trips.
 - Availability findings apply to the exact offered dates and room categories.
   An expired flight offer does not establish that a route does not exist;
   distinguish an official route announcement from a confirmed dated booking.
