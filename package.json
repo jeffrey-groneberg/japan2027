@@ -1,0 +1,21 @@
+{
+  "name": "japan-vietnam-2027",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A build-free, interactive Japan and Vietnam travel itinerary.",
+  "scripts": {
+    "start": "python3 scripts/serve.py",
+    "check": "node --check site/app.js && node --check site/lib.js && node --check site/trip-data.js && node --check site/guide-data.js && node --check site/extras.js && node --check site/map.js && node --check site/link-audit.js",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "deploy": "node scripts/publish-pages.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.0"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4"
+  }
+}

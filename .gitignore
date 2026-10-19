@@ -1,0 +1,6 @@
+node_modules/
+playwright-report/
+test-results/
+.DS_Store
+.impeccable/hook.cache.json
+__pycache__/

@@ -1,0 +1,2 @@
+site/vendor/** linguist-vendored -whitespace
+site/assets/OFL-Lilita-One.txt -whitespace
