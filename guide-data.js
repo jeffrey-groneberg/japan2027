@@ -184,7 +184,7 @@ export const dayGuides = {
     transit: { title: "Direkt mit JR zum Zoo; die Metro nur für das optionale Asakusa", ticket: localTicket, steps: ["JR Yamanote Line von Komagome nach Ueno nehmen.", "Den Ausgang zum Ueno-Park wählen und zum bestätigten geöffneten Zooeingang gehen.", "Falls ihr anschließend Asakusa besuchen möchtet: ab Ueno die Tokyo Metro Ginza Line Richtung Asakusa nehmen.", "Für den Rückweg von Asakusa über Ueno mit der JR Yamanote nach Komagome; wenn ihr nach dem Zoo heimfahrt, entfällt der Metro-Teil."] },
   },
   "2027-07-08": {
-    summary: "Mount Takao bleibt der Plan fürs Grüne. Mit bestätigtem Ghibli-Ticket könnt ihr stattdessen den Museumstag wählen: Die Details stehen unter Alternativen. Nicht beide Ausflüge an einem Tag.",
+    summary: "Mount Takao bleibt der Plan fürs Grüne. Mit bestätigtem Ghibli-Ticket könnt ihr stattdessen die eigene Museumsroute wählen. Nicht beide Ausflüge an einem Tag.",
     steps: [
       { time: "Früh morgens", title: "Wetter prüfen, Proviant mitnehmen", text: "Wasser, Kopfbedeckung und Schuhe mit Profil einpacken. Bei Gewitter, starkem Regen oder Wegsperrung auf einen Indoor-Tag wechseln." },
       { time: "Am Berg", title: "Seilbahn und kurze Wanderung kombinieren", text: "An der Talstation die aktuell empfohlene Route und letzte Rückfahrt prüfen. Einen Teil hinauffahren und dann nur so weit wandern, wie alle gut mitkommen.", places: ["takao"] },
@@ -239,7 +239,7 @@ export const dayGuides = {
     transit: { title: "Zwei Betreiber – Keihan und Kintetsu – statt eines JR-Zugs", ticket: localTicket, steps: ["Keihan ab Kiyomizu-Gojo bis Fushimi-Inari für den Schrein.", "Danach mit Keihan weiter Richtung Tambabashi.", "In Tambabashi zum Kintetsu-Bahnhof wechseln und eine passende normale Verbindung bis Ogura nehmen.", "Den Ostausgang von Kintetsu Ogura nutzen und nach Nintendos offiziellem Fußweg zum Museum gehen. JR Ogura ist ein anderer Bahnhof."] },
   },
   "2027-07-13": {
-    summary: "Nara bleibt der Hauptplan. Wenn euch Ninjas wichtiger sind, ersetzt UZUMASA Kyoto Village den gesamten Nara-Ausflug – die Details stehen unter Alternativen.",
+    summary: "Nara bleibt der Hauptplan. Wenn euch Ninjas wichtiger sind, ersetzt die UZUMASA-Route den gesamten Nara-Ausflug.",
     steps: [
       { time: "Vormittags", title: "Hirsche im Nara-Park beobachten", text: "Von Kintetsu-Nara zu Fuß ins Parkgebiet gehen. Erst ohne Futter ankommen, dann gegebenenfalls gemeinsam Hirschkekse kaufen und die Kinder begleiten.", places: ["nara"] },
       { time: "Vor oder nach der Mittagspause", title: "Zum großen Buddha im Todai-ji", text: "Durch den Tempelbereich zur Großen Buddhahalle. Danach eine Sitz- und Getränkepause statt sofort den nächsten Tempel anzusteuern.", places: ["todaiji"] },
@@ -266,7 +266,7 @@ export const dayGuides = {
       { time: "Nur bei genügend Reserve", title: "Affenpark oder frühe Rückfahrt", text: "Den Aufstieg zum Iwatayama nur machen, wenn Wetter, Gepäck und Umzugszeit entspannt sind. Andernfalls bewusst weglassen.", places: ["monkey"] },
       { time: "Nachmittags / abends", title: "Osaka einrichten, Dotonbori kurz ansehen", text: "Gepäck holen, nach Osaka fahren und einchecken. Erst danach eine überschaubare Runde am Dotonbori-Kanal und essen.", places: ["dotonbori"] },
     ],
-    tip: "Bei Gepäckversand die tatsächliche Lieferung und die Gepäckaufbewahrung mit beiden Unterkünften bestätigen.",
+    tip: "Bei Gepäckversand die tatsächliche Lieferung und die Gepäckaufbewahrung mit beiden Unterkünften bestätigen. Der Umzugstag liegt mitten in den Gion-Matsuri-Yoiyama-Tagen vom 14. bis 16. Juli; Gedränge und mögliche Verkehrsmaßnahmen rund um Shijo/Kawaramachi kurz vorher prüfen und mit Gepäck zusätzliche Reserve lassen.",
     transit: { title: "Arashiyama ist Hankyu; Osaka erreicht ihr danach über Keihan und Metro", ticket: localTicket, steps: ["Ab Kyoto-Kawaramachi eine passende Hankyu-Verbindung über Katsura nach Arashiyama nehmen.", "Nach dem Besuch zurück zur Unterkunft und das restliche Gepäck holen.", "Keihan von Kiyomizu-Gojo Richtung Kitahama in Osaka.", "In Kitahama zur Osaka Metro Sakaisuji Line wechseln und bis Ebisucho fahren; den Ausgang für die Unterkunft prüfen."] },
   },
   "2027-07-16": {
@@ -322,14 +322,11 @@ export const dayGuides = {
     transit: { title: "Nankai Rapi:t: nicht mit einer normalen JR-Fahrt verwechseln", ticket: "Das kombinierte Rapi:t-Ticket enthält Grundfahrt und Express-/Sitzplatzanteil. Offiziell bei Nankai online oder am Nankai-Schalter kaufen. Eine bloß aufgeladene PASMO-Karte ersetzt den reservierten Expressanteil nicht.", steps: ["In Shin-Imamiya zum Nankai-Bereich gehen, nicht zu JR.", "Beim digitalen Ticket Datum, Zug und Sitzplätze nach Nankais Anleitung festlegen; ohne diese Aktivierung nicht einfach losfahren.", "Bis Kansai-airport / Kansai Airport Station fahren und dort zum tatsächlichen Airline-Terminal wechseln.", "Ab Da Nang mit dem vorher vereinbarten Fahrer zum ROBINSON Nam Hoi An an Tam Tien Beach."] },
   },
   "2027-07-21": {
-    summary: "Ein bewusst freier Tag, der euch mit dem Club vertraut macht – keine versteckte Ausflugspflicht.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Morgens", title: "Strand und Pool kennenlernen", text: "Frühstück, Lage der Pools, Handtuchausgabe und aktuelle Flaggen am Strand anschauen. Eine gemeinsame kurze Schwimm- oder Spaziergangsrunde wählen.", places: ["robinson"] },
-      { time: "Mittags", title: "Pause und Angebot auswählen", text: "In der Tagesübersicht des Clubs nach passenden Kinder- und Sportangeboten schauen. Nur das buchen, worauf wirklich Lust besteht; Alters- und Buchungsregeln erfragen." },
-      { time: "Später Nachmittag", title: "Ein gemeinsamer Familienmoment", text: "Noch einmal ans Wasser, ein Spiel oder ein früher Spaziergang. Heute muss nichts außerhalb des Clubs erledigt werden." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Nur die aktuellen Strandflaggen und Hotelregeln beachten; außerhalb des Resorts ist heute nichts geplant.", places: ["robinson"] },
     ],
-    booking: "Verpflegung, Kinderbetreuung und Sportangebote nach der tatsächlichen Buchung und dem aktuellen Clubprogramm prüfen, nicht pauschal als enthalten ansehen.",
-    transit: { title: "Heute kein Transfer nötig", ticket: "Keine japanische Bahnfahrkarte, kein Tagesausflug und kein Taxi nötig.", steps: ["Im Club orientieren und den Tagesplan vor Ort ansehen.", "Den Strand nach den örtlichen Sicherheitsregeln nutzen.", "Für den morgigen Ausflug Treffpunkt und Transferdauer erst an der Rezeption bestätigen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben.", "Für den morgigen Hoi-An-Ausflug Fahrer und Treffpunkt an der Rezeption bestätigen."] },
   },
   "2027-07-22": {
     summary: "Hoi An am späteren Tag: historische Gassen, Essen und Laternen mit genügend Transferpuffer.",
@@ -343,13 +340,11 @@ export const dayGuides = {
     transit: { title: "Nicht von Da Nang, sondern ab Tam Tien rechnen", ticket: "In Vietnam braucht ihr für diese Strecke ein separat vereinbartes Auto / einen Shuttle. Suica und PASMO gelten hier nicht.", steps: ["An der Rezeption die aktuelle Fahrtzeit vom ROBINSON bis Hoi An erfragen.", "Hinweg, Rückweg, Preis und Wartezeit gemeinsam bestätigen.", "Eine verlässlich erreichbare Abholstelle außerhalb gesperrter Altstadtgassen vereinbaren."] },
   },
   "2027-07-23": {
-    summary: "Nach dem Stadtausflug nichts nachholen müssen: heute ist Erholung das Programm.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Morgens", title: "Eine Wasseraktivität auswählen", text: "Entweder Strand oder Pool und gegebenenfalls ein im Club angebotenes Spiel wählen. Sicherheit und Wetter sind wichtiger als ein bestimmtes Sportprogramm.", places: ["robinson"] },
-      { time: "Mittags", title: "Lesen, schlafen, Schatten", text: "Eine echte Pause einbauen und nicht gleich den nächsten Ausflug recherchieren." },
-      { time: "Am Abend", title: "Familienessen und morgigen Transfer klären", text: "Gemeinsam essen und für Marble Mountains nur Abholzeit, Wetter und passende Schuhe vorbereiten." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Nur die aktuellen Strandflaggen und Hotelregeln beachten; außerhalb des Resorts ist heute nichts geplant.", places: ["robinson"] },
     ],
-    transit: { title: "Heute bleibt ihr im Club", ticket: "Keine Fahrt nötig. Angebote und mögliche Zusatzkosten direkt vor Ort prüfen.", steps: ["Zum Strand oder Pool gehen.", "Für morgen ein konkretes Transferangebot ab Tam Tien einholen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben.", "Für morgen Fahrer, Kindersitze, Abholzeit und Rückfahrt zu den Marble Mountains bestätigen."] },
   },
   "2027-07-24": {
     summary: "Eine überschaubare Höhlen- und Tempelrunde, mit vernünftigen Schuhen und einer realistisch geplanten Anfahrt.",
@@ -362,13 +357,11 @@ export const dayGuides = {
     transit: { title: "Fahrer für Hin- und Rückweg organisieren", ticket: "Preis, Wartezeit und Abholstelle separat vereinbaren; den tatsächlichen Preis vor der Fahrt bestätigen.", steps: ["Ziel ausdrücklich als Marble Mountains / Thuy Son angeben.", "Hin- und Rückfahrt ab ROBINSON Tam Tien bestätigen.", "Am Eingang entscheiden, welche Treppen und Bereiche heute passen."] },
   },
   "2027-07-25": {
-    summary: "Ein freier Sonntag zwischen zwei Ausflügen. Ihr dürft auch einfach gar nichts Besonderes buchen.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Morgens", title: "Frühstück ohne Eile", text: "Danach eine kleine Strandrunde oder Zeit am Pool. Gemeinsam nur einen Lieblingsplatz auswählen und genug Trinkwasser für die erste Runde mitnehmen.", places: ["robinson"] },
-      { time: "Nachmittags", title: "Ein Angebot oder freie Zeit", text: "Nach aktuellem Clubplan ein Spiel, Sport oder Betreuung wählen – oder bewusst gemeinsam lesen und entspannen." },
-      { time: "Abends", title: "Ba-Na-Hills-Entscheidung treffen", text: "Wetter in den Bergen, Transferdauer ab Tam Tien und Lust auf einen langen Tag abgleichen. Bei schlechter Sicht ist Verschieben eine echte Alternative." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Am Abend nur Wetter, Ticket und Fahrer für Ba Na Hills kontrollieren.", places: ["robinson"] },
     ],
-    transit: { title: "Kein Ausflugstransfer heute", ticket: "Nur bei einem tatsächlich gebuchten externen Angebot entsteht eine Fahrt.", steps: ["Im Club bleiben.", "Für morgen einen vollständigen Fahrerplan oder die bewusste Absage bestätigen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben.", "Für morgen Fahrer, Talstation, Wartezeit und Rückfahrt zu Ba Na Hills schriftlich bestätigen."] },
   },
   "2027-07-26": {
     summary: "Ein großer Tagesausflug – die Brücke ist nur ein Teil der Berganlage.",
@@ -382,42 +375,32 @@ export const dayGuides = {
     transit: { title: "Ein Tagesauto statt spontan zweier Einzelfahrten", ticket: "Fahrer und Eintritt sind unterschiedliche Leistungen. Ein Rücktransfer mit vereinbarter Wartezeit vermeidet die Annahme, oben spontan problemlos ein Taxi zu finden.", steps: ["Den Fahrer am tatsächlichen Club abholen lassen.", "Als Ziel die passende Ba-Na-Hills-Talstation für euer Ticket bestätigen.", "Rückfahrt, Kontaktweg und späteste Abfahrt vorab absprechen."] },
   },
   "2027-07-27": {
-    summary: "Erholen oder bewusst eine Sache auswählen: ein Kochkurs ist eine Option, keine bestehende Buchung.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Morgens", title: "Nach dem Ausflug langsam starten", text: "Schlafen, frühstücken und ans Wasser.", places: ["robinson"] },
-      { time: "Optional statt Strandnachmittag", title: "Einen familiengeeigneten Kochkurs klären", text: "Nur buchen, wenn Anbieter, Sprache, Kindereignung, Treffpunkt und Hin-/Rücktransfer wirklich geklärt sind. Im Plan gibt es bewusst keinen erfundenen Kursanbieter." },
-      { time: "Sonst", title: "Clubnachmittag ohne Zusatzprogramm", text: "Gemeinsam spielen, Sport vor Ort oder eine lange Pause. Kein Transfer nur um des Programms willen." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Kein Kochkurs, keine Abholung und kein spontaner Altstadtausflug.", places: ["robinson"] },
     ],
-    correction: clubLocation,
-    transit: { title: "Nur für einen wirklich gebuchten Kurs fahren", ticket: "Ohne bestätigten Kurs heute keine externe Fahrt. Eine Abholung in Hoi An ist nicht automatisch eine Abholung am ROBINSON.", steps: ["Im Club bleiben oder erst einen seriösen Anbieter auswählen.", "Bei Buchung ausdrücklich die Abholung an Tam Tien und die Rückfahrt bestätigen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben."] },
   },
   "2027-07-28": {
-    summary: "Eine kurze, sichere Runde ist besser als eine ungeklärte Radtour zwischen Club und Hoi An.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Früh", title: "Radtour nur nach Orts- und Sicherheitscheck", text: "Bei der Rezeption nach einer passenden geführten Runde, Helmen, Kinderfahrrädern und der aktuellen Verkehrslage fragen. Nicht spontan auf stark befahrene Straßen ausweichen." },
-      { time: "Alternativ", title: "Strandspaziergang vor der Hitze", text: "Ohne bestätigte geeignete Radroute lieber am Club bleiben und eine kurze gemeinsame Runde zu Fuß machen.", places: ["robinson"] },
-      { time: "Nachmittags", title: "Pool, Lesen und freie Zeit", text: "Keinen weiteren Ausflug ergänzen, nur weil der Tag offen ist." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Keine unklare Radtour auf öffentlichen Straßen einplanen.", places: ["robinson"] },
     ],
-    tip: "Reisfelder und Kokospalmen bei Hoi An liegen nicht automatisch direkt neben dem Club. Eine Radroute oder Anbieterabholung muss zur tatsächlichen Basis passen.",
-    transit: { title: "Keine unbestätigte Fahrradstrecke als Navigation", ticket: "Fahrradmiete, Führung und gegebenenfalls Transfer erst nach Sicherheitscheck buchen.", steps: ["Rezeption nach einer geeigneten konkreten Strecke fragen.", "Fehlt eine bestätigte familiengeeignete Route, ohne Transfer im Club bleiben."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben."] },
   },
   "2027-07-29": {
-    summary: "Puffer heißt: nichts vorab festlegen müssen. Nur einen ausgefallenen Wunsch bei gutem Wetter nachholen.",
+    summary: "Bewusst kein Ausflug und kein Tagesprogramm: Hotel, Pool und Strand reichen vollständig.",
     steps: [
-      { time: "Nach dem Frühstück", title: "Einen Wunsch oder gar keinen auswählen", text: "Prüft gemeinsam, ob wirklich noch ein bestimmter Ausflug fehlt. Keine zweite Chance zum kompletten Besichtigungsmarathon daraus machen.", places: ["robinson"] },
-      { time: "Tagsüber", title: "Strandtag oder ein bestätigter Ersatztermin", text: "Bei Strand bleiben. Nur wenn Wetter, Transfer und gegebenenfalls Tickets passen, einen ausgefallenen Programmpunkt nachholen." },
-      { time: "Am Abend", title: "Rückreiseunterlagen einmal prüfen", text: "Flugstatus, Gepäckregeln und der gebuchte Flughafentransfer gehören langsam wieder auf die kurze Liste." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Strand · kein Programm", text: "Ausschlafen, essen, baden und ausruhen. Am Abend nur Flugstatus, Gepäckregeln und den bereits gebuchten Flughafentransfer prüfen.", places: ["robinson"] },
     ],
-    transit: { title: "Kein Transfer, solange kein konkretes Ziel feststeht", ticket: "Keine automatische Taxireservierung für einen offenen Puffertag.", steps: ["Im Club entscheiden, ob ein Ersatztermin wirklich sinnvoll ist.", "Nur dann dieselben Transfer- und Ticketprüfungen wie am ursprünglichen Ausflugstag durchführen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi, Shuttle und keine externe Buchung nötig.", steps: ["Im ROBINSON bleiben.", "Nur den bereits geplanten Flughafentransfer für den 31. Juli kontrollieren."] },
   },
   "2027-07-30": {
-    summary: "Der letzte volle Strandtag soll nicht vom Kofferpacken aufgefressen werden.",
+    summary: "Kein Ausflug: letzter freier Hotel- und Strandtag, erst am Abend entspannt packen.",
     steps: [
-      { time: "Morgens", title: "Noch einmal der Lieblingsplatz am Wasser", text: "Mit einem gemeinsamen Frühstück und eurer liebsten Pool- oder Strandrunde starten.", places: ["robinson"] },
-      { time: "Nachmittags", title: "Kleine Besorgungen und Transfer bestätigen", text: "Nur Fehlendes besorgen. Abholzeit, Fahrer, tatsächlichen Abflug und Check-out bzw. Duschmöglichkeit für morgen bestätigen." },
-      { time: "Abends", title: "Packen und gemeinsamer Abschluss", text: "Handgepäck mit Dokumenten und Wechselkleidung getrennt packen. Danach noch ein gemeinsames Essen, kein hektischer später Shoppingausflug." },
+      { time: "Ganzer Tag", title: "Hotel, Pool & Packen · kein Ausflug", text: "Tagsüber Hotel, Pool oder Strand. Am Abend Handgepäck, Dokumente und Wechselkleidung getrennt packen und die Abholung für morgen noch einmal bestätigen.", places: ["robinson"] },
     ],
-    transit: { title: "Heute bleibt die Fahrtplanung bei morgen", ticket: "Flughafentransfer ausdrücklich für den korrekten Flug und das richtige Hotel bestätigen.", steps: ["Abholung an der Clubrezeption bestätigen.", "Für den Abreisetag genügend Reserve für Fahrt, Check-in und Ausreise einplanen."] },
+    transit: { title: "Heute kein Transfer", ticket: "Kein Taxi oder Ausflug. Nur den Flughafentransfer für morgen bestätigen.", steps: ["Im ROBINSON bleiben.", "Abholzeit, Fahrer, Flug und Check-out an der Rezeption abgleichen."] },
   },
   "2027-07-31": {
     summary: "Morgens noch Urlaub, nachmittags ein bewusst einfacher Rückreiseablauf.",
