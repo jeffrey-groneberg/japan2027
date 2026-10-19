@@ -5,7 +5,7 @@ import { trip } from "../site/trip-data.js";
 import {
   buildCalendar, countdown, defaultState, destinations, filterDays,
   foldCalendarLine, metadataFor, parseState,
-  googleMapsURL, placesForDay,
+  entriesForDay, googleMapsURL, placesForDay,
 } from "../site/lib.js";
 import { bases, dayGuides, places, railGuide, resources } from "../site/guide-data.js";
 import { linkAudit, retiredLinks } from "../site/link-audit.js";
@@ -143,9 +143,9 @@ test("every mapped place has attributed coordinates and an exact matching Google
 });
 
 test("the detailed Shibuya day has four individual places in a sensible sequence", () => {
-  assert.deepEqual(placesForDay("2027-07-07").map((place) => place.id), ["takeshita", "nintendoTokyo", "crossing", "sky"]);
-  assert.deepEqual(placesForDay("2027-07-07").map((place) => place.number), [1, 2, 3, 4]);
-  assert.ok(dayGuides["2027-07-07"].booking.includes("Shibuya Sky"));
+  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.id), ["takeshita", "nintendoTokyo", "crossing", "sky"]);
+  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.number), [1, 2, 3, 4]);
+  assert.ok(dayGuides["2027-07-05"].booking.includes("Shibuya Sky"));
   assert.deepEqual(placesForDay("2027-07-03"), []);
 });
 
@@ -163,10 +163,46 @@ test("all bases have grocery and shopping choices, without inventing a private a
 });
 
 test("new instructions explicitly correct three material errors in the source", () => {
-  assert.match(dayGuides["2027-07-05"].correction, /Montag/);
+  assert.match(dayGuides["2027-07-07"].booking, /montags geschlossen/);
   assert.match(dayGuides["2027-07-12"].correction, /Taxi/);
   assert.match(dayGuides["2027-07-22"].correction, /50 km \/ 60 Minuten/);
   assert.match(dayGuides["2027-07-26"].correction, /bestätigte Gesamtdauer/);
+});
+
+test("the zoo is prioritized on Wednesday, Shibuya moves to Monday and calendar dates agree", () => {
+  assert.equal(trip.days.find((day) => day.date === "2027-07-05").title, "Shibuya & Harajuku");
+  assert.equal(trip.days.find((day) => day.date === "2027-07-07").title, "Ueno Zoo & Asakusa");
+  assert.equal(new Date("2027-07-07T12:00:00Z").getUTCDay(), 3);
+  assert.equal(dayGuides["2027-07-07"].steps[0].places[0], "zoo");
+  assert.match(dayGuides["2027-07-07"].steps[0].time, /9:30/);
+  assert.match(dayGuides["2027-07-07"].steps[2].time, /optional/);
+  assert.match(dayGuides["2027-07-05"].booking, /umgebucht/);
+  const events = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT");
+  assert.ok(events.find((event) => event.includes("DTSTART;VALUE=DATE:20270705")).includes("SUMMARY:Shibuya & Harajuku"));
+  assert.ok(events.find((event) => event.includes("DTSTART;VALUE=DATE:20270707")).includes("SUMMARY:Ueno Zoo & Asakusa"));
+});
+
+test("every point appears once inline and uses the same chronological number as its map marker", () => {
+  for (const day of trip.days) {
+    const entries = entriesForDay(day.date);
+    const ids = entries.filter((entry) => entry.placeId).map((entry) => entry.placeId);
+    assert.equal(new Set(ids).size, ids.length, day.date);
+    assert.deepEqual(entries.map((entry) => entry.number), Array.from({ length: entries.length }, (_, index) => index + 1));
+    for (const point of placesForDay(day.date)) {
+      assert.equal(entries[point.number - 1].placeId, point.id);
+    }
+    assert.equal(entries.filter((entry) => entry.showContext).length, dayGuides[day.date].steps.length);
+  }
+  assert.deepEqual(placesForDay("2027-07-07").map(({ number }) => number), [1, 3, 4]);
+});
+
+test("booking caveats distinguish exact room evidence and the officially announced route", () => {
+  const sakura = trip.accommodations[1].options.find((option) => option.id === "kyoto-2");
+  assert.match(linkAudit[sakura.links[0].url].notice, /widersprüchlich/);
+  const olfea = trip.accommodations[2].options.find((option) => option.id === "osaka-1");
+  assert.match(linkAudit[olfea.links[0].url].notice, /15.–20.07.2027/);
+  assert.equal(linkAudit[resources.kansaiDaNang.url].verification, "browser-dom");
+  assert.match(linkAudit[resources.kansaiDaNang.url].message, /Keine Bestätigung der Buchbarkeit/);
 });
 
 test("every published official, booking and coordinate link has an honest recorded check", () => {

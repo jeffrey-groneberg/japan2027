@@ -40,6 +40,9 @@ The people planning and taking the trip described in the supplied itinerary.
   plain-language explanations of JR, rail operators and where to buy tickets.
 - Show individual sightseeing and shopping locations on OpenStreetMap, with
   matching coordinate-based Google Maps links.
+- Keep descriptions, official links, navigation and culinary advice directly
+  at each itinerary point. Provide a complete shared day map in the agenda,
+  not a separate places/map tab; its numbers must match the actual points.
 - Include both grocery / everyday shopping and souvenir / leisure shopping
   around the planned bases. Do not invent the private Tokyo apartment address.
 - Check every external link individually and disclose access restrictions
@@ -54,6 +57,12 @@ The people planning and taking the trip described in the supplied itinerary.
   worthwhile, what may suit children, practical access restrictions and links.
 - Previously fetch-blocked published links must be checked in a visible
   browser canvas and its loaded DOM, not declared unavailable from fetch alone.
+- User-directed rescheduling puts Shibuya/Harajuku on 5 July and Ueno Zoo first
+  on 7 July, avoiding the regular Monday closure. Keep DisneySea on 6 July and
+  retain the existing-ticket caveat when moving Shibuya Sky.
+- Availability findings apply to the exact offered dates and room categories.
+  An expired flight offer does not establish that a route does not exist;
+  distinguish an official route announcement from a confirmed dated booking.
 
 ## Brand commitments
 

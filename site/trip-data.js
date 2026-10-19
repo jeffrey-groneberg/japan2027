@@ -1,4 +1,4 @@
-// Generated from the supplied itinerary; content is text, never executable HTML.
+// Imported itinerary with user-directed schedule revisions; content is text, never executable HTML.
 export const trip = {
   "title": "Japan & Vietnam 2027",
   "startDate": "2027-07-03",
@@ -89,11 +89,11 @@ export const trip = {
     {
       "date": "2027-07-05",
       "destination": "tokyo",
-      "title": "Sanfter Start (Jetlag)",
+      "title": "Shibuya & Harajuku",
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
-        "Asakusa — Senso-ji-Tempel & Nakamise-Gasse · nachmittags Ueno-Park mit Zoo (5 Min mit der Ginza-Linie) · bewusst ruhig",
-        "Anfahrt: JR Yamanote bis Ueno ~10 Min, Ginza-Linie bis Asakusa ~5 Min, zusammen ~380 ¥ (~2 €) · Taxi ~2.500–3.000 ¥ (~14–17 €)"
+        "Flexibler Start in Harajuku · Takeshita-Straße · Nintendo TOKYO im Shibuya PARCO · Shibuya Crossing · Shibuya Sky nur mit passendem Zeitfenster am 5. Juli",
+        "Anfahrt: JR Yamanote ab Komagome über Ikebukuro und Shinjuku nach Harajuku, danach eine Station bis Shibuya"
       ]
     },
     {
@@ -110,11 +110,12 @@ export const trip = {
     {
       "date": "2027-07-07",
       "destination": "tokyo",
-      "title": "Shibuya & Harajuku",
+      "title": "Ueno Zoo & Asakusa",
       "base": "Tokio · 4.–11. Juli · ab Wohnung in Komagome (JR Yamanote-Ringlinie & Metro Namboku, 3–5 Min zu Fuß)",
       "activities": [
-        "Shibuya Crossing & Shibuya Sky (Zeitfenster vorab, ~2.500 ¥ / ~14 € Erw.) · Nintendo Tokyo im Parco · Takeshita-Straße in Harajuku",
-        "Anfahrt: JR Yamanote direkt bis Shibuya ~25 Min, ~260 ¥ (~1,50 €), Harajuku liegt eine Station davor · Taxi ~4.000–5.000 ¥ (~22–28 €)"
+        "Ueno Zoo ab regulärer Öffnung 9:30 Uhr · etwa 2,5–3 Stunden mit Pausen · danach Mittagspause",
+        "Asakusa mit Nakamise und Senso-ji nur optional am Nachmittag; der Zoo bleibt der Hauptpunkt",
+        "Anfahrt: JR Yamanote ab Komagome direkt bis Ueno · für Asakusa zusätzlich die Tokyo Metro Ginza Line; konkreten Zoo-Kalender für den 7. Juli 2027 prüfen"
       ]
     },
     {

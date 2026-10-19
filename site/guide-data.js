@@ -54,13 +54,14 @@ export const resources = {
   fuyacho: { label: "RESI STAY Fuyacho: offizielle Unterkunft & Anfahrt", url: "https://resistay.jp/en/facilities/fuyacho/" },
   vietnamAirlines: { label: "Vietnam Airlines: offizielle Buchungsseite", url: "https://www.vietnamairlines.com/de/de/" },
   vietjet: { label: "VietJet: offizielle Airline statt abgelaufenem Suchlink", url: "https://www.vietjetair.com/en" },
+  kansaiDaNang: { label: "Kansai Airports: offizielle Ankündigung der Da-Nang-Direktverbindung", url: "https://www.kansai-airports.co.jp/en/news/e-260825-pressrelease-vj-kix-dad/" },
 };
 
 export const places = {
   sensoji: { name: "Senso-ji", destination: "tokyo", coordinates: [35.714722, 139.79675], evidence: "Wikidata Q615183; Betreiberadresse Asakusa", resource: "sensoji", description: "Tokyos großer buddhistischer Tempel in Asakusa. Geht durch das Kaminarimon-Tor, entlang der Ladenstraße und bis zur Haupthalle. Den Besuch könnt ihr kurz halten; eine komplette Führung ist nicht nötig.", suggestedTime: "45–60 Minuten", kind: "Sehenswürdigkeit" },
   nakamise: { name: "Nakamise-Ladenstraße", destination: "tokyo", coordinates: [35.712046, 139.796496], evidence: "Wikidata Q107583845; offizieller Straßenverband", resource: "nakamise", description: "Die traditionelle Einkaufsstraße vor Senso-ji: kleine Souvenirs, Reiskräcker und Süßigkeiten. Sucht euch gemeinsam einen Snack aus und esst dort, wo der Laden es erlaubt.", suggestedTime: "30–45 Minuten", kind: "Shopping & Snacks" },
   ueno: { name: "Ueno-Park", destination: "tokyo", coordinates: [35.712222, 139.771111], evidence: "Wikidata Q746216; offizielle Parkverwaltung", resource: "ueno", description: "Ein guter Gegenpol zu den vollen Straßen: schattige Wege und der Shinobazu-Teich. Am Jetlag-Tag reicht ein kurzer Spaziergang mit Getränkepause.", suggestedTime: "45–90 Minuten", kind: "Park" },
-  zoo: { name: "Ueno Zoo", destination: "tokyo", coordinates: [35.7175, 139.771389], evidence: "Wikidata Q162722; offizielle Zooseite", resource: "zoo", description: "Nur als zusätzlicher Besuch bei geöffnetem Zoo einplanen. Der ursprüngliche Termin ist ein Montag; der Zoo hat regulär montags Ruhetag. Für diesen Tag ist der Park die verlässlichere Planung, der konkrete Kalender bleibt maßgeblich.", suggestedTime: "Optional an einem anderen Tag", kind: "Alternative" },
+  zoo: { name: "Ueno Zoo", destination: "tokyo", coordinates: [35.7175, 139.771389], evidence: "Wikidata Q162722; offizielle Zooseite", resource: "zoo", description: "Euer Hauptprogrammpunkt am Mittwoch, 7. Juli: den Zoo ohne Eile erkunden und gemeinsam ein paar Lieblingstiere auswählen. Regulär ist von 9:30 bis 17:00 Uhr geöffnet, letzter Einlass eine Stunde vorher; der Besuchskalender für den konkreten Tag bleibt maßgeblich. Keine bestimmte Tierart oder Vorführung ist garantiert.", suggestedTime: "Etwa 2,5–3 Stunden mit Pausen", kind: "Zoo" },
   disney: { name: "Tokyo DisneySea", destination: "tokyo", coordinates: [35.626667, 139.888056], evidence: "Wikidata Q1202341; Betreiber Tokyo Disney Resort", resource: "disney", description: "Ein ganzer Freizeitparktag rund um aufwendig gestaltete Hafenwelten. Legt vorher gemeinsam drei Wunschattraktionen fest und ergänzt Shows, Essen und Pausen statt möglichst viele Fahrten abzuhaken.", suggestedTime: "Ganzer Tag", kind: "Freizeitpark" },
   crossing: { name: "Shibuya Scramble Crossing", destination: "tokyo", coordinates: [35.6595, 139.70056], evidence: "Wikidata Q21083961; GO TOKYO Shibuya Crossing", resource: "crossing", description: "Die große Kreuzung vor Shibuya Station. Überquert sie einmal zusammen, schaut euch das Gewusel vom Rand an und vereinbart bei Gedränge einen klaren Treffpunkt.", suggestedTime: "15–30 Minuten", kind: "Stadt" },
   sky: { name: "Shibuya Sky", destination: "tokyo", coordinates: [35.658056, 139.701389], evidence: "Wikidata Q64026922; Shibuya Scramble Square", resource: "sky", description: "Aussichtsplattform auf Shibuya Scramble Square. Das ist ein eigenes Ticket mit gebuchtem Einlass, nicht einfach eine kostenlose Aussicht am Bahnhof. Den Rest des Tages um dieses Zeitfenster legen; bei Wetterbeschränkungen die Betreiberhinweise beachten.", suggestedTime: "60–90 Minuten mit Einlass", kind: "Aussicht" },
@@ -137,37 +138,37 @@ export const dayGuides = {
     resources: ["pasmo"],
     transit: { title: "Haneda → Komagome in verständlichen Schritten", ticket: localTicket, steps: ["Am Haneda-Terminal den Schildern zur Keikyu Railway folgen. Keikyu ist ein privater Bahnbetreiber, nicht JR.", "Eine passende Verbindung Richtung Shinagawa wählen; Zugziel und eventuellen Umstieg an der Anzeige prüfen.", "In Shinagawa zu JR wechseln und die Yamanote Line Richtung Tokyo/Ueno/Komagome nehmen.", "In Komagome zur vom Gastgeber bestätigten Wohnungsadresse gehen. Alternativ direkt per vorbestelltem Van fahren."] },
   },
-  "2027-07-05": {
-    summary: "Ein überschaubarer erster Stadttag: Tempel, Snacks und eine Parkpause statt Pflichtprogramm.",
-    steps: [
-      { time: "Vormittags, nach eurem Aufwachen", title: "Asakusa gemütlich entdecken", text: "Am Kaminarimon-Tor beginnen, die Nakamise entlanggehen und bis zur Haupthalle von Senso-ji weiterlaufen. Für den ganzen Vormittag reicht diese kurze Runde.", places: ["nakamise", "sensoji"] },
-      { time: "Mittags", title: "Snack und Sitzpause", text: "Gemeinsam etwas Kleines auswählen, trinken und in Ruhe essen. Danach entscheiden, ob noch Energie für Ueno da ist." },
-      { time: "Nachmittags optional", title: "Ueno-Park statt fest eingeplantem Zoo", text: "Eine kleine Parkrunde und bei Bedarf zurück zur Wohnung. Den Zoo nicht für diesen Montag fest einplanen: regulärer Ruhetag, konkreten Kalender kontrollieren. Sein Kartenpunkt ist nur als gekennzeichnete Alternative für einen anderen Tag dabei.", places: ["ueno", "zoo"] },
-    ],
-    correction: "Am Montag, 5. Juli, ist der Park die passende Wahl: Der Zoo hat regulär montags Ruhetag. Ein Zoobesuch bleibt eine Option an einem anderen geöffneten Tag.",
-    resources: ["zoo"],
-    transit: { title: "JR und Metro sind hier zwei aufeinanderfolgende Bahnen", ticket: localTicket, steps: ["Komagome: JR Yamanote Line Richtung Ueno nehmen.", "In Ueno den JR-Bereich verlassen und den Schildern zur Tokyo Metro Ginza Line folgen.", "Mit der Ginza Line Richtung Asakusa bis Asakusa fahren.", "Für die Parkpause wieder Richtung Ueno; danach mit JR zurück nach Komagome."] },
-  },
   "2027-07-06": {
     summary: "Ein ganzer DisneySea-Tag, bei dem drei gemeinsame Wünsche wichtiger sind als möglichst viele Fahrten.",
     steps: [
       { time: "Vor dem Losfahren", title: "Tickets und App bereitlegen", text: "Datiertes Parkticket und aktuelle Öffnungszeiten prüfen. Sucht gemeinsam drei Wunschattraktionen aus und schaut auf Größenbeschränkungen.", places: ["disney"] },
       { time: "Im Park", title: "Eine Welt nach der anderen", text: "Den Rundgang nach verfügbaren Einlasszeiten, Warteschlangen und Hitze ausrichten. Essen, Wasser und eine längere Pause sind feste Teile des Tages." },
-      { time: "Später Nachmittag", title: "Lieblingsmoment statt Durchhaltepflicht", text: "Je nach Energie eine Show oder eine letzte Attraktion wählen. Ein früherer Rückweg ist völlig in Ordnung; Shibuya läuft morgen nicht weg." },
+      { time: "Später Nachmittag", title: "Lieblingsmoment statt Durchhaltepflicht", text: "Je nach Energie eine Show oder eine letzte Attraktion wählen. Ein früherer Rückweg ist völlig in Ordnung; für den Zoo morgen soll noch Energie bleiben." },
     ],
     booking: "Parkeintritt vorher kaufen. Premier Access ist eine zusätzliche, begrenzt verfügbare Leistung in der offiziellen App und keine Garantie für alle Attraktionen.",
     transit: { title: "Komagome → DisneySea: zwei JR-Bahnen und die Resortbahn", ticket: "JR-Nahverkehr und Resortbahn getrennt betrachten. Für die JR-Züge reicht die IC-Karte; die aktuelle Fahrkarte bzw. IC-Nutzung der Disney Resort Line am Betreiber prüfen. Der Parkeintritt ist nie die Bahnfahrkarte.", steps: ["JR Yamanote Line von Komagome bis Tokyo Station.", "In Tokyo Station den Schildern zur JR Keiyo Line folgen: der Bahnsteig liegt deutlich abseits, also zusätzlichen Fußweg einplanen.", "Eine passende Keiyo-/Musashino-Verbindung bis Maihama nehmen.", "Ab Maihama zur Resort Gateway Station; mit der Disney Resort Line bis Tokyo DisneySea Station."] },
   },
-  "2027-07-07": {
-    summary: "Ein echter Bummel- und Gamingtag: erst Harajuku, danach Nintendo und die Skyline von Shibuya.",
+  "2027-07-05": {
+    summary: "Ein flexibler erster Stadttag: Harajuku und Nintendo in eurem Tempo, ohne frühen Pflichtstart.",
     steps: [
       { time: "Vormittags · etwa 60–90 Min.", title: "Harajuku: Takeshita Street und ein Snack", text: "Steigt in Harajuku aus, geht durch die Takeshita Street und sucht euch gemeinsam einen Crêpe oder ein kleines Accessoire aus. Bei Gedränge in die Seitenstraßen ausweichen; es geht ums Entdecken, nicht ums Abarbeiten.", places: ["takeshita"] },
       { time: "Nach der Mittagspause · etwa 1–2 Std.", title: "Shibuya PARCO: Nintendo stöbern", text: "Nach Shibuya wechseln und im PARCO gezielt Nintendo TOKYO besuchen. Lasst jedem Zeit für seine Lieblingsserie und sucht gemeinsam ein Lieblingssouvenir aus. Das ist ein Ladenbesuch und kein Freizeitpark; die aktuelle Zugangsorganisation des Stores prüfen.", places: ["nintendoTokyo"] },
       { time: "Nachmittags oder im gebuchten Zeitfenster", title: "Kreuzung und Aussicht", text: "Die Shibuya Crossing gemeinsam überqueren. Für Shibuya Sky danach zum Scramble Square gehen und den tatsächlichen Einlass einhalten. Ohne Sky-Ticket bleibt die Kreuzung mit einer ruhigen Getränkepause ein vollständiger Abschluss.", places: ["crossing", "sky"] },
     ],
-    booking: "Nur Shibuya Sky braucht hier ein eigenes Eintritts-/Zeitfensterticket. Tagesreihenfolge danach ausrichten; Ladenzeiten und Zugang zu Nintendo TOKYO auf der offiziellen Store-Seite prüfen.",
+    booking: "Shibuya Sky ist optional und braucht ein eigenes Zeitfensterticket für Montag, 5. Juli. Ein bereits gebuchtes Ticket für den 7. Juli müsste umgebucht werden; es ändert sich nicht automatisch. Ladenzeiten und Zugang zu Nintendo TOKYO auf der offiziellen Store-Seite prüfen.",
     tip: "Harajuku und Shibuya sind benachbarte Viertel. Bei Hitze lieber eine Station mit der Yamanote fahren, statt einen zusätzlichen langen Fußweg zu erzwingen.",
     transit: { title: "Eine JR-Linie reicht für die beiden Viertel", ticket: localTicket, steps: ["Komagome: der Beschilderung JR / Yamanote Line folgen, nicht der Namboku-Metro.", "Die Richtung über Ikebukuro und Shinjuku nach Harajuku wählen; Harajuku ist der erste Bummelstopp.", "Danach mit derselben Linie eine Station von Harajuku nach Shibuya fahren oder den Spaziergang bewusst als Zusatz wählen.", "Von Shibuya wieder mit der Yamanote Richtung Shinjuku/Ikebukuro/Komagome zurück. Die konkrete Bahnsteignummer vor Ort ablesen."] },
+  },
+  "2027-07-07": {
+    summary: "Heute hat der Zoo Vorrang: vormittags Tiere entdecken, danach nur bei Lust noch nach Asakusa.",
+    steps: [
+      { time: "Ab regulärer Öffnung um 9:30 · etwa 2,5–3 Std.", title: "Ueno Zoo in Ruhe besuchen", text: "Ab Komagome nach Ueno fahren und den Zoo als festen Hauptpunkt wählen. Am Eingang den aktuellen Parkplan und Tageshinweise ansehen, gemeinsam ein paar Lieblingstiere auswählen und zwischendurch Trinkpausen machen. Nicht jede Anlage oder Tierart ist jederzeit zu sehen.", places: ["zoo"] },
+      { time: "Mittags", title: "Essen und eine richtige Pause", text: "Nach dem Zoobesuch in Ruhe essen. Eine kleine Süßspeise bei Mihashi passt als Abschluss, ersetzt aber keine Mahlzeit. Wenn alle müde sind, direkt zur Wohnung zurückfahren." },
+      { time: "Nachmittags optional · etwa 60–90 Min.", title: "Asakusa: Nakamise und Senso-ji", text: "Nur wenn noch Energie da ist: mit der Ginza-Metro von Ueno nach Asakusa. Vom Kaminarimon-Tor über die Nakamise-Ladenstraße zum Senso-ji gehen und einen kurzen Tempelbesuch machen. Lieber abkürzen, als nach dem Zoo noch einen zweiten langen Tag anzuhängen.", places: ["nakamise", "sensoji"] },
+    ],
+    booking: "Ueno Zoo ist regulär montags geschlossen, deshalb liegt der Besuch jetzt am Mittwoch, 7. Juli. Reguläre Öffnung 9:30–17:00 Uhr, Einlass bis 16:00 Uhr; den offiziellen Besuchskalender für Juli 2027 und eventuelle Ausnahmen vor dem Ticketkauf prüfen.",
+    resources: ["zoo"],
+    transit: { title: "Direkt mit JR zum Zoo; die Metro nur für das optionale Asakusa", ticket: localTicket, steps: ["JR Yamanote Line von Komagome nach Ueno nehmen.", "Den Ausgang zum Ueno-Park wählen und zum bestätigten geöffneten Zooeingang gehen.", "Falls ihr anschließend Asakusa besuchen möchtet: ab Ueno die Tokyo Metro Ginza Line Richtung Asakusa nehmen.", "Für den Rückweg von Asakusa über Ueno mit der JR Yamanote nach Komagome; wenn ihr nach dem Zoo heimfahrt, entfällt der Metro-Teil."] },
   },
   "2027-07-08": {
     summary: "Früh ins Grüne und bei Bedarf abkürzen: der Gipfel ist eine Möglichkeit, kein Muss.",
@@ -301,8 +302,8 @@ export const dayGuides = {
       { time: "Abends", title: "Einchecken und nur noch ankommen", text: "Verpflegungspaket, Schwimmregeln, nächstes Frühstück und Kinderprogramm erfragen. Ein kurzer Strandspaziergang reicht." },
     ],
     correction: clubLocation,
-    booking: "Nankai Rapi:t ist ein reservierungspflichtiger Express mit eigenem Zuschlag/Sitzplatz. Flug und Clubtransfer sind separate Buchungen.",
-    resources: ["nankai", "vietjet", "robinson"],
+    booking: "VietJets Direktstrecke ab Kansai ist vom Flughafen angekündigt, der konkrete Flug am 20. Juli 2027 muss aber noch bestätigt werden. Die Flughafenfahrt erst auf den tatsächlich gebuchten Flug abstimmen. Nankai Rapi:t braucht einen reservierten Expressplatz; Flug und Clubtransfer sind separate Buchungen.",
+    resources: ["nankai", "vietjet", "kansaiDaNang", "robinson"],
     transit: { title: "Nankai Rapi:t: nicht mit einer normalen JR-Fahrt verwechseln", ticket: "Das kombinierte Rapi:t-Ticket enthält Grundfahrt und Express-/Sitzplatzanteil. Offiziell bei Nankai online oder am Nankai-Schalter kaufen. Eine bloß aufgeladene PASMO-Karte ersetzt den reservierten Expressanteil nicht.", steps: ["In Shin-Imamiya zum Nankai-Bereich gehen, nicht zu JR.", "Beim digitalen Ticket Datum, Zug und Sitzplätze nach Nankais Anleitung festlegen; ohne diese Aktivierung nicht einfach losfahren.", "Bis Kansai-airport / Kansai Airport Station fahren und dort zum tatsächlichen Airline-Terminal wechseln.", "Ab Da Nang mit dem vorher vereinbarten Fahrer zum ROBINSON Nam Hoi An an Tam Tien Beach."] },
   },
   "2027-07-21": {

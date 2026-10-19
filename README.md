@@ -13,9 +13,12 @@ vendored locally; optional background maps come from OpenStreetMap.
   instructions, and keep favorite days.
 - Read concrete daily sequences, booking tips and plain-language train and
   ticket instructions instead of having to interpret rail abbreviations.
-- Scan separated, numbered daily points and open their full details only when
-  needed. Day-local tabs separate the agenda, places/map, travel/tickets and
-  alternatives; previous/next-day controls stay at the top.
+- Scan separated, numbered points and open descriptions, official links,
+  Google Maps and culinary advice directly at the corresponding stop.
+  A collapsible, complete day map sits in the agenda, with matching numbers,
+  point-to-map and popup-to-point navigation, plus an all-stops reset.
+  Three day-local tabs separate the agenda, travel/tickets and alternatives;
+  previous/next-day controls stay at the top.
 - Explore 45 sightseeing and shopping points with official information,
   individual Google Maps links and an interactive OpenStreetMap view.
 - Find supermarkets, everyday shopping and souvenir / gaming destinations for
@@ -57,30 +60,43 @@ OpenStreetMap objects. Every location records its coordinate evidence. Broad
 districts, mountains and festival areas are explicitly orientation points, not
 guaranteed entrances or current walking / transit routes.
 
-On **19 October 2026**, all **165 distinct published external URL targets** were
+On **19 October 2026**, all **166 distinct published external URL targets** were
 checked individually, including **45 coordinate-based sightseeing Google Maps
 links** and **31 named culinary map searches**. HTTP responses, redirects,
 source identity and map queries were reviewed. The original thirteen
 fetch-restricted pages were then opened in visible browser canvases and
 their loaded DOM inspected: all nine Expedia properties, both Booking.com
 properties, JR East's Suica page and DisneySea. DisneySea's restaurant page
-was also verified in the browser after fetch timed out.
+was also verified in the browser after fetch timed out. The newly added
+Kansai Airports route announcement was DOM-verified after a blocked fetch.
 
-The browser revealed material issues that a URL-only check misses: the cheap
-Stay SAKURA category has one bedroom and its two-bedroom suite was unavailable;
-the offered Olfea/Orphear standard apartment also has one bedroom rather than
-the required two. These findings appear next to the affected options. No
+The exact-date recheck confirmed material room-category issues: for
+11–15 July, Stay SAKURA's available apartments have one bedroom. Its
+two-bedroom suite is marked unavailable, and its detail line contradicts
+the title by also saying one bedroom. For 15–20 July, Olfea/Orphear offers
+one bedroom with two double beds; its Expedia two-bedroom balcony suite is
+unavailable. Two beds do not establish two separate bedrooms. These findings
+appear next to the affected options and do not claim the properties never
+have two-bedroom accommodation. No
 availability, price or future menu is promised by a successful link check.
 
 The old lastminute.de search was also inspected in the browser: it explicitly
 says the selected flight is no longer available. The UI therefore replaces it
-with the official VietJet website and does not claim the old nonstop schedule
-as a confirmed connection. The imported source remains
-unchanged for provenance. Incorrect candidate links and insecure redirects
+with the official VietJet website. Kansai Airports' release of 25 August 2026
+announces four weekly round trips from 20 December 2026; it does not confirm
+seats or times on 20 July 2027. The UI distinguishes this announcement from
+the expired offer and does not claim a booked or confirmed dated connection.
+The original flight fields remain internal for provenance.
+Incorrect candidate links and insecure redirects
 were not adopted as official attraction resources.
 
-Material source corrections are visible on the relevant days: Ueno Zoo's
-regular Monday closure, Nintendo Museum's explicit public-transport-only
+The schedule now puts Shibuya/Harajuku on Monday, **5 July**, and Ueno Zoo on
+Wednesday, **7 July**, avoiding the zoo's regular Monday closure. The zoo
+comes first; Asakusa afterward is optional. DisneySea stays on 6 July.
+The plan warns that an existing Shibuya Sky ticket would need changing,
+not silently transferring dates.
+
+Other material corrections are visible on the relevant days: Nintendo Museum's explicit public-transport-only
 arrival guidance (not taxi), and ROBINSON's actual Tam Tien location, about
 50 km / 60 minutes from Hoi An. Historical source data remains internal; the
 traveler-facing plan uses the corrected guidance.
@@ -107,7 +123,7 @@ development checks and the optional publishing helper.
 | `site/styles.css` | Responsive styling, compact disclosure layout and dark mode |
 | `site/app.js` | Interaction and safe text-only rendering |
 | `site/lib.js` | Filtering, dates, preference migration and calendar export |
-| `site/trip-data.js` | All imported itinerary content and original booking links |
+| `site/trip-data.js` | Imported itinerary and booking links, with user-directed daily rescheduling |
 | `site/guide-data.js` | Concrete daily plans, official sources, 45 attributed points and shopping bases |
 | `site/extras.js` | Per-day alternatives and 31 local culinary recommendations mapped to every place |
 | `site/map.js` | Consent-triggered Leaflet loading, numbered markers and explicit tile-error fallback |
@@ -124,6 +140,10 @@ To reimport a copy of the original itinerary:
 ```sh
 python3 scripts/import-itinerary.py /path/to/reiseplan.html site/trip-data.js
 ```
+
+Reimporting overwrites the manual 5/7 July schedule revision. Preserve or
+reapply it deliberately, keeping the guides, alternatives, day metadata
+and calendar export consistent.
 
 The importer extracts plain text and HTTPS links rather than executing or
 inserting the source HTML. Changes to the import schema may need corresponding

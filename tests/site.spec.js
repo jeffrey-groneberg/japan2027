@@ -35,6 +35,18 @@ async function daySection(page, name) {
   await page.getByRole("tablist", { name: "Bereiche des ausgewählten Reisetags" }).getByRole("tab", { name }).click();
 }
 
+async function openDayMap(page) {
+  await daySection(page, "Tagesablauf");
+  const overview = page.locator(".day-map-overview");
+  if (await overview.getAttribute("open") === null) await overview.locator("> summary").click();
+}
+
+async function openPoint(page, id) {
+  const point = page.locator(`#day-place-${id}`);
+  if (await point.getAttribute("open") === null) await point.locator("> summary").click();
+  return point;
+}
+
 test("all destinations, date navigation, practical transport and search work", async ({ page }) => {
   await ready(page);
   await expect(page.locator("#day-title")).toHaveText("Abflug");
@@ -87,6 +99,8 @@ test("accommodation selections persist and actual bedroom problems are explained
   await page.locator("#stay-osaka-1").check();
   await expect(page.locator("#panel-stays")).toContainText("nur ein Schlafzimmer");
   await expect(page.locator("#panel-stays")).toContainText("ausgebucht");
+  await expect(page.locator("#panel-stays")).toContainText("widersprüchlich");
+  await expect(page.locator("#panel-stays")).toContainText("Zwei Doppelbetten sind nicht zwei getrennte Schlafzimmer");
   await page.reload();
   await show(page, "stays");
   await expect(page.locator("#stay-osaka-1")).toBeChecked();
@@ -100,6 +114,9 @@ test("calendar downloads all dates, detail and culinary tips without removed met
   expect(download.suggestedFilename()).toBe("japan-vietnam-2027.ics");
   const calendar = await readFile(await download.path(), "utf8");
   expect(calendar.match(/BEGIN:VEVENT/g)).toHaveLength(30);
+  const events = calendar.replaceAll("\r\n ", "").split("BEGIN:VEVENT");
+  expect(events.find((event) => event.includes("DTSTART;VALUE=DATE:20270705"))).toContain("SUMMARY:Shibuya & Harajuku");
+  expect(events.find((event) => event.includes("DTSTART;VALUE=DATE:20270707"))).toContain("SUMMARY:Ueno Zoo & Asakusa");
   expect(calendar.replaceAll("\r\n ", "")).toContain("Kulinarik: AFURI");
   expect(calendar).not.toMatch(/Vorlage|Budget|Planungsstand/);
 });
@@ -145,8 +162,8 @@ for (const theme of ["light", "dark"]) {
         view, rule: finding.id, nodes: finding.nodes.map((node) => ({ target: node.target, reason: node.failureSummary })),
       })));
       if (view === "itinerary") {
-        for (const section of ["Orte & Karte", "Anfahrt & Tickets", "Alternativen"]) {
-          await daySection(page, section === "Orte & Karte" ? /Orte & Karte/ : section);
+        for (const section of ["Anfahrt & Tickets", "Alternativen"]) {
+          await daySection(page, section);
           const sectionResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
           violations.push(...sectionResults.violations.map((finding) => ({
             view: `itinerary/${section}`, rule: finding.id, nodes: finding.nodes.map((node) => ({ target: node.target, reason: node.failureSummary })),
@@ -202,11 +219,12 @@ test("delivery previews and browser errors", async ({ page }) => {
   await page.locator("#day-panel-alternatives").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 84));
   await capture("mobile-alternatives");
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   await expect(page.locator("#startup-notice")).toBeHidden();
+  await daySection(page, "Tagesablauf");
   await plannerTop();
   await capture("desktop-shibuya-guide");
-  await daySection(page, /Orte & Karte/);
+  await openDayMap(page);
   await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
   await expect(page.locator("#day-map .place-marker")).toHaveCount(4);
   await page.locator("#day-places").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 90));
@@ -218,6 +236,7 @@ test("delivery previews and browser errors", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await show(page, "itinerary");
   await daySection(page, "Tagesablauf");
+  await page.locator(".day-map-overview > summary").click();
   await page.locator("#day-detail").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 80));
   await capture("mobile-shibuya-guide");
   await show(page, "bases");
@@ -232,13 +251,13 @@ test("delivery previews and browser errors", async ({ page }) => {
 });
 
 test("the Shibuya day explains what to do and gives four exact place links", async ({ page }) => {
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
-  await expect(page.locator(".day-agenda > li")).toHaveCount(3);
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await expect(page.locator(".day-agenda > li")).toHaveCount(4);
   await expect(page.locator(".day-agenda")).toContainText("Lieblingssouvenir");
   await expect(page.locator(".transport-box")).toContainText("Yamanote Line");
-  await expect(page.locator(".place-item")).toHaveCount(4 + 3);
-  await daySection(page, /Orte & Karte/);
-  const links = page.locator("#day-places .place-actions a");
+  await expect(page.locator("#day-panel-plan [data-place]")).toHaveCount(4);
+  await expect(page.getByRole("tab", { name: /Orte & Karte/ })).toHaveCount(0);
+  const links = page.locator("#day-panel-plan .place-actions a");
   await expect(links).toHaveCount(4);
   const queries = await links.evaluateAll((nodes) => nodes.map((node) => new URL(node.href).searchParams.get("query")));
   expect(queries).toEqual(["35.67125,139.70481", "35.661972,139.698944", "35.6595,139.70056", "35.658056,139.701389"]);
@@ -254,17 +273,21 @@ test("map privacy, numbered markers, popups and day switching work with local ti
   page.on("request", (request) => { if (request.url().startsWith("https://tile.openstreetmap.org/")) tileRequests += 1; });
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   expect(tileRequests).toBe(0);
-  await daySection(page, /Orte & Karte/);
+  await openDayMap(page);
+  expect(tileRequests).toBe(0);
   await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
   await expect(page.locator("#day-map .place-marker")).toHaveCount(4);
   await expect(page.locator("#day-map")).toContainText("OpenStreetMap");
   await page.getByRole("button", { name: "2. Nintendo TOKYO · Shibuya PARCO", exact: true }).click();
   await expect(page.locator(".leaflet-popup-content")).toContainText("Nintendo TOKYO");
   await expect(page.locator(".leaflet-popup-content a").first()).toHaveAttribute("href", /35\.661972%2C139\.698944/);
+  await page.locator(".day-map-overview > summary").click();
   await page.getByRole("button", { name: "Donnerstag, 8. Juli: Wandertag: Mount Takao", exact: true }).click();
-  await daySection(page, /Orte & Karte/);
+  await expect(page.locator(".day-map-overview")).not.toHaveAttribute("open");
+  await expect(page.locator("#day-map .place-marker")).toHaveCount(0);
+  await openDayMap(page);
   await expect(page.locator("#day-map .place-marker")).toHaveCount(1);
   await page.getByRole("button", { name: "Samstag, 3. Juli: Abflug", exact: true }).click();
   await expect(page.locator("#day-map")).toHaveCount(0);
@@ -273,11 +296,11 @@ test("map privacy, numbered markers, popups and day switching work with local ti
 
 test("map tile failures leave clear guidance and working independent target links", async ({ page }) => {
   await page.route("https://tile.openstreetmap.org/**", (route) => route.abort("failed"));
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
-  await daySection(page, /Orte & Karte/);
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await openDayMap(page);
   await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
   await expect(page.locator("#day-places .map-status")).toContainText("konnten nicht geladen");
-  await expect(page.locator("#day-places .place-actions a")).toHaveCount(4);
+  await expect(page.locator("#day-panel-plan .place-actions a")).toHaveCount(4);
 });
 
 test("every base offers real grocery and shopping points and retains the correct map", async ({ page }) => {
@@ -295,9 +318,9 @@ test("every base offers real grocery and shopping points and retains the correct
 });
 
 test("map and daily details remain accessible on a phone after loading the map", async ({ page }) => {
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   await page.setViewportSize({ width: 390, height: 844 });
-  await daySection(page, /Orte & Karte/);
+  await openDayMap(page);
   await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
   await expect(page.locator("#day-map .place-marker")).toHaveCount(4);
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
@@ -308,28 +331,27 @@ test("map and daily details remain accessible on a phone after loading the map",
 });
 
 test("day planning separates content, keeps the overview short and reveals every detail on demand", async ({ page }) => {
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
-  await expect(page.locator(".day-agenda .agenda-disclosure")).toHaveCount(3);
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await expect(page.locator(".day-agenda .agenda-disclosure")).toHaveCount(4);
   await expect(page.locator(".day-agenda .agenda-disclosure[open]")).toHaveCount(0);
   await expect(page.locator("#day-panel-plan")).toBeVisible();
-  await expect(page.locator("#day-panel-places")).toBeHidden();
+  await expect(page.locator("#day-panel-places")).toHaveCount(0);
   await expect(page.locator("#day-panel-transit")).toBeHidden();
   expect(await page.locator("#day-detail").evaluate((node) => node.getBoundingClientRect().height)).toBeLessThan(950);
   await page.locator(".agenda-disclosure > summary").nth(1).click();
   await expect(page.locator(".agenda-disclosure[open]")).toContainText("Lieblingssouvenir");
   await page.locator(".agenda-disclosure > summary").first().click();
   await expect(page.locator(".agenda-disclosure[open]")).toHaveCount(1);
-  await page.getByRole("button", { name: "Takeshita Street · Harajuku", exact: true }).click();
-  await expect(page.locator("#day-panel-places")).toBeVisible();
-  await expect(page.locator("#day-place-takeshita .place-disclosure")).toHaveAttribute("open", "");
+  await expect(page.locator("#day-place-takeshita")).toHaveAttribute("open", "");
   await expect(page.locator("#day-place-takeshita .place-description")).toBeVisible();
+  await expect(page.locator("#day-place-takeshita .resource-links a").first()).toBeVisible();
   await daySection(page, "Tagesablauf");
   await expect(page.getByRole("button", { name: "Nächster Tag" })).toBeVisible();
   await page.getByRole("button", { name: "Nächster Tag" }).click();
-  await expect(page.locator("#day-title")).toHaveText("Wandertag: Mount Takao");
+  await expect(page.locator("#day-title")).toHaveText("DisneySea");
   await expect(page.locator("#day-panel-plan")).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   expect(await page.locator("#day-detail").evaluate((node) => node.getBoundingClientRect().height)).toBeLessThan(1250);
   await daySection(page, "Anfahrt & Tickets");
   await expect(page.locator("#day-panel-transit .transit-steps")).toBeVisible();
@@ -338,8 +360,9 @@ test("day planning separates content, keeps the overview short and reveals every
 });
 
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
-  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
-  await page.getByRole("button", { name: "Kulinarik-Tipps für unsere Stopps" }).click();
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await openPoint(page, "takeshita");
+  await page.locator("#day-place-takeshita .food-recommendation > summary").click();
   await expect(page.locator("#day-place-takeshita .food-recommendation")).toContainText("AFURI");
   await expect(page.locator("#day-place-takeshita .food-children")).toContainText("Nudeln");
   await expect(page.locator("#day-place-takeshita .food-links a")).toHaveCount(2);
@@ -350,12 +373,10 @@ test("culinary recommendations describe the experience, children and actual acce
   await page.locator("#day-place-takeshita .food-recommendation").scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${previewDirectory}/mobile-food-tip.png`, animations: "disabled" });
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-12");
-  await daySection(page, /Orte & Karte/);
-  await page.locator("#day-place-museum summary").click();
+  await openPoint(page, "museum");
   await expect(page.locator("#day-place-museum .food-recommendation")).toContainText("Nur für Museumsticket-Inhaber");
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-22");
-  await daySection(page, /Orte & Karte/);
-  await page.locator("#day-place-hoian summary").click();
+  await openPoint(page, "hoian");
   await expect(page.locator("#day-place-hoian .food-recommendation")).toContainText("Morning Glory Original");
 });
 
@@ -378,15 +399,67 @@ test("the site works under the GitHub Pages repository prefix, including relativ
     const response = await route.fetch({ url: url.href });
     await route.fulfill({ response });
   });
-  await page.goto("/japan2027/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await page.goto("/japan2027/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(page.locator("#day-title")).toHaveText("Shibuya & Harajuku");
-  await daySection(page, /Orte & Karte/);
+  await openDayMap(page);
   await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
   await expect(page.locator("#day-map .place-marker")).toHaveCount(4);
   await page.getByRole("button", { name: "Nächster Tag" }).click();
-  await expect(page).toHaveURL(/\/japan2027\/.*day=2027-07-08/);
+  await expect(page).toHaveURL(/\/japan2027\/.*day=2027-07-06/);
   await page.getByRole("link", { name: "Japan und Vietnam 2027, Startseite" }).click();
   await expect(page).toHaveURL(/\/japan2027\//);
   await expect(page.locator("#startup-notice")).toBeHidden();
+});
+
+test("the complete day map opens inline, fits every stop and links back to the exact POI", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await openPoint(page, "nintendoTokyo");
+  await page.locator("#day-place-nintendoTokyo").getByRole("button", { name: "Auf Tageskarte zeigen" }).click();
+  await expect(page.locator(".day-map-overview")).toHaveAttribute("open", "");
+  await expect(page.locator("#day-map .place-marker")).toHaveCount(4);
+  await page.locator("#day-places").getByRole("button", { name: "Alle Stopps zeigen" }).click();
+  expect(await page.locator("#day-map").evaluate((map) => {
+    const bounds = map.getBoundingClientRect();
+    return [...map.querySelectorAll(".place-marker")].every((marker) => {
+      const rect = marker.getBoundingClientRect();
+      return rect.left >= bounds.left && rect.right <= bounds.right && rect.top >= bounds.top && rect.bottom <= bounds.bottom;
+    });
+  })).toBe(true);
+  await page.getByRole("button", { name: "4. Shibuya Sky", exact: true }).click();
+  await page.getByRole("button", { name: "Details bei diesem Programmpunkt" }).click();
+  await expect(page.locator("#day-place-sky")).toHaveAttribute("open", "");
+  await expect(page.locator("#day-place-sky > summary")).toBeFocused();
+  await expect(page.locator("#day-place-sky .resource-links a").first()).toBeVisible();
+  await expect(page.locator("#day-panel-plan")).toBeVisible();
+});
+
+test("the zoo is now Wednesday's main point and the Monday/Wednesday swap appears in the date list", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
+  await expect(page.locator("#day-title")).toHaveText("Ueno Zoo & Asakusa");
+  await expect(page.locator(".day-date")).toContainText("Mittwoch, 7. Juli");
+  await expect(page.locator(".agenda-disclosure").first()).toHaveAttribute("data-place", "zoo");
+  await openPoint(page, "zoo");
+  await expect(page.locator("#day-place-zoo")).toContainText("9:30");
+  await expect(page.locator("#day-place-zoo .food-recommendation")).toContainText("Mihashi");
+  await openDayMap(page);
+  await page.getByRole("button", { name: "OpenStreetMap-Karte laden" }).click();
+  await expect(page.locator("#day-map .place-marker")).toHaveCount(3);
+  await expect(page.getByRole("button", { name: "1. Ueno Zoo", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "3. Nakamise-Ladenstraße", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Montag, 5. Juli: Shibuya & Harajuku", exact: true }).click();
+  await expect(page.locator("#day-title")).toHaveText("Shibuya & Harajuku");
+  await expect(page.locator(".day-date")).toContainText("Montag, 5. Juli");
+});
+
+test("the expired flight offer is not confused with the announced direct route", async ({ page }) => {
+  await ready(page);
+  await show(page, "travel");
+  const flight = page.locator(".flight-card").nth(1);
+  await expect(flight).toContainText("nicht, dass es keine Direktstrecke gibt");
+  await expect(flight).toContainText("20. Dezember 2026");
+  await expect(flight).toContainText("20. Juli 2027");
+  await expect(flight).toContainText("noch nicht bestätigt");
+  await expect(flight.locator("a[href*='kansai-airports.co.jp']")).toHaveAttribute("href", "https://www.kansai-airports.co.jp/en/news/e-260825-pressrelease-vj-kix-dad/");
+  await expect(page.locator("a[href*='lastminute.de']")).toHaveCount(0);
 });
