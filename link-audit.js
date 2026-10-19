@@ -1,4 +1,4 @@
-// Generated from individual URL requests; access restrictions are not treated as successful verification.
+// Generated from individual URL requests and explicit browser-DOM checks.
 export const linkAudit = {
   "https://www.senso-ji.jp/english/": {
     "label": "Senso-ji: offizieller Tempelführer",
@@ -1046,13 +1046,13 @@ export const linkAudit = {
     "kind": "booking",
     "status": "ok",
     "httpStatus": 429,
-    "checkedAt": "2026-10-19T13:33:58+00:00",
+    "checkedAt": "2026-10-19T15:35:24.511Z",
     "finalUrl": "https://www.expedia.de/.h32815429.Hotel-Information?chkin=2027-07-11&chkout=2027-07-15&rm1=a2:c8:c11",
     "pageTitle": "Stay SAKURA Kyoto Higashi Hongan-ji I",
-    "message": "Im Browser-DOM geprüft: Unterkunft stimmt; die Suite mit 2 Schlafzimmern wird für eure Daten als ausgebucht angezeigt.",
+    "message": "Erneut im Browser-DOM geprüft für 11.–15.07.2027, 2 Erwachsene und 2 Kinder: Standard-Apartments mit 1 Schlafzimmer; Suite als ausgebucht markiert.",
     "verification": "browser-dom",
     "canonicalPath": "/Kyoto-Hotels-Stay-SAKURA-Kyoto-Higashi-Hongan-Ji-I.h32815429.Hotel-Beschreibung",
-    "notice": "Achtung: Die günstiger angebotenen Apartments haben nur 1 Schlafzimmer. Die als „2 Schlafzimmer“ bezeichnete Suite ist für eure Daten im Browser als ausgebucht angezeigt worden; vor einer Auswahl direkt klären."
+    "notice": "11.–15.07.2027: Die „Suite, 2 Schlafzimmer“ ist ausgebucht; ihre Detailzeile nennt widersprüchlich 1 Schlafzimmer. Buchbare Standard-Apartments haben nur 1 Schlafzimmer."
   },
   "https://www.expedia.de/.h22155272.Hotel-Information?chkin=2027-07-11&chkout=2027-07-15&rm1=a2:c8:c11": {
     "label": "Aparthotel mit Frühstück: Tomoya Residence Hotel Nijo-Takakura: Auf Expedia ansehen & buchen →",
@@ -1083,25 +1083,25 @@ export const linkAudit = {
     "kind": "booking",
     "status": "ok",
     "httpStatus": 429,
-    "checkedAt": "2026-10-19T13:33:58+00:00",
+    "checkedAt": "2026-10-19T15:35:24.511Z",
     "finalUrl": "https://www.expedia.de/.h131286042.Hotel-Information?chkin=2027-07-15&chkout=2027-07-20&rm1=a2:c8:c11",
     "pageTitle": "Olfea Namba South No.11",
-    "message": "Im Browser-DOM geprüft: Passendes Objekt; angebotene Standardwohnung hat 1 Schlafzimmer, 2-Schlafzimmer-Suite als ausgebucht.",
+    "message": "Erneut im Browser-DOM geprüft für 15.–20.07.2027: Standardwohnung mit 1 Schlafzimmer; Balkon-Suite mit 2 Schlafzimmern als ausgebucht markiert.",
     "verification": "browser-dom",
     "canonicalPath": "/Osaka-Hotels-Olfea-Namba-South-No11.h131286042.Hotel-Beschreibung",
-    "notice": "Die aktuell angebotene Standardwohnung hat nur 1 Schlafzimmer; die 2-Schlafzimmer-Suite war beim Browsercheck ausgebucht."
+    "notice": "15.–20.07.2027: Das angebotene Apartment hat 1 Schlafzimmer. Die als 2 Schlafzimmer bezeichnete Balkon-Suite ist als ausgebucht markiert."
   },
   "https://www.booking.com/hotel/jp/oruhueanan-bo-nan-11fan-guan.html?checkin=2027-07-15&checkout=2027-07-20&group_adults=2&group_children=2&age=8&age=11&selected_currency=EUR": {
     "label": "Alternative: Orphear Namba Minami 11: auf Booking (404 €) →",
     "kind": "booking",
     "status": "ok",
     "httpStatus": 202,
-    "checkedAt": "2026-10-19T13:33:58+00:00",
+    "checkedAt": "2026-10-19T15:35:24.511Z",
     "finalUrl": "https://www.booking.com/hotel/jp/oruhueanan-bo-nan-11fan-guan.html",
     "pageTitle": "オルフェア難波南11番館",
-    "message": "Im Browser-DOM geprüft: Passendes Osaka-Objekt und Reisedaten bestätigt; empfohlenes Apartment hat 1 Schlafzimmer.",
+    "message": "Erneut im Browser-DOM geprüft für 15.–20.07.2027, 2 Erwachsene und 2 Kinder: empfohlen und buchbar angezeigt wird ein Apartment mit 1 Schlafzimmer und 2 Doppelbetten.",
     "verification": "browser-dom",
-    "notice": "Booking empfiehlt für eure Daten ein Apartment mit 1 Schlafzimmer. Zwei getrennte Schlafzimmer sind damit nicht bestätigt."
+    "notice": "Booking bietet für 15.–20.07.2027 ein Apartment mit 1 Schlafzimmer und 2 Doppelbetten an. Zwei Doppelbetten sind nicht zwei getrennte Schlafzimmer."
   },
   "https://www.expedia.de/.h3917922.Hotel-Information?chkin=2027-07-15&chkout=2027-07-20&rm1=a2:c8:c11": {
     "label": "Aparthotel mit Frühstück: Fraser Residence Nankai Osaka: Auf Expedia ansehen & buchen →",
@@ -1685,12 +1685,24 @@ export const linkAudit = {
     "finalUrl": "https://www.google.com/maps/search/?api=1&query=Morning+Glory+Original+106+Nguyen+Thai+Hoc+Hoi+An+Vietnam&ucbcb=1",
     "pageTitle": "Google Maps",
     "message": "Geprüft am 19.10.2026: HTTP 200."
+  },
+  "https://www.kansai-airports.co.jp/en/news/e-260825-pressrelease-vj-kix-dad/": {
+    "label": "Kansai Airports: offizielle Ankündigung der Da-Nang-Direktverbindung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 403,
+    "checkedAt": "2026-10-19T15:35:24.511Z",
+    "finalUrl": "https://www.kansai-airports.co.jp/en/news/e-260825-pressrelease-vj-kix-dad/",
+    "pageTitle": "Vietjet Air to Launch Kansai–Da Nang Route —Third Route Connecting Kansai and Vietnam— | News | Kansai Airports",
+    "verification": "browser-dom",
+    "message": "Nach gesperrtem Fetch im Browser-DOM geprüft: Flughafenmitteilung vom 25.08.2026 kündigt die Strecke ab 20.12.2026 mit vier Hin- und Rückflügen pro Woche an. Keine Bestätigung der Buchbarkeit am 20.07.2027."
   }
 };
 export const retiredLinks = [
   {
     "label": "Osaka → Da Nang: ursprünglicher lastminute.de-Suchlink",
     "url": "https://www.lastminute.de/msr/route/searching.do?departureAirport=KIX&arrivalAirport=DAD&outboundDay=20&outboundMonthYear=072027&adults=2&childs=2&infants=0&COBRANDED=LMNDE_LLMPROJECTDE&currency=EUR&url=search3.do&roundtrip=false&requestId=830845344195758080&mac=830845344195758080SCHv01-1434126240&acntb=flight&autoclick=true&j=907660&jC=907660_EUR&cp=9",
-    "reason": "Weiterleitung in abgelaufene Suchsitzung (reason=gone); durch die offizielle VietJet-Seite ersetzt. Keine behauptete Verfügbarkeit für Juli 2027."
+    "reason": "Erneut im Browser für Juli 2027 geprüft: Der Anbieter meldet die ausgewählte Reise als nicht mehr verfügbar. Das ist keine Aussage gegen die offiziell angekündigte VietJet-Direktstrecke; konkrete Juli-Buchbarkeit separat prüfen.",
+    "browserRecheckedAt": "2026-10-19T15:35:24.511Z"
   }
 ];

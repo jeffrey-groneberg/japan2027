@@ -22,7 +22,7 @@ function loadLeaflet() {
 
 export async function createPlaceMap(container, points, { popupFor, onStatus }) {
   const L = await loadLeaflet();
-  if (!container.isConnected) return null;
+  if (!container.isConnected || container.closest("[hidden], details:not([open])")) return null;
   const mapped = points.filter((point) => Array.isArray(point.coordinates));
   if (!mapped.length) throw new Error("No verified coordinates are available for this selection.");
   const map = L.map(container, {
@@ -36,7 +36,12 @@ export async function createPlaceMap(container, points, { popupFor, onStatus }) 
   try {
     L.control.zoom({ zoomInTitle: "Karte vergrößern", zoomOutTitle: "Karte verkleinern" }).addTo(map);
     map.attributionControl.setPrefix(false);
-    map.fitBounds(L.latLngBounds(mapped.map((point) => point.coordinates)), { padding: [32, 32], maxZoom: 15, animate: false });
+    const bounds = L.latLngBounds(mapped.map((point) => point.coordinates));
+    const showAll = () => {
+      map.closePopup();
+      map.fitBounds(bounds, { padding: [32, 32], maxZoom: 15, animate: false });
+    };
+    showAll();
     const markers = new Map();
     mapped.forEach((point) => {
       const markerLabel = document.createElement("span");
@@ -75,6 +80,7 @@ export async function createPlaceMap(container, points, { popupFor, onStatus }) 
     });
     tiles.addTo(map);
     return {
+      showAll,
       focus(id) {
         const marker = markers.get(id);
         if (!marker) return;

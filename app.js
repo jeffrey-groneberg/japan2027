@@ -1,7 +1,7 @@
 import { trip } from "./trip-data.js";
 import {
   STORAGE_KEY, buildCalendar, countdown, defaultState, destinationName,
-  destinations, filterDays, formatDate, parseState, googleMapsURL, placesForDay,
+  destinations, entriesForDay, filterDays, formatDate, parseState, googleMapsURL, placesForDay,
 } from "./lib.js";
 import { bases, dayGuides, places, railGuide, resources } from "./guide-data.js";
 import { createPlaceMap } from "./map.js";
@@ -15,6 +15,7 @@ const mapContexts = new Map();
 let mapsPermitted = false;
 let selectedBase = "tokyo";
 let selectedDaySection = "plan";
+let dayMapOpen = false;
 let state = defaultState(trip);
 let currentView = "itinerary";
 let selectedDate = trip.startDate;
@@ -91,9 +92,9 @@ function resourceLinks(ids) {
 function foodRecommendation(id) {
   const food = foodStops[foodByPlace[id]];
   if (!food) throw new Error(`Missing culinary recommendation for ${id}`);
-  const section = element("div", "food-recommendation");
+  const section = element("details", "food-recommendation");
   section.append(
-    element("h6", "", `Unser Genuss-Tipp: ${food.name}`),
+    element("summary", "", `Unser Genuss-Tipp: ${food.name}`),
     element("p", "", food.why),
     element("p", "food-children", `Für Kinder: ${food.children}`),
     element("p", "food-practical", food.practical),
@@ -162,7 +163,7 @@ function setView(view, updateLocation = true) {
   document.title = `${$(`#tab-${view}`).textContent.trim()} · Japan & Vietnam 2027`;
   requestAnimationFrame(() => {
     for (const context of mapContexts.values()) {
-      if (context.element?.isConnected && !context.element.closest("[hidden]")) {
+      if (mapIsVisible(context)) {
         context.map?.resize();
         if (mapsPermitted) context.start?.();
       }
@@ -333,7 +334,28 @@ function destroyMap(key) {
   mapContexts.delete(key);
 }
 
-function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
+function mapIsVisible(context) {
+  return context.element?.isConnected && context.element.getClientRects().length > 0
+    && !context.element.closest("[hidden], details:not([open])");
+}
+
+function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen") {
+  const content = element("div", "poi-content");
+  content.append(element("p", "place-description", point.description));
+  if (point.verificationNote) content.append(element("p", "place-verification", point.verificationNote));
+  if (point.resource) content.append(resourceLinks([point.resource]));
+  const actions = element("div", "place-actions");
+  if (point.coordinates) {
+    actions.append(
+      button(mapLabel, "text-button", () => showOnMap(point.id)),
+      linkWithStatus(`${point.name} in Google Maps`, googleMapsURL(point)),
+    );
+  } else actions.append(element("p", "link-caveat", "Für diesen Ort ist kein genauer Kartenpunkt bestätigt."));
+  content.append(actions, foodRecommendation(point.id));
+  return content;
+}
+
+function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { showList = true, revealPlace } = {}) {
   destroyMap(key);
   const context = { map: null, pending: null, cancelled: false };
   mapContexts.set(key, context);
@@ -342,8 +364,12 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
   section.id = `${key}-places`;
   const heading = element("h4", "places-heading", headingText);
   const mappedPoints = points.filter((point) => Array.isArray(point.coordinates));
-  section.append(heading, element("p", "places-intro", "Eine Nummer antippen oder einen Ort für Details aufklappen."));
+  section.append(heading, element("p", "places-intro", showList
+    ? "Eine Nummer antippen oder einen Ort für Details aufklappen."
+    : "Alle Stopps gemeinsam. Die Nummern entsprechen dem Tagesablauf; sie sind keine berechnete Geh- oder Bahnroute."));
   const mapShell = element("div", "map-shell");
+  const showAll = button("Alle Stopps zeigen", "text-button map-show-all", () => context.map.showAll());
+  showAll.hidden = true;
   const placeholder = element("div", "map-placeholder");
   const message = element("p", "map-status");
   message.setAttribute("role", "status");
@@ -358,7 +384,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
     enableMap();
   });
   placeholder.append(graphic("icon-pin"), element("p", "", "Alle bestätigten Punkte gemeinsam sehen."), load, permission);
-  mapShell.append(placeholder, canvas, message);
+  mapShell.append(placeholder, showAll, canvas, message);
   if (mappedPoints.length) section.append(mapShell);
   const popupFor = (point) => {
     const popup = element("div", "place-popup");
@@ -368,10 +394,11 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
       externalLink(`${point.name} in Google Maps`, googleMapsURL(point)),
     );
     if (point.resource) popup.append(resourceLinks([point.resource]));
+    if (revealPlace) popup.append(button("Details bei diesem Programmpunkt", "text-button", () => revealPlace(point.id)));
     return popup;
   };
   async function enableMap(focusId) {
-    if (context.cancelled) return;
+    if (context.cancelled || !mapIsVisible(context)) return;
     if (context.map) {
       if (focusId) {
         context.map.focus(focusId);
@@ -396,7 +423,10 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
           return null;
         }
         context.map = map;
-        if (map) placeholder.hidden = true;
+        if (map) {
+          placeholder.hidden = true;
+          showAll.hidden = false;
+        }
         return map;
       }).catch((error) => {
         console.error("The sightseeing map could not be displayed.", error);
@@ -415,37 +445,29 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages") {
     }
   }
   context.start = enableMap;
-  const list = element("ol", "place-list");
-  for (const point of points) {
-    const item = element("li", "place-item");
-    item.id = `${key}-place-${point.id}`;
-    const text = element("details", "place-item-content place-disclosure");
-    text.name = `${key}-place-details`;
-    const summary = element("summary");
-    const title = element("h5", "", point.name);
-    summary.append(title, element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`), graphic("icon-chevron", "icon place-chevron"));
-    text.append(summary, element("p", "place-description", point.description));
-    if (point.verificationNote) text.append(element("p", "place-verification", point.verificationNote));
-    if (point.resource) text.append(resourceLinks([point.resource]));
-    const actions = element("div", "place-actions");
-    if (point.coordinates) {
-      actions.append(
-        button("Auf Karte zeigen", "text-button", () => {
-          mapsPermitted = true;
-          enableMap(point.id);
-        }),
-        linkWithStatus(`${point.name} in Google Maps`, googleMapsURL(point)),
-      );
-    } else actions.append(element("p", "link-caveat", "Kein unbestätigter Kartenpin: Nutze bis zum Ortsabgleich die offizielle Adresse."));
-    text.append(actions);
-    text.append(foodRecommendation(point.id));
-    item.append(element("span", "place-number", point.number), text);
-    list.append(item);
+  context.focus = (id) => {
+    mapsPermitted = true;
+    return enableMap(id);
+  };
+  if (showList) {
+    const list = element("ol", "place-list");
+    for (const point of points) {
+      const item = element("li", "place-item");
+      item.id = `${key}-place-${point.id}`;
+      const text = element("details", "place-item-content place-disclosure");
+      text.name = `${key}-place-details`;
+      const summary = element("summary");
+      const title = element("h5", "", point.name);
+      summary.append(title, element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`), graphic("icon-chevron", "icon place-chevron"));
+      text.append(summary, placeContent(point, context.focus));
+      item.append(element("span", "place-number", point.number), text);
+      list.append(item);
+    }
+    section.append(list);
   }
-  section.append(list);
   if (mapsPermitted && mappedPoints.length) {
     requestAnimationFrame(() => {
-      if (!context.cancelled && section.isConnected && !section.closest("[hidden]")) enableMap();
+      if (!context.cancelled && mapIsVisible(context)) enableMap();
     });
   }
   return section;
@@ -518,7 +540,7 @@ function renderDayDetail(day, days) {
   dayTabs.setAttribute("aria-label", "Bereiche des ausgewählten Reisetags");
   const points = placesForDay(day.date);
   for (const [id, label] of [
-    ["plan", "Tagesablauf"], ["places", `Orte & Karte (${points.length})`],
+    ["plan", "Tagesablauf"],
     ["transit", "Anfahrt & Tickets"], ["alternatives", "Alternativen"],
   ]) {
     const panel = element("div", "day-subpanel");
@@ -551,8 +573,9 @@ function renderDayDetail(day, days) {
       tab.tabIndex = key === id ? 0 : -1;
     }
     const context = mapContexts.get("day");
-    if (id === "places" && context) {
+    if (id === "plan" && dayMapOpen && context) {
       requestAnimationFrame(() => {
+        if (!mapIsVisible(context)) return;
         context.map?.resize();
         if (mapsPermitted) context.start?.();
       });
@@ -560,7 +583,6 @@ function renderDayDetail(day, days) {
   }
   detail.append(dayTabs);
   const planPanel = daySections.get("plan").panel;
-  const placesPanel = daySections.get("places").panel;
   const transitPanel = daySections.get("transit").panel;
   const alternativesPanel = daySections.get("alternatives").panel;
   alternativesPanel.append(element("p", "alternatives-intro", "Wenn ihr schneller fertig seid oder Lust auf etwas anderes habt: Diese Ideen ersetzen einen Programmpunkt oder füllen freie Zeit – kein zusätzliches Pflichtprogramm."));
@@ -574,31 +596,57 @@ function renderDayDetail(day, days) {
   }
   if (guide) {
     planPanel.append(element("p", "day-summary", guide.summary));
+    let overview;
+    const revealPlace = (id) => {
+      selectSection("plan");
+      const target = $(`#day-place-${id}`);
+      target.open = true;
+      target.scrollIntoView({ block: "start" });
+      $("summary", target).focus({ preventScroll: true });
+    };
+    if (points.length) {
+      overview = element("details", "day-map-overview");
+      overview.open = dayMapOpen;
+      const summary = element("summary");
+      summary.append(graphic("icon-pin"), document.createTextNode(`Tageskarte · alle ${points.length} Orte`), graphic("icon-chevron", "icon day-map-chevron"));
+      overview.append(summary, placeExplorer(points, "day", "Der ganze Tag auf einer Karte", { showList: false, revealPlace }));
+      overview.addEventListener("toggle", () => {
+        if (!overview.isConnected) return;
+        dayMapOpen = overview.open;
+        if (overview.open) {
+          const context = mapContexts.get("day");
+          context.map?.resize();
+          if (mapsPermitted) context.start();
+        }
+      });
+      planPanel.append(overview);
+    }
+    const showOnMap = (id) => {
+      overview.open = true;
+      dayMapOpen = true;
+      mapContexts.get("day").focus(id);
+    };
     const agenda = element("ol", "day-agenda");
-    for (const [stepIndex, step] of guide.steps.entries()) {
+    for (const { step, placeId, showContext, number } of entriesForDay(day.date)) {
       const item = element("li");
       const disclosure = element("details", "agenda-disclosure");
       disclosure.name = "day-agenda-points";
+      const point = placeId ? points.find((point) => point.id === placeId) : null;
+      if (point) {
+        disclosure.id = `day-place-${point.id}`;
+        disclosure.dataset.place = point.id;
+      }
       const summary = element("summary");
       const heading = element("span", "agenda-heading");
-      heading.append(element("span", "agenda-time", step.time), element("h4", "", step.title));
-      summary.append(element("span", "agenda-number", stepIndex + 1), heading, graphic("icon-chevron", "icon agenda-chevron"));
+      heading.append(element("span", "agenda-time", step.time), element("h4", "", point ? point.name : step.title));
+      summary.append(element("span", "agenda-number", number), heading, graphic("icon-chevron", "icon agenda-chevron"));
       const body = element("div", "agenda-body");
-      body.append(element("p", "", step.text));
-      if (step.places?.length) {
-        const related = element("div", "agenda-places");
-        for (const id of step.places) {
-          const place = places[id];
-          const jump = button(place.name, "agenda-place-link", () => {
-            selectSection("places");
-            const target = $(`#day-place-${id}`);
-            $(".place-disclosure", target).open = true;
-            target.scrollIntoView({ block: "start" });
-            $("summary", target).focus({ preventScroll: true });
-          });
-          related.append(jump);
-        }
-        body.append(related);
+      if (showContext) body.append(element("p", "agenda-context", step.text));
+      if (point) {
+        body.append(
+          element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`),
+          placeContent(point, showOnMap, "Auf Tageskarte zeigen"),
+        );
       }
       disclosure.append(summary, body);
       item.append(disclosure);
@@ -617,14 +665,6 @@ function renderDayDetail(day, days) {
     }
     if (guide.tip) planPanel.append(element("p", "day-tip", guide.tip));
     if (guide.resources?.length) planPanel.append(resourceLinks(guide.resources));
-    if (points.length) {
-      planPanel.append(button("Kulinarik-Tipps für unsere Stopps", "text-button food-shortcut", () => {
-        selectSection("places");
-        const target = $("#day-places .place-disclosure");
-        target.open = true;
-        $(".food-recommendation", target).scrollIntoView({ block: "center" });
-      }));
-    }
     const transit = element("div", "transport-box");
     const transitHeading = element("h4");
     transitHeading.append(graphic("icon-train"), document.createTextNode(guide.transit.title));
@@ -637,8 +677,6 @@ function renderDayDetail(day, days) {
       button("Was ist JR? Bahn-ABC & Ticketkauf", "text-button", openRailGuide),
     );
     transitPanel.append(transit);
-    if (points.length) placesPanel.append(placeExplorer(points, "day"));
-    else placesPanel.append(element("p", "intro-copy", "Für diesen An- oder Rückreisetag sind keine Sightseeing-Punkte eingeplant. Die Anreise steht unter „Anfahrt & Tickets“."));
     if (day.destination !== "reise") planPanel.append(button(`Einkaufen bei unserer Basis in ${destinationName(day.destination)}`, "button button-secondary base-shortcut", () => openBase(day.destination)));
   }
   if (day.base !== "Anreise" && day.base !== "Rückreise") {
@@ -676,7 +714,7 @@ function renderTravel() {
     railSection.append(block);
   }
   container.append(railSection, element("h3", "content-subheading", "Die geplanten Flüge"));
-  container.append(element("p", "intro-copy", "Hinflug über Hanoi nach Tokyo-Haneda, Weiterflug von Osaka nach Da Nang, Rückflug über Saigon nach Frankfurt. Die konkrete Osaka-Verbindung muss neu ausgewählt werden."));
+  container.append(element("p", "intro-copy", "Hinflug über Hanoi nach Tokyo-Haneda, Weiterflug von Osaka nach Da Nang, Rückflug über Saigon nach Frankfurt. Die Osaka-Direktstrecke ist offiziell angekündigt; den konkreten Flug für den 20. Juli bei der Airline prüfen."));
   const flights = element("div", "flight-list");
   for (const flight of trip.flights) {
     const card = element("article", "flight-card");
@@ -684,11 +722,12 @@ function renderTravel() {
     content.append(
       element("h3", "", flight.route),
       element("p", "", flight === trip.flights[1]
-        ? "Die zuvor ausgewählte Verbindung wird vom Anbieter als nicht mehr verfügbar angezeigt. Eine neue Verbindung Kansai (KIX) → Da Nang (DAD) auswählen; die bisher geplante direkte Ankunft um 13:00 ist nicht bestätigt."
+        ? "Der alte lastminute-Buchungslink zeigt die ausgewählte Reise weiterhin als nicht verfügbar. Das bedeutet nicht, dass es keine Direktstrecke gibt: Kansai Airports kündigt VietJet Osaka–Da Nang ab 20. Dezember 2026 mit vier Hin- und Rückflügen pro Woche an. Verfügbarkeit und Flugzeiten für Dienstag, 20. Juli 2027, sind damit noch nicht bestätigt."
         : flight.details),
-      element("span", "carrier-note", flight === trip.flights[1] ? "Verbindung neu auswählen" : flight.carrier),
+      element("span", "carrier-note", flight === trip.flights[1] ? "VietJet · Direktstrecke angekündigt" : flight.carrier),
     );
     if (flight.links.length) content.append(bookingLinks(flight.links));
+    if (flight === trip.flights[1]) content.append(resourceLinks(["kansaiDaNang"]));
     card.append(element("p", "flight-date", flight.date), content);
     flights.append(card);
   }
@@ -720,9 +759,9 @@ function renderStays() {
       description.append(
         element("summary", "", "Details & Buchungslinks"),
         element("p", "", option.id === "kyoto-2"
-          ? "Die Unterkunft bietet verschiedene Apartments. Die aktuell sichtbaren günstigeren Varianten haben nur ein Schlafzimmer; die Zwei-Schlafzimmer-Suite war beim Browsercheck ausgebucht."
+          ? "Erneut für 11.–15. Juli 2027 geprüft: Die buchbaren Standard-Apartments zeigen nur ein Schlafzimmer. Die „Suite, 2 Schlafzimmer“ ist als ausgebucht markiert; ihre Detailzeile nennt widersprüchlich „1 Schlafzimmer“. Zwei getrennte Schlafzimmer sind für eure Daten damit nicht bestätigt."
           : option.id === "osaka-1"
-            ? "Wohnungen südwestlich von Namba nahe Daikokucho. Die angebotene Standardwohnung hat nur ein Schlafzimmer; zwei getrennte Schlafzimmer sind für eure Reisedaten nicht bestätigt."
+            ? "Erneut für 15.–20. Juli 2027 geprüft: Booking bietet ein „Apartment mit 1 Schlafzimmer“ an. Bei Expedia ist die Standardwohnung ebenfalls mit einem Schlafzimmer gelistet; die als „2 Schlafzimmer“ bezeichnete Balkon-Suite ist ausgebucht. Zwei Doppelbetten sind nicht zwei getrennte Schlafzimmer."
             : option.description),
         bookingLinks(option.links),
       );

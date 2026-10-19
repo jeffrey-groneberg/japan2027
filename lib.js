@@ -13,9 +13,9 @@ export const STORAGE_KEY = "japan-vietnam-2027:planner:v1";
 const dayMetadata = {
   "2027-07-03": ["transfer", "Frankfurt Airport, Germany"],
   "2027-07-04": ["transfer", "Komagome Station, Tokyo, Japan"],
-  "2027-07-05": ["culture", "Senso-ji, Tokyo, Japan"],
+  "2027-07-05": ["city", "Shibuya Parco, Tokyo, Japan"],
   "2027-07-06": ["park", "Tokyo DisneySea, Japan"],
-  "2027-07-07": ["city", "Shibuya Parco, Tokyo, Japan"],
+  "2027-07-07": ["culture", "Ueno Zoo, Tokyo, Japan"],
   "2027-07-08": ["nature", "Mount Takao, Japan"],
   "2027-07-09": ["culture", "teamLab Planets, Tokyo, Japan"],
   "2027-07-10": ["city", "Akihabara, Tokyo, Japan"],
@@ -197,7 +197,14 @@ export function googleMapsURL(place) {
   return url.href;
 }
 
+export function entriesForDay(date) {
+  return (dayGuides[date]?.steps ?? []).flatMap((step) => step.places?.length
+    ? step.places.map((id, index) => ({ step, placeId: id, showContext: index === 0 }))
+    : [{ step, placeId: null, showContext: true }])
+    .map((entry, index) => ({ ...entry, number: index + 1 }));
+}
+
 export function placesForDay(date) {
-  const ids = [...new Set((dayGuides[date]?.steps ?? []).flatMap((step) => step.places ?? []))];
-  return ids.map((id, index) => ({ id, number: index + 1, ...places[id] }));
+  return entriesForDay(date).filter((entry) => entry.placeId)
+    .map(({ placeId, number }) => ({ id: placeId, number, ...places[placeId] }));
 }
