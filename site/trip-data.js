@@ -168,7 +168,7 @@ export const trip = {
       "base": "Kyoto · 11.–15. Juli · ab Wohnung RESI STAY Fuyacho im Zentrum (~5 Min zu Fuß zur Keihan-Station Kiyomizu-Gojo, ~8 Min zu Hankyu Kyoto-Kawaramachi)",
       "activities": [
         "Ab ~7:30 Fushimi Inari, bevor Hitze und Menschenmassen kommen · nachmittags Nintendo Museum im gelosten Zeitfenster (Museum ist dienstags zu — Montag passt)",
-        "Anfahrt: Keihan ab Kiyomizu-Gojo bis Fushimi-Inari ~7 Min, ~220 ¥ (~1 €) · weiter Keihan bis Tambabashi, Kintetsu bis Ogura (5 Min zum Museum) ~20 Min, ~400 ¥ (~2 €) · Taxi Wohnung → Inari ~1.800 ¥ (~10 €), Inari → Museum ~3.500 ¥ (~20 €)"
+        "Anfahrt: Keihan ab Kiyomizu-Gojo bis Fushimi-Inari ~7 Min, ~220 ¥ (~1 €) · weiter Keihan bis Tambabashi, Kintetsu bis Ogura (Ostausgang, etwa 5 Min zu Fuß zum Museum) ~20 Min, ~400 ¥ (~2 €) · Nintendo schließt die Anreise zum Museum per Taxi ausdrücklich aus"
       ]
     },
     {
@@ -259,10 +259,10 @@ export const trip = {
     {
       "date": "2027-07-21",
       "destination": "vietnam",
-      "title": "Ankommen & Strand",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Pool, Strand, Club-Programm, Kinderbetreuung kennenlernen"
+        "Bewusst kein Ausflug: im Hotel bleiben, Pool und Strand nutzen"
       ]
     },
     {
@@ -278,10 +278,10 @@ export const trip = {
     {
       "date": "2027-07-23",
       "destination": "vietnam",
-      "title": "Strandtag",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Erholung, Wassersport & Club-Aktivitäten"
+        "Bewusst kein Ausflug: freier Hotel- und Strandtag"
       ]
     },
     {
@@ -297,10 +297,10 @@ export const trip = {
     {
       "date": "2027-07-25",
       "destination": "vietnam",
-      "title": "Strandtag / Club",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Fauler Tag am Meer"
+        "Bewusst kein Ausflug: freier Hotel- und Strandtag"
       ]
     },
     {
@@ -316,37 +316,37 @@ export const trip = {
     {
       "date": "2027-07-27",
       "destination": "vietnam",
-      "title": "Strandtag / optional Kochkurs",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Entspannen oder Kochkurs in Hoi An"
+        "Bewusst kein Ausflug: freier Hotel- und Strandtag"
       ]
     },
     {
       "date": "2027-07-28",
       "destination": "vietnam",
-      "title": "Strandtag / Radtour",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Erholung oder Radtour durch Reisfelder & Kokospalmen"
+        "Bewusst kein Ausflug: freier Hotel- und Strandtag"
       ]
     },
     {
       "date": "2027-07-29",
       "destination": "vietnam",
-      "title": "Strandtag / Puffer",
+      "title": "Hotel, Pool & Strand",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Faulenzen oder einen Ausflug nachholen, der wegen Wetter ausgefallen ist"
+        "Bewusst kein Ausflug: freier Hotel- und Strandtag"
       ]
     },
     {
       "date": "2027-07-30",
       "destination": "vietnam",
-      "title": "Letzter voller Strandtag",
+      "title": "Hotel, Pool & Packen",
       "base": "Da Nang · Robinson Club (All-Inclusive) · 20.–31. Juli",
       "activities": [
-        "Souvenirs, abends langsam packen"
+        "Kein Ausflug: Hotel, Pool oder Strand; abends entspannt packen"
       ]
     },
     {

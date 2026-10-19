@@ -73,7 +73,7 @@ test("UZUMASA replaces Nara as a complete ninja day and keeps child safety expli
   assert.deepEqual(filterDays(trip.days, { query: "Ninja-Haus" }).map(({ date }) => date), ["2027-07-13"]);
   const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT")
     .find((entry) => entry.includes("DTSTART;VALUE=DATE:20270713"));
-  assert.match(event, /Alternative: UZUMASA Ninja-Haus statt Nara/);
+  assert.match(event, /Route: UZUMASA Ninja-Haus statt Nara/);
   assert.match(event, /Kulinarik: UZUMASA Kyoto Village/);
 });
 
@@ -95,7 +95,7 @@ test("HIRAKUZA is an honest family sumo dinner show, not a professional tourname
   assert.match(option.transit, /Namba Parks/);
   const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT")
     .find((calendarEntry) => calendarEntry.includes("DTSTART;VALUE=DATE:20270718"));
-  assert.match(event, /Alternative: Sumo-Show mit Abendessen/);
+  assert.match(event, /Route: Sumo-Show mit Abendessen/);
 });
 
 test("festivals use proposal dates with honest unconfirmed status and do not overload fixed days", () => {

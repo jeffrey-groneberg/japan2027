@@ -206,7 +206,7 @@ export function buildCalendar(trip, now = new Date()) {
         ...(dayGuides[day.date]?.booking ? [dayGuides[day.date].booking] : []),
         ...(dayGuides[day.date]?.tip ? [dayGuides[day.date].tip] : []),
         ...(alternatives[day.date] ?? []).map((option) => [
-          `Alternative: ${option.title}`, option.when, option.text,
+          `Route: ${option.title}`, option.when, option.text,
           ...(option.booking ? [option.booking] : []),
           ...(option.transit ? [option.transit] : []),
           ...[...new Set(option.places.map((id) => foodByPlace[id]))].map((id) => `Optionale ${calendarFood(id)}`),

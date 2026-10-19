@@ -104,12 +104,18 @@ test("calendar folding preserves multibyte characters and escapes user-visible p
 });
 
 test("every travel day has a concrete sequence, actionable transport and ticket guidance", () => {
+  const hotelDays = new Set(["2027-07-21", "2027-07-23", "2027-07-25", "2027-07-27", "2027-07-28", "2027-07-29", "2027-07-30"]);
   assert.deepEqual(Object.keys(dayGuides).sort(), trip.days.map((day) => day.date).sort());
   for (const [date, guide] of Object.entries(dayGuides)) {
     assert.ok(guide.summary.length >= 50, date);
-    assert.ok(guide.steps.length >= 2, date);
-    assert.ok(guide.transit.title && guide.transit.ticket.length >= 50, date);
-    assert.ok(guide.transit.steps.length >= 2, date);
+    assert.ok(guide.steps.length >= (hotelDays.has(date) ? 1 : 2), date);
+    assert.ok(guide.transit.title && guide.transit.ticket.length >= (hotelDays.has(date) ? 20 : 50), date);
+    assert.ok(guide.transit.steps.length >= (hotelDays.has(date) ? 1 : 2), date);
+    if (hotelDays.has(date)) {
+      assert.equal(guide.steps.length, 1, date);
+      assert.match(guide.steps[0].title, /Hotel, Pool/);
+      assert.match(guide.transit.title, /kein Transfer/i);
+    }
     for (const step of guide.steps) {
       assert.ok(step.title && step.time && step.text.trim(), `${date}: ${step.title}`);
       for (const id of step.places ?? []) assert.ok(places[id], `${date}: ${id}`);
@@ -242,11 +248,13 @@ test("old browser preferences migrate without losing favorites or retaining remo
   assert.equal("budget" in migrated, false);
 });
 
-test("all days have alternatives and every location has an explained child-aware culinary recommendation", () => {
-  assert.deepEqual(Object.keys(alternatives).sort(), trip.days.map((day) => day.date).sort());
-  for (const date of Object.keys(dayGuides)) {
-    assert.ok(alternatives[date]?.length);
-    for (const alternative of alternatives[date]) {
+test("route decisions stay explicit while Vietnam hotel days remain intentionally empty", () => {
+  const hotelDays = ["2027-07-21", "2027-07-23", "2027-07-25", "2027-07-27", "2027-07-28", "2027-07-29", "2027-07-30"];
+  for (const date of hotelDays) assert.equal(alternatives[date], undefined, date);
+  for (const [date, options] of Object.entries(alternatives)) {
+    assert.ok(dayGuides[date], date);
+    assert.ok(options.length, date);
+    for (const alternative of options) {
       assert.ok(alternative.title && alternative.when && alternative.text.length > 60);
       for (const id of alternative.places) assert.ok(places[id], `${date}: ${id}`);
       for (const id of alternative.resources ?? []) assert.ok(resources[id], `${date}: ${id}`);
@@ -289,7 +297,7 @@ test("Ghibli is a reserved-ticket alternative, not an additional mountain-day ob
   assert.equal(Object.keys(places).some((id) => /akira|ghost|transformers|skytree/i.test(id)), false);
   const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT").find((event) => event.includes("DTSTART;VALUE=DATE:20270708"));
   assert.match(event, /SUMMARY:Wandertag: Mount Takao/);
-  assert.match(event, /Alternative: Ghibli Museum statt Mount Takao/);
+  assert.match(event, /Route: Ghibli Museum statt Mount Takao/);
   assert.match(event, /03:00 Uhr MESZ/);
   assert.match(event, /Optionale Kulinarik: Straw Hat/);
 });

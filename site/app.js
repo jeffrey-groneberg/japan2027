@@ -1,15 +1,16 @@
 import { trip } from "./trip-data.js";
 import {
   STORAGE_KEY, buildCalendar, countdown, defaultState, destinationName,
-  destinations, entriesForDay, festivalMapsURL, festivalsForDay, filterDays, filterDining, formatDate, parseState, googleMapsURL, placesForDay,
+  destinations, festivalMapsURL, festivalsForDay, filterDays, filterDining, formatDate, parseState, googleMapsURL,
 } from "./lib.js";
 import { bases, dayGuides, places, railGuide, resources } from "./guide-data.js";
 import { createPlaceMap } from "./map.js";
 import { linkAudit } from "./link-audit.js";
-import { alternatives, foodByPlace, foodMapsURL, foodStops } from "./extras.js";
+import { foodByPlace, foodMapsURL, foodStops } from "./extras.js";
 import { placeFigure, placeThumbnail } from "./poi-visuals.js";
 import { diningBookingLabels, diningCategoryLabels, diningOptions } from "./dining-data.js";
 import { festivalOptions, festivalStatusLabels, fireworksContext } from "./festival-data.js";
+import { buildDayLanes, formatLaneTime } from "./lane-data.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const views = ["itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
@@ -18,7 +19,7 @@ const mapContexts = new Map();
 let mapsPermitted = false;
 let selectedBase = "tokyo";
 let selectedDaySection = "plan";
-let dayMapOpen = false;
+let selectedLaneBlock = null;
 let state = defaultState(trip);
 let currentView = "itinerary";
 let selectedDate = trip.startDate;
@@ -285,6 +286,7 @@ function revealSelectedDay() {
 function chooseDay(day, focusTarget = "list") {
   selectedDate = day.date;
   selectedDaySection = "plan";
+  selectedLaneBlock = null;
   renderItinerary();
   if (focusTarget === "list") $(`[data-date="${day.date}"]`, $("#day-list"))?.focus({ preventScroll: true });
   else {
@@ -352,7 +354,7 @@ function mapIsVisible(context) {
     && !context.element.closest("[hidden], details:not([open])");
 }
 
-function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen", introduction) {
+function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen", introduction, mapTarget = point.id) {
   const content = element("div", "poi-content");
   content.append(placeFigure(point, linkWithStatus));
   if (introduction) content.append(element("p", "agenda-context", introduction));
@@ -361,14 +363,14 @@ function placeContent(point, showOnMap, mapLabel = "Auf Karte zeigen", introduct
   if (point.resource) content.append(resourceLinks([point.resource]));
   const actions = element("div", "place-actions");
   if (point.coordinates) {
-    if (showOnMap) actions.append(button(mapLabel, "text-button", () => showOnMap(point.id)));
+    if (showOnMap) actions.append(button(mapLabel, "text-button", () => showOnMap(mapTarget)));
     actions.append(linkWithStatus(`${point.name} in Google Maps`, googleMapsURL(point)));
   } else actions.append(element("p", "link-caveat", "Für diesen Ort ist kein genauer Kartenpunkt bestätigt."));
   content.append(actions, foodRecommendation(point.id));
   return content;
 }
 
-function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { showList = true, revealPlace } = {}) {
+function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { showList = true, showReset = true, revealPlace } = {}) {
   destroyMap(key);
   const context = { map: null, pending: null, cancelled: false };
   mapContexts.set(key, context);
@@ -379,7 +381,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
   const mappedPoints = points.filter((point) => Array.isArray(point.coordinates));
   section.append(heading, element("p", "places-intro", showList
     ? "Eine Nummer antippen oder einen Ort für Details aufklappen."
-    : "Alle Stopps gemeinsam. Die Nummern entsprechen dem Tagesablauf; Stopps im selben Gebäude teilen sich einen Marker. Das ist keine berechnete Geh- oder Bahnroute."));
+    : "Alle Routenstopps gemeinsam. Kennungen wie A1 oder B2 gehören zur jeweiligen Lane; Stopps im selben Gebäude teilen sich einen Marker. Das ist keine berechnete Geh- oder Bahnroute."));
   const mapShell = element("div", "map-shell");
   const showAll = button("Alle Stopps zeigen", "text-button map-show-all", () => context.map.showAll());
   showAll.hidden = true;
@@ -397,7 +399,9 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
     enableMap();
   });
   placeholder.append(graphic("icon-pin"), element("p", "", "Alle bestätigten Punkte gemeinsam sehen."), load, permission);
-  mapShell.append(placeholder, showAll, canvas, message);
+  mapShell.append(placeholder);
+  if (showReset) mapShell.append(showAll);
+  mapShell.append(canvas, message);
   if (mappedPoints.length) section.append(mapShell);
   const popupFor = (point) => {
     const popup = element("div", "place-popup");
@@ -438,7 +442,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
         context.map = map;
         if (map) {
           placeholder.hidden = true;
-          showAll.hidden = false;
+          if (showReset) showAll.hidden = false;
         }
         return map;
       }).catch((error) => {
@@ -501,6 +505,186 @@ function openBase(id) {
   $("#tab-bases").focus({ preventScroll: true });
 }
 
+function laneMapPoints(schedule) {
+  return schedule.mapBlocks.map((block) => ({
+    id: block.key,
+    blockKey: block.key,
+    placeId: block.placeId,
+    number: block.number,
+    ...places[block.placeId],
+  }));
+}
+
+function appendLaneOptionDetails(container, option) {
+  if (!option) return;
+  container.append(element("p", "lane-when", option.when));
+  if (option.booking) container.append(element("h4", "", "Eintritt & Reservierung"), element("p", "", option.booking));
+  if (option.transit) container.append(element("h4", "", "Anfahrt für diese Route"), element("p", "", option.transit));
+  if (option.resources?.length) container.append(resourceLinks(option.resources));
+  if (option.dining) container.append(button("Sumo-Essen in Kulinarik öffnen", "button button-secondary lane-dining-link", () => openDining(option.dining)));
+}
+
+function journeyIcon(mode) {
+  return {
+    walk: "icon-walk",
+    taxi: "icon-car",
+    car: "icon-car",
+    bus: "icon-bus",
+    flight: "icon-plane",
+    cable: "icon-mountain",
+    check: "icon-info",
+  }[mode] ?? "icon-train";
+}
+
+function laneSourceLabel(block) {
+  if (block.kind === "travel") return "Anreise";
+  if (block.kind === "buffer") return "Geplante Zeit";
+  if (block.source === "alternative") return "Eigener Routenblock";
+  if (block.source === "shared") return "Gemeinsamer Abschnitt";
+  return "Empfohlen";
+}
+
+function appendFlexNotes(container, notes = []) {
+  if (!notes.length) return;
+  const section = element("section", "lane-flex-notes");
+  section.append(element("h4", "", notes.length === 1 ? "Flex-Hinweis" : "Flex-Hinweise"));
+  for (const note of notes) {
+    const item = element("div", "lane-flex-note");
+    item.append(element("strong", "", note.title), element("p", "", note.text), element("p", "lane-when", note.when));
+    appendLaneOptionDetails(item, note);
+    section.append(item);
+  }
+  container.append(section);
+}
+
+function renderLaneDetail(container, block, showOnMap) {
+  container.replaceChildren();
+  if (!block) {
+    container.append(
+      element("h4", "", "Route genauer ansehen"),
+      element("p", "lane-detail-empty", "Wähle einen Block in einer Lane. Hier erscheinen Beschreibung, Tickets, Kartenlink und Kulinarik, ohne die Zeitachse aufzublähen."),
+    );
+    return;
+  }
+  const heading = element("div", "lane-detail-heading");
+  const copy = element("div");
+  copy.append(
+    element("span", "lane-detail-route", `${block.laneLabel} · ${block.laneTitle}`),
+    element("h4", "", block.title),
+    element("p", "lane-detail-time", `ca. ${formatLaneTime(block.start)}–${formatLaneTime(block.end)} · ${block.duration} Minuten`),
+  );
+  heading.append(copy, element("span", `lane-source lane-source-${block.source}`, laneSourceLabel(block)));
+  container.append(heading);
+  const option = block.source === "alternative" ? block.option : null;
+  if (block.kind === "travel") {
+    if (block.journey.summary !== block.text) container.append(element("p", "lane-detail-text", block.journey.summary));
+    if (block.text) container.append(element("p", "lane-detail-text", block.text));
+    const steps = element("ol", "lane-journey-steps");
+    for (const step of block.journey.steps) steps.append(element("li", "", step));
+    container.append(steps);
+    if (block.journey.ticket) container.append(element("h4", "", "Ticket / Bezahlung"), element("p", "lane-detail-text", block.journey.ticket));
+    if (block.journey.verify) {
+      const verify = element("div", `lane-journey-check${block.journey.missing ? " lane-journey-missing" : ""}`);
+      verify.append(graphic(block.journey.missing ? "icon-info" : "icon-check"), element("p", "", block.journey.verify));
+      container.append(verify);
+    }
+  } else if (block.kind === "buffer") {
+    container.append(element("p", "lane-detail-text", block.text));
+  } else if (block.placeId) {
+    const point = { id: block.placeId, ...places[block.placeId] };
+    if (block.arrivalJourney) {
+      const arrival = element("div", "lane-inline-arrival");
+      const arrivalCopy = element("div");
+      arrivalCopy.append(element("strong", "", "Kurzer Weg vom vorherigen Punkt"), element("p", "", block.arrivalJourney.summary));
+      arrival.append(graphic(journeyIcon(block.arrivalJourney.mode)), arrivalCopy);
+      container.append(arrival);
+    }
+    container.append(
+      element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`),
+      placeContent(point, showOnMap, "Auf Tageskarte zeigen", block.text || option?.text, block.mapKey),
+    );
+  } else {
+    container.append(element("p", "lane-detail-text", block.text));
+  }
+  appendLaneOptionDetails(container, option);
+  appendFlexNotes(container, block.flexNotes);
+}
+
+function renderLaneBoard(schedule, selectBlock) {
+  const scroll = element("div", "lane-board-scroll");
+  scroll.setAttribute("role", "region");
+  scroll.setAttribute("aria-label", "Parallele Tagesrouten mit ungefährer Zeitachse");
+  scroll.tabIndex = 0;
+  const board = element("div", "lane-board");
+  const scale = 1.8;
+  const trackHeight = Math.max(280, (schedule.end - schedule.start) * scale);
+  board.style.gridTemplateColumns = `56px repeat(${schedule.lanes.length}, minmax(220px, 1fr))`;
+  board.style.minWidth = `${56 + schedule.lanes.length * 220}px`;
+  board.append(element("div", "lane-corner", "Zeit"));
+  for (const lane of schedule.lanes) {
+    const header = element("div", `lane-header${lane.isPrimary ? " lane-header-primary" : ""}`);
+    header.append(
+      element("strong", "", lane.label),
+      element("span", "lane-header-title", lane.title),
+      element("small", "lane-header-difference", lane.difference),
+    );
+    board.append(header);
+  }
+  const axis = element("div", "lane-time-axis");
+  axis.style.height = `${trackHeight}px`;
+  for (let time = schedule.start; time <= schedule.end; time += 120) {
+    const label = element("span", "lane-time-label", formatLaneTime(time));
+    label.style.top = `${(time - schedule.start) * scale}px`;
+    axis.append(label);
+  }
+  board.append(axis);
+  for (const lane of schedule.lanes) {
+    const track = element("div", "lane-track");
+    track.style.height = `${trackHeight}px`;
+    track.setAttribute("aria-label", `${lane.label}: ${lane.title}`);
+    for (const block of lane.blocks) {
+      if (block.arrivalJourney) {
+        const connector = element("div", "lane-inline-connector");
+        const connectorHeight = block.arrivalJourney.duration * scale;
+        connector.style.top = `${(block.start - block.arrivalJourney.duration - schedule.start) * scale + 3}px`;
+        connector.style.height = `${Math.max(14, connectorHeight - 6)}px`;
+        connector.title = block.arrivalJourney.summary;
+        connector.setAttribute("aria-hidden", "true");
+        connector.append(graphic(journeyIcon(block.arrivalJourney.mode)), element("span", "", "kurzer Weg"));
+        track.append(connector);
+      }
+      const control = button("", `lane-block lane-block-${block.source} lane-block-${block.kind}`, () => selectBlock(block.key, true));
+      const slotHeight = block.duration * scale;
+      const inset = Math.min(4, slotHeight / 5);
+      control.style.top = `${(block.start - schedule.start) * scale + inset}px`;
+      control.style.height = `${Math.max(18, slotHeight - inset * 2)}px`;
+      control.dataset.laneBlock = block.key;
+      if (block.placeId) control.dataset.placeId = block.placeId;
+      control.setAttribute("aria-pressed", String(selectedLaneBlock === block.key));
+      control.setAttribute("aria-label", `${lane.label}, ca. ${formatLaneTime(block.start)} bis ${formatLaneTime(block.end)}: ${block.title}`);
+      const text = element("span", "lane-block-copy");
+      text.append(element("span", "lane-block-time", `${formatLaneTime(block.start)}–${formatLaneTime(block.end)}`), element("span", "lane-block-title", block.title));
+      if (block.kind === "travel") {
+        const marker = element("span", "lane-block-mode");
+        marker.append(graphic(journeyIcon(block.journey.mode)));
+        control.append(marker, text);
+      } else if (block.kind === "buffer") {
+        const marker = element("span", "lane-block-mode");
+        marker.append(graphic("icon-pause"));
+        control.append(marker, text);
+      } else {
+        const marker = element("span", "lane-block-number", block.number);
+        if (block.placeId) control.append(placeThumbnail({ id: block.placeId, ...places[block.placeId] }), marker, text);
+        else control.append(marker, text);
+      }
+      track.append(control);
+    }
+    board.append(track);
+  }
+  scroll.append(board);
+  return scroll;
+}
+
 function renderDayDetail(day, days) {
   destroyMap("day");
   const detail = $("#day-detail");
@@ -515,6 +699,11 @@ function renderDayDetail(day, days) {
     );
     return;
   }
+  const guide = dayGuides[day.date];
+  const laneSchedule = buildDayLanes(day.date);
+  const points = laneMapPoints(laneSchedule);
+  const blocksByKey = new Map(laneSchedule.lanes.flatMap((lane) => lane.blocks.map((block) => [block.key, block])));
+  let openDayMap = () => {};
   const topline = element("div", "day-topline");
   const location = element("div", "day-location");
   const city = element("span", "destination-label");
@@ -540,21 +729,27 @@ function renderDayDetail(day, days) {
     control.append(graphic("icon-chevron", previous ? "icon previous-icon" : "icon"));
     navigation.append(control);
   }
-  headerActions.append(navigation, favorite);
+  headerActions.append(navigation);
+  if (points.length) {
+    const mapButton = button("", "icon-button day-map-button", () => openDayMap());
+    mapButton.setAttribute("aria-label", "Tageskarte öffnen");
+    mapButton.title = "Tageskarte öffnen";
+    mapButton.append(graphic("icon-pin"));
+    headerActions.append(mapButton);
+  }
+  headerActions.append(favorite);
   topline.append(location, headerActions);
   const title = element("h3", "", day.title);
   title.id = "day-title";
   title.tabIndex = -1;
   detail.append(topline, element("p", "day-date", formatDate(day.date)), title);
-  const guide = dayGuides[day.date];
   const daySections = new Map();
   const dayTabs = element("div", "day-tabs");
   dayTabs.setAttribute("role", "tablist");
   dayTabs.setAttribute("aria-label", "Bereiche des ausgewählten Reisetags");
-  const points = placesForDay(day.date);
   for (const [id, label] of [
-    ["plan", "Tagesablauf"],
-    ["transit", "Anfahrt & Tickets"], ["alternatives", "Alternativen"],
+    ["plan", "Tagesrouten"],
+    ["transit", "Anfahrt & Tickets"],
   ]) {
     const panel = element("div", "day-subpanel");
     panel.id = `day-panel-${id}`;
@@ -585,35 +780,10 @@ function renderDayDetail(day, days) {
       tab.setAttribute("aria-selected", String(key === id));
       tab.tabIndex = key === id ? 0 : -1;
     }
-    const context = mapContexts.get("day");
-    if (id === "plan" && dayMapOpen && context) {
-      requestAnimationFrame(() => {
-        if (!mapIsVisible(context)) return;
-        context.map?.resize();
-        if (mapsPermitted) context.start?.();
-      });
-    }
   }
   detail.append(dayTabs);
   const planPanel = daySections.get("plan").panel;
   const transitPanel = daySections.get("transit").panel;
-  const alternativesPanel = daySections.get("alternatives").panel;
-  alternativesPanel.append(element("p", "alternatives-intro", "Wenn ihr schneller fertig seid oder Lust auf etwas anderes habt: Diese Ideen ersetzen einen Programmpunkt oder füllen freie Zeit – kein zusätzliches Pflichtprogramm."));
-  for (const option of alternatives[day.date] ?? []) {
-    const block = element("details", "alternative-option");
-    const summary = element("summary");
-    if (option.places.length) summary.append(placeThumbnail({ id: option.places[0], ...places[option.places[0]] }));
-    summary.append(element("span", "alternative-title", option.title), graphic("icon-chevron"));
-    block.append(summary, element("p", "alternative-when", option.when), element("p", "", option.text));
-    if (option.booking) block.append(element("h4", "", "Eintritt & Reservierung"), element("p", "", option.booking));
-    if (option.transit) block.append(element("h4", "", "Anfahrt für diese Alternative"), element("p", "", option.transit));
-    if (option.resources?.length) block.append(resourceLinks(option.resources));
-    if (option.dining) block.append(button("Sumo-Essen in Kulinarik öffnen", "button button-secondary alternative-dining-link", () => openDining(option.dining)));
-    for (const id of option.places) {
-      block.append(element("h4", "", places[id].name), placeContent({ id, ...places[id] }));
-    }
-    alternativesPanel.append(block);
-  }
   if (guide) {
     planPanel.append(element("p", "day-summary", guide.summary));
     for (const event of festivalsForDay(day.date)) {
@@ -624,68 +794,63 @@ function renderDayDetail(day, days) {
       );
       planPanel.append(note);
     }
-    let overview;
-    const revealPlace = (id) => {
+    let mapDialog;
+    let laneBoard;
+    const laneDetail = element("section", "lane-detail");
+    laneDetail.id = "lane-detail";
+    laneDetail.setAttribute("aria-label", "Details zum ausgewählten Routenblock");
+    if (!blocksByKey.has(selectedLaneBlock)) selectedLaneBlock = null;
+    const showOnMap = (id) => {
+      openDayMap(id);
+    };
+    const selectLaneBlock = (key, scroll = false) => {
+      const block = blocksByKey.get(key);
+      if (!block) return;
+      selectedLaneBlock = key;
+      for (const control of laneBoard?.querySelectorAll("[data-lane-block]") ?? []) {
+        control.setAttribute("aria-pressed", String(control.dataset.laneBlock === key));
+      }
+      renderLaneDetail(laneDetail, block, showOnMap);
+      if (scroll) laneDetail.scrollIntoView({ block: "nearest" });
+    };
+    const revealPlace = (key) => {
+      mapDialog?.close();
       selectSection("plan");
-      const target = $(`#day-place-${id}`);
-      target.open = true;
-      target.scrollIntoView({ block: "start" });
-      $("summary", target).focus({ preventScroll: true });
+      selectLaneBlock(key, true);
+      laneBoard?.querySelector(`[data-lane-block="${CSS.escape(key)}"]`)?.focus({ preventScroll: true });
     };
     if (points.length) {
-      overview = element("details", "day-map-overview");
-      overview.open = dayMapOpen;
-      const summary = element("summary");
-      summary.append(graphic("icon-pin"), document.createTextNode(`Tageskarte · alle ${points.length} Orte`), graphic("icon-chevron", "icon day-map-chevron"));
-      overview.append(summary, placeExplorer(points, "day", "Der ganze Tag auf einer Karte", { showList: false, revealPlace }));
-      overview.addEventListener("toggle", () => {
-        if (!overview.isConnected) return;
-        dayMapOpen = overview.open;
-        if (overview.open) {
+      mapDialog = element("dialog", "day-map-dialog");
+      mapDialog.setAttribute("aria-labelledby", "day-map-dialog-title");
+      const dialogHeader = element("div", "day-map-dialog-header");
+      const dialogTitle = element("h4", "", `Tageskarte · ${points.length} Routenstopps`);
+      dialogTitle.id = "day-map-dialog-title";
+      const close = button("", "icon-button", () => mapDialog.close());
+      close.setAttribute("aria-label", "Tageskarte schließen");
+      close.title = "Tageskarte schließen";
+      close.append(graphic("icon-close", "icon dialog-close-icon"));
+      dialogHeader.append(dialogTitle, close);
+      mapDialog.append(dialogHeader, placeExplorer(points, "day", "Alle Routen auf einer Karte", { showList: false, showReset: false, revealPlace }));
+      mapDialog.addEventListener("click", (event) => {
+        if (event.target === mapDialog) mapDialog.close();
+      });
+      detail.append(mapDialog);
+      openDayMap = (focusId) => {
+        if (!mapDialog.open) mapDialog.showModal();
+        requestAnimationFrame(() => {
           const context = mapContexts.get("day");
           context.map?.resize();
-          if (mapsPermitted) context.start();
-        }
-      });
-      planPanel.append(overview);
+          if (focusId) context.focus(focusId);
+          else if (mapsPermitted) context.start();
+        });
+      };
     }
-    const showOnMap = (id) => {
-      overview.open = true;
-      dayMapOpen = true;
-      mapContexts.get("day").focus(id);
-    };
-    const agenda = element("ol", "day-agenda");
-    for (const { step, placeId, showContext, number } of entriesForDay(day.date)) {
-      const item = element("li");
-      const disclosure = element("details", "agenda-disclosure");
-      disclosure.name = "day-agenda-points";
-      const point = placeId ? points.find((point) => point.id === placeId) : null;
-      if (point) {
-        disclosure.id = `day-place-${point.id}`;
-        disclosure.dataset.place = point.id;
-      }
-      const summary = element("summary");
-      const heading = element("span", "agenda-heading");
-      heading.append(element("span", "agenda-time", step.time), element("h4", "", point ? point.name : step.title));
-      const numberBadge = element("span", "agenda-number", number);
-      if (point) {
-        const thumbnail = placeThumbnail(point);
-        thumbnail.append(numberBadge);
-        summary.append(thumbnail);
-      } else summary.append(numberBadge);
-      summary.append(heading, graphic("icon-chevron", "icon agenda-chevron"));
-      const body = element("div", "agenda-body");
-      if (point) {
-        body.append(
-          element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`),
-          placeContent(point, showOnMap, "Auf Tageskarte zeigen", showContext ? step.text : undefined),
-        );
-      } else if (showContext) body.append(element("p", "agenda-context", step.text));
-      disclosure.append(summary, body);
-      item.append(disclosure);
-      agenda.append(item);
-    }
-    planPanel.append(element("p", "agenda-help", "Programmpunkte aufklappen, um alle Details zu lesen."), agenda);
+    planPanel.append(
+      element("p", "lane-intro", "Jede Spalte ist eine vollständige Route inklusive Anreise, Umstiegen, Pausen und Rückweg. Die vertikale Position zeigt das ungefähre Zeitfenster; die Blockhöhe steht für die grobe Dauer. Konkrete Abfahrtszeit, Gleis und reservierte Einlasszeit am Reisetag prüfen."),
+    );
+    laneBoard = renderLaneBoard(laneSchedule, selectLaneBlock);
+    planPanel.append(laneBoard, laneDetail);
+    renderLaneDetail(laneDetail, selectedLaneBlock ? blocksByKey.get(selectedLaneBlock) : null, showOnMap);
     if (guide.correction) {
       const correction = element("div", "planning-correction");
       correction.append(element("h4", "", "Gut zu wissen"), element("p", "", guide.correction));
@@ -742,6 +907,7 @@ function renderItinerary() {
   if (!days.some((day) => day.date === selectedDate) && days.length) {
     selectedDate = days[0].date;
     selectedDaySection = "plan";
+    selectedLaneBlock = null;
   }
   renderDayList(days);
   renderDayDetail(days.find((day) => day.date === selectedDate), days);
