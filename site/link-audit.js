@@ -1696,6 +1696,731 @@ export const linkAudit = {
     "pageTitle": "Vietjet Air to Launch Kansai–Da Nang Route —Third Route Connecting Kansai and Vietnam— | News | Kansai Airports",
     "verification": "browser-dom",
     "message": "Nach gesperrtem Fetch im Browser-DOM geprüft: Flughafenmitteilung vom 25.08.2026 kündigt die Strecke ab 20.12.2026 mit vier Hin- und Rückflügen pro Woche an. Keine Bestätigung der Buchbarkeit am 20.07.2027."
+  },
+  "https://shop.pokemon.co.jp/en/shop/pokemoncenter-shibuya/": {
+    "label": "Pokémon Center SHIBUYA: offizielle Shopseite",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:02+00:00",
+    "finalUrl": "https://shop.pokemon.co.jp/en/shop/pokemoncenter-shibuya/",
+    "pageTitle": "Pokémon Center SHIBUYA | Pokémon Center Official Website",
+    "message": "Im geladenen Browser-DOM geprüft: offizielles Pokémon Center SHIBUYA, Shibuya PARCO 6F, verlinktes Google-Maps-Geschäftsziel. Aktuelle Shopinformationen sind keine Bestands- oder Öffnungsgarantie für Juli 2027.",
+    "verification": "browser-dom"
+  },
+  "https://www.ghibli-museum.jp/en/welcome/": {
+    "label": "Kulinarik: Straw Hat Café · Pause im Ghibli Museum",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:02+00:00",
+    "finalUrl": "https://www.ghibli-museum.jp/en/welcome/",
+    "pageTitle": "Welcome! - Ghibli Museum, Mitaka",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Keine zugesagte Verfügbarkeit für Juli 2027."
+  },
+  "https://www.ghibli-museum.jp/en/tickets/": {
+    "label": "Ghibli Museum: offizielle Ticketreservierung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:02+00:00",
+    "finalUrl": "https://www.ghibli-museum.jp/en/tickets/",
+    "pageTitle": "Tickets - Ghibli Museum, Mitaka",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Keine zugesagte Verfügbarkeit für Juli 2027."
+  },
+  "https://www.ghibli-museum.jp/en/hours-and-directions/": {
+    "label": "Ghibli Museum: offizielle Anreise",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:02+00:00",
+    "finalUrl": "https://www.ghibli-museum.jp/en/hours-and-directions/",
+    "pageTitle": "Hours and Directions - Ghibli Museum, Mitaka",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; offizielle Betreiberseite und Inhalt abgeglichen. Keine zugesagte Verfügbarkeit für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=35.6619997%2C139.6984094": {
+    "label": "Google Maps: Pokémon Center SHIBUYA",
+    "kind": "map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:03+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=35.6619997,139.6984094&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; die Koordinaten entsprechen dem Ziel im offiziellen Betreiber-Kartenlink und bleiben im Google-Maps-Suchparameter erhalten."
+  },
+  "https://www.google.com/maps/search/?api=1&query=35.696238%2C139.5704317": {
+    "label": "Google Maps: Ghibli Museum · Mitaka",
+    "kind": "map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:03+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=35.696238,139.5704317&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; die Koordinaten entsprechen dem Ziel im offiziellen Betreiber-Kartenlink und bleiben im Google-Maps-Suchparameter erhalten."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Straw+Hat+Cafe+Ghibli+Museum+1-1-83+Shimorenjaku+Mitaka+Tokyo": {
+    "label": "Google Maps: Straw Hat Café · Pause im Ghibli Museum",
+    "kind": "food-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T16:45:03+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Straw+Hat+Cafe+Ghibli+Museum+1-1-83+Shimorenjaku+Mitaka+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; Caféname und Museumsadresse sind abgeglichen, der konkrete Suchparameter bleibt erhalten. Keine Reservierungszusage."
+  },
+  "https://www.miraikan.jst.go.jp/en/visit/": {
+    "label": "Miraikan: offizielle Besuchs- und Ruhetage",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:47+00:00",
+    "finalUrl": "https://www.miraikan.jst.go.jp/en/visit/",
+    "pageTitle": "Visit | Miraikan – The National Museum of Emerging Science and Innovation",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.zauo.com/shops/shinjuku/": {
+    "label": "Zauo Shinjuku · Das Essen selbst angeln",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:47+00:00",
+    "finalUrl": "https://www.zauo.com/shops/shinjuku/",
+    "pageTitle": "釣船茶屋ざうお 新宿店｜店舗情報｜釣船茶屋ざうお【公式】",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Zauo+Shinjuku+Shinjuku+Washington+Hotel+1F+3-2-9+Nishi-Shinjuku+Tokyo": {
+    "label": "Google Maps: Zauo Shinjuku · Das Essen selbst angeln",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:47+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Zauo+Shinjuku+Shinjuku+Washington+Hotel+1F+3-2-9+Nishi-Shinjuku+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.viewhotels.co.jp/asakusa/restaurant/musashi/": {
+    "label": "Musashi · Buffet mit Skytree-Blick",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:47+00:00",
+    "finalUrl": "https://www.viewhotels.co.jp/asakusa/restaurant/musashi/",
+    "pageTitle": "スカイグリルブッフェ 武藏 | レストラン＆バー | 【公式】浅草ビューホテル",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Sky+Grill+Buffet+Musashi+Asakusa+View+Hotel+26F+Tokyo": {
+    "label": "Google Maps: Musashi · Buffet mit Skytree-Blick",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:48+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Sky+Grill+Buffet+Musashi+Asakusa+View+Hotel+26F+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.viewhotels.co.jp/asakusa/restaurant/dinner/": {
+    "label": "Dinner, Sitzungen & Allergiehinweis",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:49+00:00",
+    "finalUrl": "https://www.viewhotels.co.jp/asakusa/restaurant/dinner/",
+    "pageTitle": "ディナーのご案内 | 【公式】浅草ビューホテル",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.viewhotels.co.jp/asakusa/faq/cat-restaurant/13.html": {
+    "label": "Kinderzugang laut Hotel",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:49+00:00",
+    "finalUrl": "https://www.viewhotels.co.jp/asakusa/faq/cat-restaurant/13.html",
+    "pageTitle": "レストランについてのご質問｜【公式】浅草ビューホテルのよくあるご質問",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.viewhotels.co.jp/asakusa/faq/cat-restaurant/16.html": {
+    "label": "Kinderangebot laut Hotel",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.viewhotels.co.jp/asakusa/faq/cat-restaurant/16.html",
+    "pageTitle": "レストランについてのご質問｜【公式】浅草ビューホテルのよくあるご質問",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.pokemon-cafe.jp/en/cafe/": {
+    "label": "Pokémon Café TOKYO",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.pokemon-cafe.jp/en/cafe/",
+    "pageTitle": "Pokémon Cafe Official Website",
+    "message": "Im geladenen Browser-DOM geprüft: getrennte Filialen in Nihombashi und Shinsaibashi, Abendöffnung und ausdrückliche Vorreservierung. Kein Café im Pokémon Center SHIBUYA behauptet.",
+    "verification": "browser-dom"
+  },
+  "https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Tokyo+Nihombashi+Takashimaya+East+Building+5F+2-11-2+Nihombashi+Tokyo": {
+    "label": "Google Maps: Pokémon Café TOKYO",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Tokyo+Nihombashi+Takashimaya+East+Building+5F+2-11-2+Nihombashi+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.pokemon-cafe.jp/en/cafe/reservation.html": {
+    "label": "Pokémon Café TOKYO: Reservierung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.pokemon-cafe.jp/en/cafe/reservation.html",
+    "pageTitle": "RESERVATION｜Pokémon Cafe Official Website",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.pokemon-cafe.jp/ja/cafe/faq/": {
+    "label": "Reservierungs- und Kinderregeln",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.pokemon-cafe.jp/ja/cafe/faq/",
+    "pageTitle": "FAQ｜Pokémon Cafe - ポケモンカフェ 公式サイト",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.pokemon-cafe.jp/ja/cafe/menu/": {
+    "label": "Aktuelle Karte & Kinderteller",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://www.pokemon-cafe.jp/ja/cafe/menu/",
+    "pageTitle": "メニュー｜Pokémon Cafe - ポケモンカフェ 公式サイト",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://iconia.co.jp/restaurants-hotel-art-hotel-osaka-bay-tower-osaka": {
+    "label": "SKY BUFFET 51 · Osaka von oben",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:50+00:00",
+    "finalUrl": "https://iconia.co.jp/restaurants-hotel-art-hotel-osaka-bay-tower-osaka",
+    "pageTitle": "レストラン｜アートホテル大阪ベイタワー【グループ公式】｜アイコニア・ホスピタリティ【公式】",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=SKY+BUFFET+51+Art+Hotel+Osaka+Bay+Tower+Bentencho+Osaka": {
+    "label": "Google Maps: SKY BUFFET 51 · Osaka von oben",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:51+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=SKY+BUFFET+51+Art+Hotel+Osaka+Bay+Tower+Bentencho+Osaka&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://iconia.co.jp/faq-hotel-art-hotel-osaka-bay-tower-osaka": {
+    "label": "Kinder beim Dinner & Besuch ohne Reservierung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:51+00:00",
+    "finalUrl": "https://iconia.co.jp/faq-hotel-art-hotel-osaka-bay-tower-osaka",
+    "pageTitle": "よくあるご質問（FAQ） | 【公式】アートホテル大阪ベイタワー",
+    "message": "Im Browser-DOM die Antworten geöffnet: SKY BUFFET 51 erlaubt Besuche ohne Reservierung vorbehaltlich Vollbelegung; Reservierung empfohlen. Die Kinder-FAQ nennt SKY BUFFET 51 ausdrücklich auch beim Dinner und verweist für Kindertarife auf Rückfrage.",
+    "verification": "browser-dom"
+  },
+  "https://www.kurasushi.co.jp/namba_sennichimae/": {
+    "label": "Kura Sushi Namba Sennichimae",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:51+00:00",
+    "finalUrl": "https://www.kurasushi.co.jp/namba_sennichimae/",
+    "pageTitle": "くら寿司メモリアル店 なんば千日前｜くら寿司｜回転寿司｜",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Kura+Sushi+Namba+Sennichimae+Nobuta+Building+3F+2-8-4+Sennichimae+Osaka": {
+    "label": "Google Maps: Kura Sushi Namba Sennichimae",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:51+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Kura+Sushi+Namba+Sennichimae+Nobuta+Building+3F+2-8-4+Sennichimae+Osaka&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://shop.kurasushi.co.jp/detail/660": {
+    "label": "Offizielle Filialdaten",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:52+00:00",
+    "finalUrl": "https://shop.kurasushi.co.jp/detail/660",
+    "pageTitle": "くら寿司 なんば千日前店｜くら寿司｜回転寿司 ホーム おすすめ情報 店舗検索 メニュー お持ち帰り寿司",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Osaka+Daimaru+Shinsaibashi+Main+Building+9F+1-7-1+Shinsaibashisuji+Osaka": {
+    "label": "Google Maps: Pokémon Café OSAKA",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:52+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Osaka+Daimaru+Shinsaibashi+Main+Building+9F+1-7-1+Shinsaibashisuji+Osaka&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.kyoto-station-building.co.jp/ramen_koji/": {
+    "label": "Kyoto Ramen Koji · Eine Etage voller Ramen",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:53+00:00",
+    "finalUrl": "https://www.kyoto-station-building.co.jp/ramen_koji/",
+    "pageTitle": "Directly connected to Kyoto Station | Kyoto Ramen Alley",
+    "message": "Im Browser-DOM geprüft: 10. Etage, aktuelle Abendöffnung bis 22 Uhr; FAQ lehnt Sitzplatzreservierungen ausdrücklich ab und bestätigt Kindergeschirr und Kinderstühle in allen Lokalen. Zeiten für Juli 2027 bleiben zu prüfen.",
+    "verification": "browser-dom"
+  },
+  "https://www.google.com/maps/search/?api=1&query=Kyoto+Ramen+Koji+Kyoto+Station+Building+10F+Kyoto": {
+    "label": "Google Maps: Kyoto Ramen Koji · Eine Etage voller Ramen",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:53+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Kyoto+Ramen+Koji+Kyoto+Station+Building+10F+Kyoto&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.asagao-maturi.com/": {
+    "label": "Iriya Asagao-matsuri · Prunkwinden-Markt",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:53+00:00",
+    "finalUrl": "https://www.asagao-maturi.com/",
+    "pageTitle": "入谷朝顔まつり（朝顔市）",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.google.com/maps/search/?api=1&query=Iriya+Kishimojin+Shingenji+Temple+Shitaya+Taito+Tokyo": {
+    "label": "Google Maps: Iriya Asagao-matsuri · Prunkwinden-Markt",
+    "kind": "event-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:53+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=Iriya+Kishimojin+Shingenji+Temple+Shitaya+Taito+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 19.10.2026: HTTP 200; konkreter Name und Ortszusatz mit Betreiberangaben abgeglichen, der Google-Maps-Suchparameter bleibt erhalten."
+  },
+  "https://www.city.taito.lg.jp/event/kanko/iriyaasagaomatsuri.html": {
+    "label": "Taito City: zuletzt angekündigte Ausgabe",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:53+00:00",
+    "finalUrl": "https://www.city.taito.lg.jp/event/kanko/iriyaasagaomatsuri.html",
+    "pageTitle": "入谷朝顔まつり・ふるさと交流物産展 台東区ホームページ",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.tokyodisneyresort.jp/en/tds/show/detail/967/": {
+    "label": "DisneySea · Believe! Sea of Dreams",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": null,
+    "checkedAt": "2026-10-19T18:05:54+00:00",
+    "finalUrl": "https://www.tokyodisneyresort.jp/en/tds/show/detail/967/",
+    "pageTitle": "[Official]Believe! Sea of Dreams｜Tokyo DisneySea | Tokyo Disney Resort",
+    "message": "Nach Fetch-Zeitüberschreitung im geladenen Browser-DOM geprüft: Hafen-Show mit Booten, Projektionen und Pyrotechnik, etwa 30 Minuten; freie und gesonderte kostenpflichtige Zuschauerbereiche. Keine Bestätigung einer Aufführung am 9. Juli 2027.",
+    "verification": "browser-dom"
+  },
+  "https://www.senso-ji.jp/annual_event/13.html": {
+    "label": "Senso-ji Hozuki-ichi · Lampionblumen-Markt",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:54+00:00",
+    "finalUrl": "https://www.senso-ji.jp/annual_event/13.html",
+    "pageTitle": "四万六千日・ほおずき市 - 浅草寺",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.yasaka-jinja.or.jp/event/gion02/": {
+    "label": "Gion Matsuri · Festwagen und Laternen",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:55+00:00",
+    "finalUrl": "https://www.yasaka-jinja.or.jp/event/gion02/",
+    "pageTitle": "祇園祭の行事｜主な神事・行事｜八坂神社",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://ja.kyoto.travel/event/major/gion/": {
+    "label": "Kyoto City: regulärer Festablauf",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:55+00:00",
+    "finalUrl": "https://ja.kyoto.travel/event/major/gion/",
+    "pageTitle": "祇園祭「どんな祭？」｜【京都市公式】京都観光Navi",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://www.sumidagawa-hanabi.com/": {
+    "label": "Sumida-Feuerwerk · Tokyo",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:56+00:00",
+    "finalUrl": "https://www.sumidagawa-hanabi.com/",
+    "pageTitle": "隅田川花火大会 公式Webサイト",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://osakatemmangu.or.jp/saijireki/tjm": {
+    "label": "Tenjin Matsuri · Osaka",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:57+00:00",
+    "finalUrl": "https://osakatemmangu.or.jp/saijireki/tjm",
+    "pageTitle": "天神祭（てんじんまつり） | 大阪天満宮",
+    "message": "Einzeln geprüft am 19.10.2026: offizielle Betreiberseite und Zielzuordnung abgeglichen; keine zugesagte Verfügbarkeit oder bestätigtes Programm für Juli 2027."
+  },
+  "https://commons.wikimedia.org/wiki/File:Sensoji_2023.jpg": {
+    "label": "File:Sensoji 2023.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:57+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Sensoji_2023.jpg",
+    "pageTitle": "File:Sensoji 2023.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/publicdomain/zero/1.0/deed.en": {
+    "label": "CC0",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:57+00:00",
+    "finalUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "pageTitle": "Deed - CC0 1.0 Universal - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:Asakusa_sensoji07s3200.jpg": {
+    "label": "File:Asakusa sensoji07s3200.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:58+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Asakusa_sensoji07s3200.jpg",
+    "pageTitle": "File:Asakusa sensoji07s3200.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/licenses/by/2.5": {
+    "label": "CC BY 2.5",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:58+00:00",
+    "finalUrl": "https://creativecommons.org/licenses/by/2.5/",
+    "pageTitle": "Deed - Attribution 2.5 Generic - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:Tokyo_Disney_Sea_Mountain.jpg": {
+    "label": "File:Tokyo Disney Sea Mountain.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Tokyo_Disney_Sea_Mountain.jpg",
+    "pageTitle": "File:Tokyo Disney Sea Mountain.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/licenses/by-sa/3.0/": {
+    "label": "CC BY-SA 3.0",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "pageTitle": "Deed - Attribution-ShareAlike 3.0 Unported - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:SHIBUYA_SCRAMBLE_SQUARE_East_Tower.jpg": {
+    "label": "File:SHIBUYA SCRAMBLE SQUARE East Tower.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:SHIBUYA_SCRAMBLE_SQUARE_East_Tower.jpg",
+    "pageTitle": "File:SHIBUYA SCRAMBLE SQUARE East Tower.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/licenses/by-sa/4.0": {
+    "label": "CC BY-SA 4.0",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "pageTitle": "Deed - Attribution-ShareAlike 4.0 International - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:Shibuya_Parco_191229b.jpg": {
+    "label": "File:Shibuya Parco 191229b.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Shibuya_Parco_191229b.jpg",
+    "pageTitle": "File:Shibuya Parco 191229b.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Takeshita_Street.jpg": {
+    "label": "File:Takeshita Street.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:05:59+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Takeshita_Street.jpg",
+    "pageTitle": "File:Takeshita Street.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Odaiba_Seashore_Park.jpg": {
+    "label": "File:Odaiba Seashore Park.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:00+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Odaiba_Seashore_Park.jpg",
+    "pageTitle": "File:Odaiba Seashore Park.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:170312_Ginza_Tokyo_Japan01s3.jpg": {
+    "label": "File:170312 Ginza Tokyo Japan01s3.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:00+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:170312_Ginza_Tokyo_Japan01s3.jpg",
+    "pageTitle": "File:170312 Ginza Tokyo Japan01s3.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Akiba_denkigai.jpg": {
+    "label": "File:Akiba denkigai.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:00+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Akiba_denkigai.jpg",
+    "pageTitle": "File:Akiba denkigai.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Pontocho_by_Wolfiewolf_in_Nabeyacho,_Kyoto.jpg": {
+    "label": "File:Pontocho by Wolfiewolf in Nabeyacho, Kyoto.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:00+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Pontocho_by_Wolfiewolf_in_Nabeyacho,_Kyoto.jpg",
+    "pageTitle": "File:Pontocho by Wolfiewolf in Nabeyacho, Kyoto.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/licenses/by/2.0": {
+    "label": "CC BY 2.0",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:00+00:00",
+    "finalUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "pageTitle": "Deed - Attribution 2.0 Generic - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:Fushimiinari-taisha,_naihaiden-1.jpg": {
+    "label": "File:Fushimiinari-taisha, naihaiden-1.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:01+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Fushimiinari-taisha,_naihaiden-1.jpg",
+    "pageTitle": "File:Fushimiinari-taisha, naihaiden-1.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Nintendo_Museum_Entrance.jpg": {
+    "label": "File:Nintendo Museum Entrance.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:01+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Nintendo_Museum_Entrance.jpg",
+    "pageTitle": "File:Nintendo Museum Entrance.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Five-storied_Pagoda,_Kofuku-ji_-_Nara,_Japan_-_DSC07497.jpg": {
+    "label": "File:Five-storied Pagoda, Kofuku-ji - Nara, Japan - DSC07497.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:01+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Five-storied_Pagoda,_Kofuku-ji_-_Nara,_Japan_-_DSC07497.jpg",
+    "pageTitle": "File:Five-storied Pagoda, Kofuku-ji - Nara, Japan - DSC07497.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Daibutsu-den_in_Todaiji_Nara02bs3200.jpg": {
+    "label": "File:Daibutsu-den in Todaiji Nara02bs3200.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:01+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Daibutsu-den_in_Todaiji_Nara02bs3200.jpg",
+    "pageTitle": "File:Daibutsu-den in Todaiji Nara02bs3200.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Kurama-dera_sanmon.jpg": {
+    "label": "File:Kurama-dera sanmon.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:02+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Kurama-dera_sanmon.jpg",
+    "pageTitle": "File:Kurama-dera sanmon.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:%E8%B2%B4%E8%88%B9%E7%A5%9E%E7%A4%BE_Kibune_Jinja_(KYOTO-JAPAN)_(4951368080).jpg": {
+    "label": "File:貴船神社 Kibune Jinja (KYOTO-JAPAN) (4951368080).jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:02+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:%E8%B2%B4%E8%88%B9%E7%A5%9E%E7%A4%BE_Kibune_Jinja_(KYOTO-JAPAN)_(4951368080).jpg",
+    "pageTitle": "File:貴船神社 Kibune Jinja (KYOTO-JAPAN) (4951368080).jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Karasuma_shijo_01.JPG": {
+    "label": "File:Karasuma shijo 01.JPG",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:02+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Karasuma_shijo_01.JPG",
+    "pageTitle": "File:Karasuma shijo 01.JPG - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Iwatayama_Monkey_Park.jpg": {
+    "label": "File:Iwatayama Monkey Park.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:02+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Iwatayama_Monkey_Park.jpg",
+    "pageTitle": "File:Iwatayama Monkey Park.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:%E5%8A%9B%E3%82%92%E5%90%88%E3%82%8F%E3%81%9B%E3%82%88%E3%81%86%E6%97%A5%E6%9C%AC_2014_%E5%A4%A7%E9%98%AA_(12206068196).jpg": {
+    "label": "File:力を合わせよう日本 2014 大阪 (12206068196).jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:02+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:%E5%8A%9B%E3%82%92%E5%90%88%E3%82%8F%E3%81%9B%E3%82%88%E3%81%86%E6%97%A5%E6%9C%AC_2014_%E5%A4%A7%E9%98%AA_(12206068196).jpg",
+    "pageTitle": "File:力を合わせよう日本 2014 大阪 (12206068196).jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Harry_Potter_and_the_Forbidden_Journey_USJ.JPG": {
+    "label": "File:Harry Potter and the Forbidden Journey USJ.JPG",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:03+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Harry_Potter_and_the_Forbidden_Journey_USJ.JPG",
+    "pageTitle": "File:Harry Potter and the Forbidden Journey USJ.JPG - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Minoh_Falls_Minoh_Osaka_pref_Japan01s5.jpg": {
+    "label": "File:Minoh Falls Minoh Osaka pref Japan01s5.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:03+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Minoh_Falls_Minoh_Osaka_pref_Japan01s5.jpg",
+    "pageTitle": "File:Minoh Falls Minoh Osaka pref Japan01s5.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:2018_Umeda_Sky_Building.jpg": {
+    "label": "File:2018 Umeda Sky Building.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:03+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:2018_Umeda_Sky_Building.jpg",
+    "pageTitle": "File:2018 Umeda Sky Building.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Osaka_Castle_02bs3200.jpg": {
+    "label": "File:Osaka Castle 02bs3200.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:03+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Osaka_Castle_02bs3200.jpg",
+    "pageTitle": "File:Osaka Castle 02bs3200.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Nipponbashi_Osaka_Japan01-r.jpg": {
+    "label": "File:Nipponbashi Osaka Japan01-r.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:04+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Nipponbashi_Osaka_Japan01-r.jpg",
+    "pageTitle": "File:Nipponbashi Osaka Japan01-r.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Osaka_Kaiyukan01s3872.jpg": {
+    "label": "File:Osaka Kaiyukan01s3872.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:04+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Osaka_Kaiyukan01s3872.jpg",
+    "pageTitle": "File:Osaka Kaiyukan01s3872.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Panoramic_View_2.jpg": {
+    "label": "File:Panoramic View 2.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:05+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Panoramic_View_2.jpg",
+    "pageTitle": "File:Panoramic View 2.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://creativecommons.org/licenses/by-sa/3.0": {
+    "label": "CC BY-SA 3.0",
+    "kind": "license",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:05+00:00",
+    "finalUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "pageTitle": "Deed - Attribution-ShareAlike 3.0 Unported - Creative Commons",
+    "message": "Einzeln geprüft am 19.10.2026: gültige Creative-Commons-Lizenzseite; der Lizenztyp entspricht dem Nachweis der verwendeten Commons-Fotos."
+  },
+  "https://commons.wikimedia.org/wiki/File:The_Golden_Bridge,_Ba_Na_Hills,_Vietnam.jpg": {
+    "label": "File:The Golden Bridge, Ba Na Hills, Vietnam.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:05+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:The_Golden_Bridge,_Ba_Na_Hills,_Vietnam.jpg",
+    "pageTitle": "File:The Golden Bridge, Ba Na Hills, Vietnam.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
+  },
+  "https://commons.wikimedia.org/wiki/File:Nishiki_ichiba_kyoto.jpg": {
+    "label": "File:Nishiki ichiba kyoto.jpg",
+    "kind": "photo",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-19T18:06:05+00:00",
+    "finalUrl": "https://commons.wikimedia.org/wiki/File:Nishiki_ichiba_kyoto.jpg",
+    "pageTitle": "File:Nishiki ichiba kyoto.jpg - Wikimedia Commons",
+    "message": "Einzeln geprüft am 19.10.2026: Wikimedia-Commons-Dateiseite; Bild, Fotograf und Lizenz gegen die Commons-Metadaten abgeglichen. Das Bild wird lokal bereitgestellt."
   }
 };
 export const retiredLinks = [

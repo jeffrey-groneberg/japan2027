@@ -24,7 +24,7 @@ The pinned brief overrides the direction roll (seed 135a2d75). No raster image
 generation or raster comp is used; the exact geometry is authored as SVG.
 
 First viewport: compact masthead, two-column type-and-illustration hero on
-desktop, four-stop route selector, then a task-oriented five-tab planner.
+desktop, four-stop route selector, then a task-oriented seven-tab planner.
 Mobile stacks the hero, groups route stops two by two and presents dates as a
 horizontal scroll strip. No budget feature remains.
 
@@ -46,7 +46,7 @@ control restores the complete map extent. There is no separate places/map tab.
 Previous/next-day navigation stays in the day header. Nothing is removed from
 calendar exports. Automated checks bound the default Shibuya day-card
 height below 950px desktop and 1250px at 390px mobile.
-Forty-five attributed sightseeing and shopping points have matching
+Forty-seven attributed sightseeing and shopping points have matching
 coordinate-based Google Maps links and optional interactive OpenStreetMap
 background maps. A separate Bases & Shopping panel covers groceries and
 leisure shopping for all four bases. Never imply that the exact Tokyo private
@@ -67,7 +67,7 @@ explicit map action; their privacy consequence and OSM attribution are visible.
 Label source estimates as
 October 2026 planning data. Publishing on GitHub Pages makes the itinerary
 public. Selection of a different lodging does not recalculate source transit.
-All 166 current external URL targets were checked individually on
+All 238 current external URL targets were checked individually on
 19 October 2026. The thirteen originally fetch-restricted pages were then
 verified by loaded DOM in visible browser canvases, as the user requested.
 One additional fetch-blocked Disney restaurant page was also DOM-verified.
@@ -87,8 +87,33 @@ UI, budget functionality, print feature, metadata/disclaimer footer and the
 entire footer. This supersedes earlier surface notes about source/print.
 Keep only the immediately relevant map consent and OSM attribution.
 Every day now includes optional alternatives, shown in the local Alternatives
-tab rather than appending a long default column. Every one of the 45 places
-has one of 31 local food recommendations, including why it is worthwhile,
+tab rather than appending a long default column. Every one of the 47 places
+has one of 32 local food recommendations, including why it is worthwhile,
 child-aware options/caveats, practical access restrictions, official links
 and named Google Maps searches. Food recommendations live as nested
 disclosures directly inside the matching POI.
+
+Current local expansion: compact POI photo thumbnails and larger credited
+archive photos inside the opened point. Twenty-nine place mappings use local
+licensed Commons photos; original theme-aware illustrations cover missing or
+seasonally misleading candidates and are explicitly labeled. The photo
+credit/error state and independent links stay available. No copied game or
+film character illustration is authored.
+
+Kulinarik is its own main panel: family evening meals in Tokyo, Kyoto and Osaka,
+filterable by city, experience/view/casual category and verified walk-in access.
+Mandatory booking and our recommendation to book are not the same state.
+A per-day dinner shortcut opens the selected Japanese city; the main tab rail
+reveals the active tab horizontally without forcing a vertical page jump.
+
+Feste & Feuerwerk holds five optional, date-qualified proposals, also linked
+from their relevant days. None has an explicitly confirmed 2027 programme.
+The 17 July Gion parade replaces Minoh if chosen; Iriya and Hozuki replace or
+shorten other optional blocks. No fireworks outside the city stay are inserted.
+
+Later user choice moves DisneySea to Friday 9 July, after four full adjustment
+days, and teamLab/Odaiba to Tuesday 6 July without the closed Miraikan stop.
+Ghibli is a reserved-ticket alternative to Takao on 8 July, with a booking
+checklist item and its own transport/cafe information. The official Pokémon
+Center joins Nintendo TOKYO on 5 July; same-building map markers group their
+numbers without losing the separate Google destination links.

@@ -58,8 +58,25 @@ The people planning and taking the trip described in the supplied itinerary.
 - Previously fetch-blocked published links must be checked in a visible
   browser canvas and its loaded DOM, not declared unavailable from fetch alone.
 - User-directed rescheduling puts Shibuya/Harajuku on 5 July and Ueno Zoo first
-  on 7 July, avoiding the regular Monday closure. Keep DisneySea on 6 July and
-  retain the existing-ticket caveat when moving Shibuya Sky.
+  on 7 July, avoiding the regular Monday closure. The later explicit user
+  choice moves DisneySea to Friday 9 July and teamLab/Odaiba to 6 July;
+  do not propose Miraikan on its normal Tuesday closure. Retain existing-ticket
+  caveats rather than implying reservations move with the plan.
+- Add only Ghibli from the requested anime ideas: a reserved-ticket alternative
+  on 8 July, not a second excursion on top of Mount Takao. The official
+  Pokémon Center SHIBUYA is also explicitly requested, alongside Nintendo
+  TOKYO in PARCO on 5 July.
+- The user chose real location photos plus Japanese illustrations for the
+  POI highlights. Keep the collapsed overview compact, license/credit real
+  imagery and label illustrations rather than passing them off as photographs.
+- Provide a separate family-oriented Kulinarik section focused only on Tokyo,
+  Kyoto and Osaka: interactive meals and views without adult-only bars or
+  formal fine-dining obligations. Separate verified walk-ins, recommended
+  reservations and mandatory advance bookings.
+- Research and integrate fitting fireworks, parades and festivals. Date-specific
+  2027 announcements must be distinguished from traditional annual rules.
+  Keep festival options genuinely optional, give family crowd/exit guidance
+  and do not silently change the stays or fixed park day to chase an event.
 - Availability findings apply to the exact offered dates and room categories.
   An expired flight offer does not establish that a route does not exist;
   distinguish an official route announcement from a confirmed dated booking.

@@ -6,7 +6,7 @@
   "description": "A build-free, interactive Japan and Vietnam travel itinerary.",
   "scripts": {
     "start": "python3 scripts/serve.py",
-    "check": "node --check site/app.js && node --check site/lib.js && node --check site/trip-data.js && node --check site/guide-data.js && node --check site/extras.js && node --check site/map.js && node --check site/link-audit.js",
+    "check": "node --check site/app.js && node --check site/lib.js && node --check site/trip-data.js && node --check site/guide-data.js && node --check site/extras.js && node --check site/map.js && node --check site/link-audit.js && node --check site/dining-data.js && node --check site/festival-data.js && node --check site/poi-photos.js && node --check site/poi-visuals.js",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
     "deploy": "node scripts/publish-pages.mjs"

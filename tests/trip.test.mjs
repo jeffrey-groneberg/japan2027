@@ -27,7 +27,7 @@ test("all 30 original travel dates are unique, ordered and contiguous", () => {
 test("all flights, accommodation alternatives, booking links and deadlines survive", () => {
   assert.equal(trip.flights.length, 3);
   assert.equal(trip.accommodations.flatMap((city) => city.options).length, 10);
-  assert.equal(trip.checklist.length, 7);
+  assert.equal(trip.checklist.length, 8);
   const links = [
     ...trip.flights.flatMap((flight) => flight.links),
     ...trip.accommodations.flatMap((city) => city.options.flatMap((stay) => stay.links)),
@@ -142,9 +142,12 @@ test("every mapped place has attributed coordinates and an exact matching Google
   assert.deepEqual(places.coop.coordinates, [15.5729589, 108.4838371]);
 });
 
-test("the detailed Shibuya day has four individual places in a sensible sequence", () => {
-  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.id), ["takeshita", "nintendoTokyo", "crossing", "sky"]);
-  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.number), [1, 2, 3, 4]);
+test("the Shibuya day includes the official Pokemon Center alongside Nintendo in PARCO", () => {
+  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.id), ["takeshita", "nintendoTokyo", "pokemon", "crossing", "sky"]);
+  assert.deepEqual(placesForDay("2027-07-05").map((place) => place.number), [1, 2, 3, 4, 5]);
+  assert.equal(places.pokemon.mapGroup, places.nintendoTokyo.mapGroup);
+  assert.deepEqual(places.pokemon.coordinates, [35.6619997, 139.6984094]);
+  assert.equal(resources.pokemon.url, "https://shop.pokemon.co.jp/en/shop/pokemoncenter-shibuya/");
   assert.ok(dayGuides["2027-07-05"].booking.includes("Shibuya Sky"));
   assert.deepEqual(placesForDay("2027-07-03"), []);
 });
@@ -221,7 +224,7 @@ test("every published official, booking and coordinate link has an honest record
     }
   }
   assert.ok(Object.keys(linkAudit).length >= 110);
-  assert.equal(Object.values(linkAudit).filter((entry) => entry.kind === "map").length, 45);
+  assert.equal(Object.values(linkAudit).filter((entry) => entry.kind === "map").length, 47);
   assert.equal(retiredLinks.length, 1);
   for (const entry of Object.values(linkAudit)) {
     assert.match(entry.checkedAt, /^\d{4}-\d{2}-\d{2}T/);
@@ -246,6 +249,7 @@ test("all days have alternatives and every location has an explained child-aware
     for (const alternative of alternatives[date]) {
       assert.ok(alternative.title && alternative.when && alternative.text.length > 60);
       for (const id of alternative.places) assert.ok(places[id], `${date}: ${id}`);
+      for (const id of alternative.resources ?? []) assert.ok(resources[id], `${date}: ${id}`);
     }
   }
   for (const id of Object.keys(places)) {
@@ -264,6 +268,40 @@ test("all days have alternatives and every location has an explained child-aware
   assert.match(foodStops.mochi.children, /sicherem Kauen/);
   assert.match(foodStops.tsujiri.children, /Koffein/);
   assert.match(foodStops.hoian.name, /Morning Glory/);
+});
+
+test("Ghibli is a reserved-ticket alternative, not an additional mountain-day obligation", () => {
+  const option = alternatives["2027-07-08"].find(({ places }) => places.includes("ghibli"));
+  assert.ok(option);
+  assert.deepEqual(option.places, ["ghibli"]);
+  assert.match(option.when, /bestätigtem Zeitfensterticket/);
+  assert.match(option.booking, /10. Juni 2027/);
+  assert.match(option.booking, /03:00 Uhr MESZ/);
+  assert.match(option.booking, /Lawson/);
+  assert.match(option.transit, /JR Chuo Line/);
+  assert.deepEqual(placesForDay("2027-07-08").map(({ id }) => id), ["takao"]);
+  assert.deepEqual(places.ghibli.coordinates, [35.696238, 139.5704317]);
+  assert.match(places.ghibli.description, /bis zwölf Jahre/);
+  assert.match(foodStops[foodByPlace.ghibli].practical, /Nur mit Museumseintritt/);
+  assert.deepEqual(filterDays(trip.days, { query: "Ghibli" }).map(({ date }) => date), ["2027-07-08"]);
+  assert.deepEqual(filterDays(trip.days, { query: "Straw Hat" }).map(({ date }) => date), ["2027-07-08"]);
+  assert.deepEqual(filterDays(trip.days, { query: "Pokemon Center" }).map(({ date }) => date), ["2027-07-05"]);
+  assert.equal(Object.keys(places).some((id) => /akira|ghost|transformers|skytree/i.test(id)), false);
+  const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT").find((event) => event.includes("DTSTART;VALUE=DATE:20270708"));
+  assert.match(event, /SUMMARY:Wandertag: Mount Takao/);
+  assert.match(event, /Alternative: Ghibli Museum statt Mount Takao/);
+  assert.match(event, /03:00 Uhr MESZ/);
+  assert.match(event, /Optionale Kulinarik: Straw Hat/);
+});
+
+test("adding the optional Ghibli booking preserves all previous checklist identities and saved progress", () => {
+  assert.deepEqual(trip.checklist.map(({ id }) => id).sort(), Array.from({ length: 8 }, (_, index) => `task-${index}`));
+  const task = trip.checklist.find(({ id }) => id === "task-7");
+  assert.match(task.title, /Optional: Ghibli/);
+  assert.match(task.deadline, /10.06.2027.*03:00 MESZ/);
+  assert.deepEqual(task.resources, ["ghibliTickets"]);
+  const previous = { ...defaultState(trip), completed: ["task-0", "task-3", "task-6"] };
+  assert.deepEqual(parseState(JSON.stringify(previous), trip).completed, previous.completed);
 });
 
 test("countdown handles departure, the full trip and the time after returning", () => {

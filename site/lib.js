@@ -1,5 +1,6 @@
 import { dayGuides, places } from "./guide-data.js";
 import { alternatives, foodByPlace, foodStops } from "./extras.js";
+import { festivalOptions, festivalStatusLabels } from "./festival-data.js";
 
 export const destinations = [
   { id: "tokyo", name: "Tokyo", japanese: "東京", dates: "4.–11. Juli", nights: 7, country: "Japan", symbol: "city-tokyo" },
@@ -14,10 +15,10 @@ const dayMetadata = {
   "2027-07-03": ["transfer", "Frankfurt Airport, Germany"],
   "2027-07-04": ["transfer", "Komagome Station, Tokyo, Japan"],
   "2027-07-05": ["city", "Shibuya Parco, Tokyo, Japan"],
-  "2027-07-06": ["park", "Tokyo DisneySea, Japan"],
+  "2027-07-06": ["culture", "teamLab Planets, Tokyo, Japan"],
   "2027-07-07": ["culture", "Ueno Zoo, Tokyo, Japan"],
   "2027-07-08": ["nature", "Mount Takao, Japan"],
-  "2027-07-09": ["culture", "teamLab Planets, Tokyo, Japan"],
+  "2027-07-09": ["park", "Tokyo DisneySea, Japan"],
   "2027-07-10": ["city", "Akihabara, Tokyo, Japan"],
   "2027-07-11": ["transfer", "Kyoto Station, Japan"],
   "2027-07-12": ["culture", "Nintendo Museum, Uji, Japan"],
@@ -86,9 +87,32 @@ export function filterDays(days, { destination = "all", query = "", savedOnly = 
       ...(dayGuides[day.date]?.steps ?? []).flatMap((step) => [
         step.title, step.text, ...(step.places ?? []).map((id) => places[id]?.name ?? ""),
       ]),
+      ...(alternatives[day.date] ?? []).flatMap((option) => [
+        option.title, option.text, option.booking ?? "", option.transit ?? "",
+        ...option.places.flatMap((id) => [places[id].name, foodStops[foodByPlace[id]].name]),
+      ]),
+      ...festivalsForDay(day.date).flatMap((event) => [event.title, event.why, event.when, event.planAdvice]),
     ].join(" "));
     return terms.every((term) => searchable.includes(term));
   });
+}
+
+export function filterDining(options, { destination = "all", category = "all", spontaneous = false } = {}) {
+  return options.filter((option) => (destination === "all" || option.destination === destination)
+    && (category === "all" || option.category === category)
+    && (!spontaneous || option.walkIn === true));
+}
+
+export function festivalsForDay(date) {
+  return festivalOptions.filter((event) => event.proposedDates.includes(date));
+}
+
+export function festivalMapsURL(event) {
+  if (event.placeId) return googleMapsURL(places[event.placeId]);
+  const url = new URL("https://www.google.com/maps/search/");
+  url.searchParams.set("api", "1");
+  url.searchParams.set("query", event.query);
+  return url.href;
 }
 
 export function countdown(start, end, now = new Date()) {
@@ -152,6 +176,12 @@ export function foldCalendarLine(value) {
   return lines.join("\r\n");
 }
 
+function calendarFood(id) {
+  const food = foodStops[id];
+  if (!food) throw new Error(`Missing culinary calendar data: ${id}`);
+  return `Kulinarik: ${food.name}\n${food.why}\nFür Kinder: ${food.children}\n${food.practical}`;
+}
+
 export function buildCalendar(trip, now = new Date()) {
   const stamp = now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
   const lines = [
@@ -173,11 +203,19 @@ export function buildCalendar(trip, now = new Date()) {
         dayGuides[day.date]?.summary ?? "",
         ...(dayGuides[day.date]?.steps ?? []).map((step) => `${step.time}: ${step.title}\n${step.text}`),
         ...(dayGuides[day.date]?.correction ? [dayGuides[day.date].correction] : []),
-        ...(alternatives[day.date] ?? []).map((option) => `Alternative: ${option.title}\n${option.text}`),
-        ...[...new Set(placesForDay(day.date).map((place) => foodByPlace[place.id]))].filter(Boolean).map((id) => {
-          const food = foodStops[id];
-          return `Kulinarik: ${food.name}\n${food.why}\nFür Kinder: ${food.children}`;
-        }),
+        ...(dayGuides[day.date]?.booking ? [dayGuides[day.date].booking] : []),
+        ...(dayGuides[day.date]?.tip ? [dayGuides[day.date].tip] : []),
+        ...(alternatives[day.date] ?? []).map((option) => [
+          `Alternative: ${option.title}`, option.when, option.text,
+          ...(option.booking ? [option.booking] : []),
+          ...(option.transit ? [option.transit] : []),
+          ...[...new Set(option.places.map((id) => foodByPlace[id]))].map((id) => `Optionale ${calendarFood(id)}`),
+        ].join("\n")),
+        ...festivalsForDay(day.date).map((event) => [
+          `Festoption (${festivalStatusLabels[event.dateStatus]}): ${event.title}`,
+          event.when, event.planAdvice, event.children, event.logistics,
+        ].join("\n")),
+        ...[...new Set(placesForDay(day.date).map((place) => foodByPlace[place.id]))].filter(Boolean).map(calendarFood),
       ].join("\n"))}`,
       "END:VEVENT",
     );

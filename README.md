@@ -15,11 +15,14 @@ vendored locally; optional background maps come from OpenStreetMap.
   ticket instructions instead of having to interpret rail abbreviations.
 - Scan separated, numbered points and open descriptions, official links,
   Google Maps and culinary advice directly at the corresponding stop.
+  Compact photo thumbnails and larger, credited local photos make places
+  recognizable; original Japanese-style illustrations fill clearly labeled
+  gaps rather than pretending to be photographs.
   A collapsible, complete day map sits in the agenda, with matching numbers,
   point-to-map and popup-to-point navigation, plus an all-stops reset.
   Three day-local tabs separate the agenda, travel/tickets and alternatives;
   previous/next-day controls stay at the top.
-- Explore 45 sightseeing and shopping points with official information,
+- Explore 47 sightseeing and shopping points with official information,
   individual Google Maps links and an interactive OpenStreetMap view.
 - Find supermarkets, everyday shopping and souvenir / gaming destinations for
   each planned base, without inventing a private apartment's exact address.
@@ -27,7 +30,15 @@ vendored locally; optional background maps come from OpenStreetMap.
   Bedroom-category problems found during the browser check are called out.
 - Find alternatives for every day and a nearby culinary recommendation at
   every mapped place, with an explanation, child-aware choices and access rules.
-- Track seven booking tasks and export the detailed days as an `.ics` calendar.
+- Open the general **Kulinarik** section for seven family-oriented dinner
+  ideas in Tokyo, Kyoto and Osaka, including interactive meals and skyline
+  buffets. City/category filters compose with an evidence-based
+  “Nur spontan versuchbar” filter; reservation-only cafés are excluded from it.
+- Find five optional festival/show proposals in **Feste & Feuerwerk** and
+  through links on the matching dates. Traditional dates are explicitly
+  unconfirmed for 2027, never presented as purchased tickets or guaranteed shows.
+- Track eight booking tasks, including optional Ghibli reservations, and
+  export the detailed days as an `.ics` calendar.
 - Switch between light and dark themes. Keyboard navigation, reduced motion
   and small screens are supported.
 
@@ -60,15 +71,20 @@ OpenStreetMap objects. Every location records its coordinate evidence. Broad
 districts, mountains and festival areas are explicitly orientation points, not
 guaranteed entrances or current walking / transit routes.
 
-On **19 October 2026**, all **166 distinct published external URL targets** were
-checked individually, including **45 coordinate-based sightseeing Google Maps
-links** and **31 named culinary map searches**. HTTP responses, redirects,
+On **19 October 2026**, all **238 distinct published external URL targets** were
+checked individually, including **47 coordinate-based sightseeing Google Maps
+links**, **32 per-place culinary map searches**, the separate dinner/festival
+targets, and every displayed photo-source/license link. HTTP responses, redirects,
 source identity and map queries were reviewed. The original thirteen
 fetch-restricted pages were then opened in visible browser canvases and
 their loaded DOM inspected: all nine Expedia properties, both Booking.com
 properties, JR East's Suica page and DisneySea. DisneySea's restaurant page
 was also verified in the browser after fetch timed out. The newly added
 Kansai Airports route announcement was DOM-verified after a blocked fetch.
+The DisneySea evening-show page was also DOM-verified after a timeout.
+Loaded browser FAQ answers resolved previously incomplete evidence for
+Pokémon Café, SKY BUFFET 51 and Kyoto Ramen Koji; absence of a reservation
+button alone was not treated as proof of a walk-in policy.
 
 The exact-date recheck confirmed material room-category issues: for
 11–15 July, Stay SAKURA's available apartments have one bedroom. Its
@@ -92,9 +108,30 @@ were not adopted as official attraction resources.
 
 The schedule now puts Shibuya/Harajuku on Monday, **5 July**, and Ueno Zoo on
 Wednesday, **7 July**, avoiding the zoo's regular Monday closure. The zoo
-comes first; Asakusa afterward is optional. DisneySea stays on 6 July.
+comes first; Asakusa afterward is optional. At the user's explicit choice,
+**DisneySea moves to Friday, 9 July**, after four full days of adjustment.
+teamLab/Odaiba moves to Tuesday, 6 July; Miraikan is not proposed that day
+because of its regular Tuesday closure.
 The plan warns that an existing Shibuya Sky ticket would need changing,
 not silently transferring dates.
+The same caveat applies to existing DisneySea/teamLab tickets.
+
+Ghibli Museum is a **reserved-ticket alternative** to Mount Takao on 8 July,
+not an additional excursion or spontaneously available rainy-day substitute.
+The current rule would put July ticket sales on 10 June at 10:00 JST /
+03:00 CEST; the relevant 2027 calendar and sales policy still need checking.
+Its entry contains transport, age-limited Cat Bus guidance and Straw Hat Café
+access restrictions. Pokémon Center SHIBUYA joins Nintendo TOKYO on 5 July;
+they share a building marker while retaining distinct verified Google targets.
+
+The festival proposals are Iriya's morning-glory market (7 July), the
+potential DisneySea harbour show (9 July), Senso-ji's Hozuki market
+(10 July), a short Gion lantern/float evening (14 July), and the Gion parade
+as an **alternative instead of Minoh** from Osaka (17 July). No specific
+2027 edition/show has been confirmed. Senso-ji replaces part of the busy
+shopping/packing day; Iriya does not become a third mandatory excursion
+after the zoo and Asakusa. Sumida and Tenjin fireworks are explained as
+normally outside the respective city stays, not falsely assigned to them.
 
 Other material corrections are visible on the relevant days: Nintendo Museum's explicit public-transport-only
 arrival guidance (not taxi), and ROBINSON's actual Tam Tien location, about
@@ -124,8 +161,14 @@ development checks and the optional publishing helper.
 | `site/app.js` | Interaction and safe text-only rendering |
 | `site/lib.js` | Filtering, dates, preference migration and calendar export |
 | `site/trip-data.js` | Imported itinerary and booking links, with user-directed daily rescheduling |
-| `site/guide-data.js` | Concrete daily plans, official sources, 45 attributed points and shopping bases |
-| `site/extras.js` | Per-day alternatives and 31 local culinary recommendations mapped to every place |
+| `site/guide-data.js` | Concrete daily plans, official sources, 47 attributed points and shopping bases |
+| `site/extras.js` | Per-day alternatives and 32 local culinary recommendations mapped to every place |
+| `site/dining-data.js` | Seven family dinner highlights, explicit booking/access rules and operator evidence |
+| `site/festival-data.js` | Five date-qualified festival/show proposals and out-of-window fireworks context |
+| `site/poi-photos.js` | Local photo paths, Commons source, author and license for each adopted photograph |
+| `site/poi-visuals.js` | Shared photo/illustration treatment, attribution and explicit image-error states |
+| `site/assets/poi/` | Locally served, size-bounded real photos and small thumbnails |
+| `site/assets/poi-illustrations.svg` | Original theme-aware scenes; no copied game/film character graphics |
 | `site/map.js` | Consent-triggered Leaflet loading, numbered markers and explicit tile-error fallback |
 | `site/link-audit.js` | Individual external-link verification snapshot and retired search link |
 | `site/vendor/leaflet/` | Locally served Leaflet 1.9.4 assets and BSD license |
@@ -141,8 +184,9 @@ To reimport a copy of the original itinerary:
 python3 scripts/import-itinerary.py /path/to/reiseplan.html site/trip-data.js
 ```
 
-Reimporting overwrites the manual 5/7 July schedule revision. Preserve or
-reapply it deliberately, keeping the guides, alternatives, day metadata
+Reimporting overwrites the manual 5/7 July and 6/9 July revisions, Pokémon
+addition and optional Ghibli checklist item. Preserve or reapply them
+deliberately, keeping guides, alternatives, day metadata, festival placements
 and calendar export consistent.
 
 The importer extracts plain text and HTTPS links rather than executing or
@@ -175,7 +219,18 @@ Culinary tips distinguish an individual restaurant from an explicitly labeled
 food area or seasonal stand. Children's suitability is practical guidance,
 not a certified allergen-free or guaranteed children's-menu claim. Museum and
 theme-park food requires the appropriate admission. Matcha's caffeine, hot
-food and sticky mochi have place-specific caveats.
+food and sticky mochi have place-specific caveats. General dinner highlights
+are not all spontaneous: operator-confirmed walk-ins are distinct from our
+recommendation to reserve and from a mandatory reservation.
+
+The 29 per-place photo mappings use Wikimedia Commons images with verified
+CC0 / CC BY / CC BY-SA metadata, downloaded as local large/thumbnail variants.
+Two places in PARCO deliberately share the same building exterior photo;
+it does not imply a photograph of either shop's interior. Visible figure
+captions identify archive photos, attribution, source, license and cropping.
+Images whose candidates showed cherry blossoms, Halloween or winter were
+rejected in favor of original, clearly labeled illustrations. Image loading
+errors are surfaced without breaking the itinerary or its independent links.
 
 To refresh link evidence, first export the inventory, run the checker, then
 **review the actual destination and source identity** before publishing a new
