@@ -841,6 +841,7 @@ function renderDayDetail(day, days) {
           const context = mapContexts.get("day");
           context.map?.resize();
           if (focusId) context.focus(focusId);
+          else if (context.map) context.map.showAll();
           else if (mapsPermitted) context.start();
         });
       };
