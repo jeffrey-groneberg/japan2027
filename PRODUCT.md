@@ -34,6 +34,11 @@ The people planning and taking the trip described in the supplied itinerary.
   receives scroll/pointer parallax.
   Each carriage has a transparent panoramic window showing the actual shared
   mountain background, not a separate miniature scene. Labels remain readable.
+  Scenery and rails extend edge-to-edge while the train remains centered at
+  the existing maximum content width. Include Japanese destination names.
+  Do not tint the label areas; use one gently moving curved arrow at the first
+  target's lower-left corner. Hide it after the first carriage selection and
+  preserve dismissal in the browser, including older preference migrations.
 - Desktop/tablet navigation must not scroll horizontally: measure the real
   menu widths and move only overflowing destinations into a “Mehr” disclosure.
   Restore them on resize/font load and preserve selection and keyboard focus.

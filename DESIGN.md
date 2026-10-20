@@ -236,6 +236,12 @@ Each carriage has a 40px-high ink-framed transparent window above its labels.
 Carriage backgrounds paint around the opening so the actual single mountain
 layer behind the train shows through. There are no cloned window landscapes
 or independent window animations; the same scenery continues above the roof.
+The scenery and rails are full-bleed, but the carriage viewport retains the
+centered 1200px page-width constraint. Latin destination names are paired with
+Japanese labels marked `lang="ja"`. Label areas remain uncolored. A curved
+arrow outside the first label points at its lower-left corner and moves gently
+only while the scene is visible. Any carriage selection permanently dismisses
+the arrow through the existing local preference state.
 A repeating landscape tile passes slowly toward the right while
 rail sleepers pass faster, creating continuous forward travel. Offscreen/hidden states and Reduce Motion
 stop all train motion. This is symbolic navigation, not geographic rail routing.

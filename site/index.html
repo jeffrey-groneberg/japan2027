@@ -72,8 +72,8 @@
     }
   </style>
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=7a9a398">
-  <script type="module" src="./app.js?v=7a9a398" id="app-module"></script>
+  <link rel="stylesheet" href="./styles.css?v=8b92e2f">
+  <script type="module" src="./app.js?v=8b92e2f" id="app-module"></script>
 </head>
 <body>
   <!--
@@ -105,6 +105,7 @@
       <symbol id="icon-bus" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="17" rx="3"/><path d="M4 9h16M7 20v2m10-2v2M8 15h.01M16 15h.01"/></symbol>
       <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 5v14m8-14v14"/></symbol>
       <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-8h6v8"/></symbol>
+      <symbol id="icon-curved-arrow" viewBox="0 0 64 56"><path d="M8 6C-8 34 10 52 50 44m0 0-12-8m12 8-14 4"/></symbol>
       <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
       <symbol id="icon-bed" viewBox="0 0 24 24"><path d="M3 19V6m0 9h18v4m0-4V9a2 2 0 0 0-2-2h-7v8M3 11h9"/><path d="M5 7h4v4"/></symbol>
       <symbol id="icon-wallet" viewBox="0 0 24 24"><path d="M20 8V5H5a3 3 0 0 0 0 6h16v9H5a3 3 0 0 1-3-3V8"/><path d="M17 11v5h4m-4-2.5h.1"/></symbol>
@@ -249,7 +250,7 @@
       <div class="festival-trim" aria-hidden="true"></div>
     </section>
 
-    <div class="page-width route-area">
+    <div class="route-area">
       <div class="route-train-scene">
         <div class="route-train-scenery" aria-hidden="true">
         <svg class="route-train-landscape" viewBox="0 0 2400 200" preserveAspectRatio="none">
@@ -262,7 +263,7 @@
           <use href="#train-landscape-tile" x="1200"/>
         </svg>
         </div>
-        <div class="route-train-window" tabindex="0" role="region" aria-label="Stationszug">
+        <div class="page-width route-train-window" tabindex="0" role="region" aria-label="Stationszug">
         <div class="route-train">
           <nav id="route-stops" class="route-strip" aria-label="Die vier Stationen der Reise"></nav>
           <div class="route-train-nose" aria-hidden="true">

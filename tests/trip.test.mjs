@@ -76,11 +76,24 @@ test("local state round-trips and corrupt or obsolete data never silently succee
     (value) => { value.completed = ["task-0", "task-0"]; },
     (value) => { value.stays.kyoto = "invalid"; },
     (value) => { value.theme = "invalid"; },
+    (value) => { value.trainHintDismissed = "true"; },
   ]) {
     const invalid = structuredClone(state);
     mutate(invalid);
     assert.throws(() => parseState(JSON.stringify(invalid), trip), /does not match/);
   }
+});
+
+test("train hint dismissal persists and older saved preferences retain their state", () => {
+  const state = defaultState(trip);
+  assert.equal(state.trainHintDismissed, false);
+  state.trainHintDismissed = true;
+  assert.equal(parseState(JSON.stringify(state), trip).trainHintDismissed, true);
+  delete state.trainHintDismissed;
+  state.favorites = ["2027-07-07"];
+  const migrated = parseState(JSON.stringify(state), trip);
+  assert.equal(migrated.trainHintDismissed, false);
+  assert.deepEqual(migrated.favorites, state.favorites);
 });
 
 test("calendar export has all 30 all-day events, correct exclusive ends and UTC stamps", () => {

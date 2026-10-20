@@ -323,6 +323,12 @@ fixed-width SVG rectangles, not a shifting CSS gradient, with overscan at both e
 Each carriage has a transparent panoramic window: the same single mountain
 landscape is visible behind the train and through all windows, with no
 separate miniature scenes or independent window animation.
+Scenery and rails fill the viewport edge to edge; the train stays centered
+within the existing 1200px content width. Destinations retain Latin labels
+alongside 東京, 京都, 大阪 and ダナン. A small curved arrow points at the lower-left
+corner of the first destination, with no colored label panels. It disappears
+after any carriage is selected and stays dismissed in this browser's saved
+planner state.
 Seamlessly passing scenery and faster-moving sleepers create continuous
 forward travel without moving the clickable carriages. The train never wraps:
 small screens scroll the single row horizontally, including its nose.

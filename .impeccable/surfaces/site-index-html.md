@@ -22,6 +22,10 @@ only the decorative scenery.
 Transparent panoramic windows above each carriage label show the actual single
 mountain background behind the train. No separate landscapes are drawn inside
 the windows.
+Scenery and rails fill the viewport; the centered train retains its maximum
+content width. Japanese names accompany the Latin labels. No label tint is
+used. A small curved arrow points at the first target's lower-left corner and
+is dismissed persistently on the first carriage selection.
 
 Current navigation: Home is the default eighth main destination, owning the
 animated hero and station strip exclusively. Shared navigation sits above all

@@ -982,6 +982,49 @@ test("station train preserves all destinations and uses bounded reduced-motion-a
   await expect(scene).not.toHaveClass(/motion-active/);
 });
 
+test("train scenery fills wide screens and its arrow disappears after the first carriage choice", async ({ page }) => {
+  for (const width of [430, 1440, 2560]) {
+    await page.setViewportSize({ width, height: 932 });
+    await ready(page, "/?clawpilotTheme=light#view=home");
+    const geometry = await page.locator(".route-train-scene").evaluate((scene) => {
+      const rect = scene.getBoundingClientRect();
+      const viewport = scene.querySelector(".route-train-window").getBoundingClientRect();
+      const scenery = scene.querySelector(".route-train-scenery").getBoundingClientRect();
+      const rails = scene.querySelector(".route-train-rails").getBoundingClientRect();
+      return { left: rect.left, right: rect.right, viewportWidth: innerWidth, trainWidth: viewport.width, center: (viewport.left + viewport.right) / 2, sceneryLeft: scenery.left, sceneryRight: scenery.right, railLeft: rails.left, railRight: rails.right };
+    });
+    expect(geometry.left).toBe(0);
+    expect(geometry.right).toBe(geometry.viewportWidth);
+    expect(geometry.trainWidth).toBeLessThanOrEqual(1200);
+    expect(geometry.center).toBeCloseTo(width / 2, 1);
+    expect(geometry.sceneryLeft).toBeLessThanOrEqual(0);
+    expect(geometry.sceneryRight).toBeGreaterThanOrEqual(width);
+    expect(geometry.railLeft).toBe(0);
+    expect(geometry.railRight).toBe(width);
+  }
+  const arrow = page.locator("#train-cta");
+  await expect(arrow).toBeVisible();
+  await expect(page.locator(".stop-japanese")).toHaveText(["東京", "京都", "大阪", "ダナン"]);
+  await expect(page.locator(".stop-japanese").first()).toHaveAttribute("lang", "ja");
+  await expect(page.locator(".stop-target").first()).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  expect(await arrow.evaluate((node) => {
+    const arrow = node.getBoundingClientRect();
+    const target = node.parentElement.getBoundingClientRect();
+    return Math.max(Math.abs(arrow.left + 50 - target.left), Math.abs(arrow.top + 44 - target.bottom));
+  })).toBeLessThan(1);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.locator(".route-train-scene").scrollIntoViewIfNeeded();
+  await expect(arrow).toHaveCSS("animation-name", "train-hint-point");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.locator('.route-stop[data-destination="kyoto"]').click();
+  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)).trainHintDismissed, storageKey)).toBe(true);
+  await show(page, "home");
+  await expect(arrow).toBeHidden();
+  await page.reload();
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(arrow).toBeHidden();
+});
+
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   let point = await openPoint(page, "takeshita");

@@ -2,7 +2,7 @@ import { trip } from "./trip-data.js";
 import {
   STORAGE_KEY, buildCalendar, countdown, defaultState, destinationName,
   destinations, festivalMapsURL, festivalsForDay, filterDays, filterDining, formatDate, parseState, googleMapsURL,
-} from "./lib.js";
+} from "./lib.js?v=f3b2c04";
 import { bases, dayGuides, places, railGuide, resources } from "./guide-data.js";
 import { createPlaceMap } from "./map.js";
 import { linkAudit } from "./link-audit.js";
@@ -456,20 +456,41 @@ function selectDestination(id) {
 function renderRouteControls() {
   const route = $("#route-stops");
   destinations.forEach((destination, index) => {
-    const stop = button("", "route-stop", () => selectDestination(destination.id));
+    const stop = button("", "route-stop", () => {
+      if (!state.trainHintDismissed) {
+        state.trainHintDismissed = true;
+        $("#train-cta").setAttribute("hidden", "");
+        saveState();
+      }
+      selectDestination(destination.id);
+    });
     stop.dataset.destination = destination.id;
     stop.setAttribute("aria-pressed", "false");
     stop.setAttribute("aria-label", `${destination.name}, ${destination.dates}, ${destination.nights} Nächte: Tagesplan anzeigen`);
     const copy = element("span", "stop-copy");
-    copy.append(
+    const heading = element("span", "stop-heading");
+    const japanese = element("span", "stop-japanese", destination.japanese);
+    japanese.lang = "ja";
+    heading.append(
       element("span", "stop-name", destination.id === "vietnam" ? "Da Nang" : destination.name),
+      japanese,
+    );
+    copy.append(
+      heading,
       element("span", "stop-dates", destination.dates),
       element("span", "stop-nights", `${destination.nights} Nächte · ${destination.country}`),
     );
+    const target = element("span", "stop-target");
+    target.append(copy, graphic(destination.symbol, "stop-art", "0 0 200 140"));
+    if (index === 0) {
+      const hint = graphic("icon-curved-arrow", "train-hint-arrow", "0 0 64 56");
+      hint.id = "train-cta";
+      hint.toggleAttribute("hidden", state.trainHintDismissed);
+      target.append(hint);
+    }
     stop.append(
       element("span", "stop-number", index + 1),
-      copy,
-      graphic(destination.symbol, "stop-art", "0 0 200 140"),
+      target,
     );
     const window = element("span", "carriage-window");
     window.setAttribute("aria-hidden", "true");
