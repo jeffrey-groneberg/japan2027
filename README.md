@@ -17,6 +17,9 @@ vendored locally; optional background maps come from OpenStreetMap.
   height reflects approximate duration; named train, metro, bus, taxi, flight
   and walking blocks start from the actual preceding stop. Meals, recovery and
   deliberate free time are visible instead of looking like missing plan data.
+- On phones, the time axis stays fixed beside exactly one route. Swipe
+  horizontally to the next or previous lane; the visible route label, arrow
+  controls and keyboard navigation provide equivalent non-gesture access.
 - Select a numbered stop to open descriptions, official links, Google Maps and
   culinary advice directly below the lanes.
   Compact photo thumbnails and larger, credited local photos make places

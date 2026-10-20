@@ -219,6 +219,23 @@ test("all 30 day lanes stay separated and visually cover their timeline on deskt
         return issues;
       }));
       expect(defects, `day ${index + 1} at ${width}px`).toEqual([]);
+      if (width === 390) {
+        const mobileVisibility = await page.locator(".lane-board-scroll").evaluate((scroll) => {
+          const viewport = scroll.getBoundingClientRect();
+          const axis = scroll.querySelector(".lane-time-axis").getBoundingClientRect();
+          const tracks = [...scroll.querySelectorAll(".lane-track")];
+          return {
+            laneCount: tracks.length,
+            visibleCount: tracks.filter((track) => {
+              const rect = track.getBoundingClientRect();
+              return Math.min(rect.right, viewport.right) - Math.max(rect.left, axis.right) > 2;
+            }).length,
+          };
+        });
+        expect(mobileVisibility.visibleCount, `mobile day ${index + 1}`).toBe(1);
+        if (mobileVisibility.laneCount > 1) await expect(page.locator(".lane-mobile-nav")).toBeVisible();
+        else await expect(page.locator(".lane-mobile-nav")).toBeHidden();
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `day ${index + 1} at ${width}px`).toBe(true);
     }
   }
@@ -406,6 +423,52 @@ test("day planning uses complete parallel lanes and reveals details on demand", 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await daySection(page, "Anfahrt & Tickets");
   await expect(page.locator("#day-panel-transit .transit-steps")).toBeVisible();
+});
+
+test("mobile shows exactly one lane and snaps between routes by swipe, buttons and keyboard", async ({ page }) => {
+  const visibleLaneCount = () => page.locator(".lane-board-scroll").evaluate((scroll) => {
+    const viewport = scroll.getBoundingClientRect();
+    const axis = scroll.querySelector(".lane-time-axis").getBoundingClientRect();
+    return [...scroll.querySelectorAll(".lane-track")].filter((track) => {
+      const rect = track.getBoundingClientRect();
+      return Math.min(rect.right, viewport.right) - Math.max(rect.left, axis.right) > 2;
+    }).length;
+  });
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await ready(page, `/?clawpilotTheme=light&laneWidth=${width}#view=itinerary&day=2027-07-10`);
+    const scroll = page.locator(".lane-board-scroll");
+    const status = page.locator(".lane-mobile-status");
+    await expect(page.locator(".lane-mobile-nav")).toBeVisible();
+    await expect(status).toContainText("Route A · Empfohlene Route");
+    await expect(status).toContainText("1 von 4");
+    await expect(scroll).toHaveCSS("scroll-snap-type", "x mandatory");
+    await expect.poll(visibleLaneCount).toBe(1);
+    expect(await scroll.evaluate((node) => {
+      const track = node.querySelector(".lane-track").getBoundingClientRect();
+      return Math.abs(track.width - (node.clientWidth - 62));
+    })).toBeLessThan(2);
+
+    await page.getByRole("button", { name: "Nächste Route" }).click();
+    await expect(status).toContainText("Route B · Mehr Markt, weniger Geschäfte");
+    await expect.poll(() => scroll.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+    await expect.poll(visibleLaneCount).toBe(1);
+
+    await scroll.evaluate((node) => node.scrollBy({ left: node.clientWidth * 0.9, behavior: "auto" }));
+    await expect(status).toContainText("Route C · Mehr Gaming, kein Ginza");
+    await expect.poll(visibleLaneCount).toBe(1);
+
+    await scroll.focus();
+    await page.keyboard.press("End");
+    await expect(status).toContainText("Route D · HIRAKUZA Ginza statt Akihabara");
+    await expect(page.getByRole("button", { name: "Nächste Route" })).toBeDisabled();
+    await expect.poll(visibleLaneCount).toBe(1);
+  }
+
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-10");
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(page.locator(".lane-mobile-nav")).toBeHidden();
 });
 
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {

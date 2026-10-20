@@ -90,7 +90,9 @@ Materially different plans now appear as complete parallel route lanes on a
 shared approximate time axis. Named train, metro, bus, taxi, flight and walking
 blocks start from the actual preceding stop; pauses and deliberate free time
 fill the day rather than reading as missing data. Pacing-only choices remain
-compact flex notes instead of duplicate lanes. The day map is opened from a
+compact flex notes instead of duplicate lanes. On phones, only one lane is
+visible beside the sticky time axis; horizontal swiping snaps between routes,
+with a current-route counter and arrow/keyboard controls as equivalents. The day map is opened from a
 single icon in the day header and appears in a closable modal. Every one of the 48 places
 has one of 33 local food recommendations, including why it is worthwhile,
 child-aware options/caveats, practical access restrictions, official links

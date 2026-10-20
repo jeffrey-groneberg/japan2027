@@ -56,6 +56,9 @@ The people planning and taking the trip described in the supplied itinerary.
   shared approximate time axis. Put concrete transport from the preceding stop,
   pauses and deliberate free time in the lane. Pacing-only choices become flex
   notes instead of visually duplicate lanes.
+- On mobile, show exactly one lane beside the sticky time axis and use native
+  horizontal swipe snapping to switch routes. Keep a visible route counter and
+  previous/next controls for keyboard and non-gesture access.
 - The user explicitly chose a culinary recommendation for every individual
   sightseeing place or district, not only one per city. Explain what makes it
   worthwhile, what may suit children, practical access restrictions and links.
