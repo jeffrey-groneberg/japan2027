@@ -219,6 +219,14 @@ Tiny logo lettering, artwork labels and narrow metadata are not a reusable minim
 
 ## Layout
 
+Home is now the default eighth main destination and alone contains the banner
+and station strip. Shared navigation precedes all panels, so operational panels
+start directly below it. On phones the horizontal tab rail is replaced by a
+compact sticky menu button and an animated two-column sitemap. The menu closes
+on selection, outside click or Escape and restores button focus. Mobile day and
+item screens continue to hide global navigation. This supersedes the former
+hero-before-every-panel structure.
+
 The shared page container caps at (1200px), centered with desktop side space (32px each). At (800px) and below the side space becomes (20px); at (600px) and below it becomes (16px). The spacing primitives record recurring literals from the stylesheet, not newly implemented CSS variables.
 
 - **Opening composition:** desktop pairs type with a slightly wider SVG column. At the phone breakpoint the composition stacks, and the art remains bounded rather than becoming a decorative page background.

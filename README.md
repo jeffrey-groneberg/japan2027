@@ -310,6 +310,12 @@ project URL. GitHub Pages caches assets for ten minutes, so `site/index.html`
 uses one shared `?v=` value for `styles.css` and `app.js`; update that value
 whenever either core asset changes.
 
+Home (`#view=home`, also the default URL) owns the animated banner and station
+overview. The other seven panels omit both and begin below the shared menu.
+On phones, the compact menu button opens an animated two-column sitemap;
+Escape, selection or an outside click closes it. Existing day/item deep links
+still open the focused mobile detail screens.
+
 To publish a new version, first commit the source changes, then run:
 
 ```sh

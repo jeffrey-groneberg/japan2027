@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const storageKey = "japan-vietnam-2027:planner:v1";
 const tabs = {
+  home: "Home",
   itinerary: "Reiseplan",
   travel: "Flüge & Anfahrt",
   stays: "Unterkünfte",
@@ -22,13 +23,15 @@ test.beforeEach(async ({ page }) => {
   }));
 });
 
-async function ready(page, url = "/?clawpilotTheme=light") {
+async function ready(page, url = "/?clawpilotTheme=light#view=itinerary") {
   await page.goto(url);
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(page.locator(".day-option")).toHaveCount(30);
 }
 
 async function show(page, view) {
+  const menu = page.locator("#mobile-menu-toggle");
+  if (await menu.isVisible() && await menu.getAttribute("aria-expanded") === "false") await menu.click();
   await page.getByRole("tab", { name: tabs[view], exact: typeof tabs[view] === "string" }).click();
   await expect(page.locator(`#panel-${view}`)).toBeVisible();
 }
@@ -48,6 +51,55 @@ async function openPoint(page, id) {
   return page.locator("#lane-detail");
 }
 
+test("Home owns the banner while task panels open directly below navigation", async ({ page }) => {
+  for (const width of [430, 1440]) {
+    await page.setViewportSize({ width, height: 932 });
+    await ready(page, "/?clawpilotTheme=light");
+    await expect(page.locator("#tab-home")).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator(".hero")).toBeVisible();
+    await expect(page.locator(".route-area")).toBeVisible();
+    await expect(page.locator("#panel-itinerary")).toBeHidden();
+    await page.getByRole("link", { name: "Reise entdecken" }).click();
+    await expect(page.locator("#panel-itinerary")).toBeVisible();
+    await expect(page.locator(".hero")).toBeHidden();
+    await expect(page.locator(".route-area")).toBeHidden();
+    expect(await page.locator("#panel-itinerary").evaluate((panel) => panel.getBoundingClientRect().top)).toBeLessThan(260);
+    await show(page, "stays");
+    await expect(page.locator(".hero")).toBeHidden();
+    await page.getByRole("link", { name: "Japan und Vietnam 2027, Startseite" }).click();
+    await expect(page.locator("#panel-home")).toBeVisible();
+    await page.locator('.route-stop[data-destination="kyoto"]').click();
+    await expect(page.locator("#panel-home")).toBeHidden();
+    await expect(page.locator(".day-option")).toHaveCount(4);
+    await expect(page.locator("#panel-itinerary")).toBeVisible();
+  }
+});
+
+test("mobile menu expands the full sitemap and closes on selection or Escape", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 430, height: 760 });
+  await ready(page, "/?clawpilotTheme=light");
+  const menu = page.locator("#mobile-menu-toggle");
+  const rail = page.locator(".planner-tabs");
+  await expect(rail).toBeHidden();
+  await menu.click();
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
+  await expect(rail.getByRole("tab")).toHaveCount(8);
+  await expect(rail).toHaveCSS("display", "grid");
+  await page.getByRole("tab", { name: "Unterkünfte", exact: true }).click();
+  await expect(page.locator("#panel-stays")).toBeVisible();
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await expect(rail).toBeHidden();
+  await expect(menu).toBeFocused();
+  await menu.click();
+  await page.keyboard.press("Escape");
+  await expect(rail).toBeHidden();
+  await expect(menu).toBeFocused();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await menu.click();
+  await expect(rail).toHaveCSS("animation-name", "none");
+});
+
 test("all destinations, date navigation, practical transport and search work", async ({ page }) => {
   await ready(page);
   await expect(page.locator("#day-title")).toHaveText("Abflug");
@@ -57,7 +109,7 @@ test("all destinations, date navigation, practical transport and search work", a
   await expect(page.locator(".transport-box")).toContainText("Keikyu");
   await expect(page.locator(".transport-box")).toContainText("Welches Ticket, wo kaufen?");
   for (const [id, count] of [["tokyo", 7], ["kyoto", 4], ["osaka", 5], ["vietnam", 12]]) {
-    await page.locator(`.route-stop[data-destination="${id}"]`).click();
+    await page.locator(`.filter-button[data-destination="${id}"]`).click();
     await expect(page.locator(".day-option")).toHaveCount(count);
     await expect(page.locator(`.filter-button[data-destination="${id}"]`)).toHaveAttribute("aria-pressed", "true");
   }
@@ -172,6 +224,7 @@ for (const theme of ["light", "dark"]) {
         }
       }
     }
+    await show(page, "home");
     await page.locator('.route-stop[data-destination="tokyo"]').click();
     const selectedResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
     violations.push(...selectedResults.violations.map((finding) => ({
@@ -249,12 +302,13 @@ test("delivery previews and browser errors", async ({ page }) => {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
-  await ready(page);
+  await ready(page, "/?clawpilotTheme=light#view=home");
   await page.evaluate(() => document.fonts.ready);
   const previewDirectory = process.env.PREVIEW_DIR ?? "test-results/previews";
   const capture = async (name) => page.screenshot({ path: `${previewDirectory}/${name}.png`, animations: "disabled" });
   const plannerTop = async () => page.locator("#planner").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 8));
   await capture("desktop-home");
+  await show(page, "itinerary");
   await plannerTop();
   await capture("desktop-itinerary");
   for (const view of ["travel", "stays", "dining", "festivals", "checklist"]) {
@@ -264,10 +318,11 @@ test("delivery previews and browser errors", async ({ page }) => {
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await show(page, "itinerary");
-  await page.goto("/?clawpilotTheme=light#view=itinerary");
+  await page.goto("/?clawpilotTheme=light#view=home");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await page.evaluate(() => window.scrollTo(0, 0));
   await capture("mobile-home");
+  await show(page, "itinerary");
   await plannerTop();
   await capture("mobile-itinerary-list");
   await page.getByRole("button", { name: "Montag, 5. Juli: Shibuya & Harajuku", exact: true }).click();
@@ -589,7 +644,7 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await page.goBack();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
   await expect(page.locator("body")).not.toHaveClass(/mobile-day-view/);
-  await expect(page.locator(".planner-tabs")).toBeVisible();
+  await expect(page.locator("#mobile-menu-toggle")).toBeVisible();
   await expect(page.locator(".day-selector")).toBeVisible();
   await expect(page.locator("#day-detail")).toBeHidden();
   await expect(selectedDay).toBeFocused();
@@ -721,7 +776,7 @@ test("motion animates the festival world, explains state and respects reduced mo
 
   await show(page, "travel");
   await expect(page.locator("#panel-travel")).toHaveCSS("animation-name", "panel-arrival");
-  await show(page, "itinerary");
+  await show(page, "home");
   await page.locator('.route-stop[data-destination="kyoto"]').click();
   await expect(page.locator('.route-stop[data-destination="kyoto"] .stop-art')).toHaveCSS("animation-name", "landmark-arrival");
   await page.evaluate(() => {
@@ -1001,12 +1056,8 @@ test("the dinner shortcut opens ideas for the selected Japanese city", async ({ 
   await expect(page.locator("#panel-dining")).toBeVisible();
   await expect(page.locator('[data-dining-destination="tokyo"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#dining-list .dining-option")).toHaveCount(4);
-  await expect(page.locator("#tab-dining")).toBeFocused();
-  expect(await page.locator("#tab-dining").evaluate((tab) => {
-    const rect = tab.getBoundingClientRect();
-    const rail = tab.parentElement.getBoundingClientRect();
-    return rect.left >= rail.left && rect.right <= rail.right;
-  })).toBe(true);
+  await expect(page.locator("#mobile-menu-toggle")).toBeFocused();
+  await expect(page.locator("#mobile-menu-label")).toHaveText("Menü · Kulinarik");
 });
 
 test("UZUMASA appears as a full-day ninja replacement rather than an addition to Nara", async ({ page }) => {

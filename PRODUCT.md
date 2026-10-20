@@ -22,6 +22,12 @@ The people planning and taking the trip described in the supplied itinerary.
 
 ## Capabilities and constraints
 
+- Home is the default main-menu destination and exclusively contains the
+  animated banner and four-station overview. All planning panels open directly
+  beneath the shared navigation without the banner. On mobile a compact sticky
+  menu button animates the complete eight-item sitemap open/closed; selection,
+  Escape or an outside click closes it. Day/item screens retain their back
+  controls instead of global navigation.
 - Preserve the source itinerary's dates, destinations, daily activities,
   transport instructions, accommodation alternatives, booking links, budget
   estimates and booking deadlines.

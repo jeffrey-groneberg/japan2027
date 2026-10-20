@@ -13,7 +13,7 @@ import { festivalOptions, festivalStatusLabels, fireworksContext } from "./festi
 import { buildDayLanes, formatLaneTime } from "./lane-data.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
-const views = ["itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
+const views = ["home", "itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
 const mobileItineraryQuery = matchMedia("(max-width: 600px)");
 const reducedMotionQuery = matchMedia("(prefers-reduced-motion: reduce)");
 const accommodationTransportNote = "Die Anfahrten im Tagesplan beziehen sich weiterhin auf die ursprünglichen Hauptunterkünfte; eine andere Auswahl ändert sie nicht automatisch.";
@@ -24,7 +24,7 @@ let selectedBase = "tokyo";
 let selectedDaySection = "plan";
 let selectedLaneBlock = null;
 let state = defaultState(trip);
-let currentView = "itinerary";
+let currentView = "home";
 let selectedDate = trip.startDate;
 let mobileDayOpen = false;
 let mobileItemOpen = false;
@@ -204,7 +204,7 @@ function applyPreferredTheme() {
 
 function writeLocation(mode = "replace", statePatch = {}) {
   const hash = new URLSearchParams({ view: currentView });
-  if (currentView !== "itinerary" || !mobileItineraryQuery.matches || mobileDayOpen) hash.set("day", selectedDate);
+  if (currentView !== "home" && (currentView !== "itinerary" || !mobileItineraryQuery.matches || mobileDayOpen)) hash.set("day", selectedDate);
   if (currentView === "itinerary" && mobileItineraryQuery.matches && mobileDayOpen) {
     hash.set("screen", mobileItemOpen ? "item" : "day");
     if (mobileItemOpen && selectedLaneBlock) hash.set("item", selectedLaneBlock);
@@ -229,6 +229,21 @@ function syncMobileDayView() {
   }
 }
 
+function toggleMobileMenu(open, restoreFocus = false) {
+  const nav = $(".planner-nav");
+  const closing = !open && (nav.classList.contains("menu-open") || nav.classList.contains("menu-closing"))
+    && mobileItineraryQuery.matches && !reducedMotionQuery.matches;
+  nav.classList.toggle("menu-closing", closing);
+  nav.classList.toggle("menu-open", open);
+  $("#mobile-menu-toggle").setAttribute("aria-expanded", String(open));
+  if (restoreFocus) $("#mobile-menu-toggle").focus({ preventScroll: true });
+}
+
+function focusActiveNavigation() {
+  const control = mobileItineraryQuery.matches ? $("#mobile-menu-toggle") : $(`#tab-${currentView}`);
+  control.focus({ preventScroll: true });
+}
+
 function setView(view, updateLocation = true) {
   currentView = view;
   syncMobileDayView();
@@ -245,6 +260,8 @@ function setView(view, updateLocation = true) {
   if (activeTab.offsetLeft < rail.scrollLeft) rail.scrollLeft = activeTab.offsetLeft;
   else if (tabEnd > rail.scrollLeft + rail.clientWidth) rail.scrollLeft = tabEnd - rail.clientWidth;
   document.title = `${$(`#tab-${view}`).textContent.trim()} · Japan & Vietnam 2027`;
+  $("#mobile-menu-label").textContent = `Menü · ${$(`#tab-${view}`).textContent.trim()}`;
+  toggleMobileMenu(false);
   requestAnimationFrame(() => {
     for (const context of mapContexts.values()) {
       if (mapIsVisible(context)) {
@@ -263,9 +280,11 @@ function activatePlannerView(view) {
     setView(view, false);
     renderItinerary();
     $("#panel-itinerary").scrollIntoView({ block: "start" });
+    toggleMobileMenu(false, true);
     return;
   }
   setView(view);
+  if (mobileItineraryQuery.matches) toggleMobileMenu(false, true);
 }
 
 function readLocation() {
@@ -280,7 +299,7 @@ function readLocation() {
   const requestedDate = params.get("day");
   const requestedScreen = params.get("screen");
   const requestedItem = params.get("item");
-  const resolvedView = views.includes(requestedView) ? requestedView : "itinerary";
+  const resolvedView = views.includes(requestedView) ? requestedView : (requestedView || requestedDate ? "itinerary" : "home");
   if (requestedDate) {
     if (trip.days.some((day) => day.date === requestedDate)) selectedDate = requestedDate;
     else {
@@ -713,7 +732,7 @@ function openBase(id) {
   renderBase();
   setView("bases");
   $("#planner").scrollIntoView({ block: "start" });
-  $("#tab-bases").focus({ preventScroll: true });
+  focusActiveNavigation();
 }
 
 function laneMapPoints(schedule) {
@@ -1192,7 +1211,7 @@ function renderDayDetail(day, days) {
           renderDiningList();
           setView("dining");
           $("#planner").scrollIntoView({ block: "start" });
-          $("#tab-dining").focus({ preventScroll: true });
+          focusActiveNavigation();
         }));
       }
       planPanel.append(shortcuts);
@@ -1367,7 +1386,7 @@ function renderChecklist() {
         event.preventDefault();
         setView(destinationsForTask[task.id]);
         $("#planner").scrollIntoView({ block: "start" });
-        $(`#tab-${currentView}`).focus({ preventScroll: true });
+        focusActiveNavigation();
       });
       copy.append(link);
     }
@@ -1559,6 +1578,20 @@ function downloadCalendar() {
 }
 
 function bindEvents() {
+  $(".planner-tabs").addEventListener("animationend", (event) => {
+    if (event.target === $(".planner-tabs")) $(".planner-nav").classList.remove("menu-closing");
+  });
+  $("#mobile-menu-toggle").addEventListener("click", () => {
+    toggleMobileMenu($("#mobile-menu-toggle").getAttribute("aria-expanded") !== "true");
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && $("#mobile-menu-toggle").getAttribute("aria-expanded") === "true") {
+      toggleMobileMenu(false, true);
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".planner-nav")) toggleMobileMenu(false);
+  });
   $("#day-search").addEventListener("input", (event) => {
     filters.query = event.target.value;
     renderItinerary();
@@ -1589,7 +1622,8 @@ function bindEvents() {
       if (target) {
         event.preventDefault();
         activatePlannerView(target);
-        $(`#tab-${target}`).focus();
+        if (mobileItineraryQuery.matches) $("#mobile-menu-toggle").focus({ preventScroll: true });
+        else $(`#tab-${target}`).focus();
       }
     });
   }
@@ -1608,7 +1642,7 @@ function bindEvents() {
         updateFilterControls();
       }
       renderItinerary();
-    }
+    } else renderItinerary();
     revealSelectedDay();
     if ((focusDayListAfterNavigation || wasMobileDayOpen) && !mobileDayOpen && currentView === "itinerary") {
       focusDayListAfterNavigation = false;

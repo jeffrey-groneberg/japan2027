@@ -72,8 +72,8 @@
     }
   </style>
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=4bd6eec">
-  <script type="module" src="./app.js?v=4bd6eec" id="app-module"></script>
+  <link rel="stylesheet" href="./styles.css?v=4d41f86">
+  <script type="module" src="./app.js?v=4d41f86" id="app-module"></script>
 </head>
 <body>
   <!--
@@ -104,6 +104,8 @@
       <symbol id="icon-car" viewBox="0 0 24 24"><path d="m5 16-2-2 2-6h14l2 6-2 2M5 8l2-4h10l2 4M4 14h16v5H4Z"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="15" r="1"/></symbol>
       <symbol id="icon-bus" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="17" rx="3"/><path d="M4 9h16M7 20v2m10-2v2M8 15h.01M16 15h.01"/></symbol>
       <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 5v14m8-14v14"/></symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-8h6v8"/></symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
       <symbol id="icon-bed" viewBox="0 0 24 24"><path d="M3 19V6m0 9h18v4m0-4V9a2 2 0 0 0-2-2h-7v8M3 11h9"/><path d="M5 7h4v4"/></symbol>
       <symbol id="icon-wallet" viewBox="0 0 24 24"><path d="M20 8V5H5a3 3 0 0 0 0 6h16v9H5a3 3 0 0 1-3-3V8"/><path d="M17 11v5h4m-4-2.5h.1"/></symbol>
       <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
@@ -151,7 +153,7 @@
   </div>
 
   <header class="masthead page-width">
-    <a class="brand" href="./" aria-label="Japan und Vietnam 2027, Startseite">
+    <a class="brand" href="#view=home" aria-label="Japan und Vietnam 2027, Startseite">
       <svg class="brand-mark" viewBox="0 0 50 50" aria-hidden="true">
         <circle class="scene-red scene-outline" cx="25" cy="25" r="22"/>
         <path class="scene-paper" d="m25 9 3.5 10.5L39 23l-10.5 3.5L25 37l-3.5-10.5L11 23l10.5-3.5Z"/>
@@ -168,6 +170,20 @@
   </header>
 
   <main>
+    <div class="planner-nav page-width">
+      <button type="button" class="button button-secondary mobile-menu-toggle" id="mobile-menu-toggle" aria-expanded="false" aria-controls="planner-menu"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg><span id="mobile-menu-label">Menü · Home</span></button>
+      <div class="planner-tabs" id="planner-menu" role="tablist" aria-label="Reiseplanung">
+        <button type="button" role="tab" id="tab-home" aria-controls="panel-home" aria-selected="true" data-view="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> Home</button>
+        <button type="button" role="tab" id="tab-itinerary" aria-controls="panel-itinerary" aria-selected="false" tabindex="-1" data-view="itinerary"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg> Reiseplan</button>
+        <button type="button" role="tab" id="tab-travel" aria-controls="panel-travel" aria-selected="false" tabindex="-1" data-view="travel"><svg class="icon" aria-hidden="true"><use href="#icon-plane"/></svg> Flüge &amp; Anfahrt</button>
+        <button type="button" role="tab" id="tab-stays" aria-controls="panel-stays" aria-selected="false" tabindex="-1" data-view="stays"><svg class="icon" aria-hidden="true"><use href="#icon-bed"/></svg> Unterkünfte</button>
+        <button type="button" role="tab" id="tab-bases" aria-controls="panel-bases" aria-selected="false" tabindex="-1" data-view="bases"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> Basen &amp; Einkaufen</button>
+        <button type="button" role="tab" id="tab-dining" aria-controls="panel-dining" aria-selected="false" tabindex="-1" data-view="dining"><svg class="icon" aria-hidden="true"><use href="#icon-food"/></svg> Kulinarik</button>
+        <button type="button" role="tab" id="tab-festivals" aria-controls="panel-festivals" aria-selected="false" tabindex="-1" data-view="festivals"><svg class="icon" aria-hidden="true"><use href="#icon-spark"/></svg> Feste &amp; Feuerwerk</button>
+        <button type="button" role="tab" id="tab-checklist" aria-controls="panel-checklist" aria-selected="false" tabindex="-1" data-view="checklist"><svg class="icon" aria-hidden="true"><use href="#icon-list"/></svg> Checkliste <span class="tab-count" id="tab-check-count">0/8</span></button>
+      </div>
+    </div>
+    <section id="panel-home" class="tab-panel" role="tabpanel" aria-labelledby="tab-home">
     <section class="hero">
       <div class="hero-inner page-width">
         <div class="hero-copy">
@@ -234,22 +250,14 @@
     <div class="page-width route-area">
       <nav id="route-stops" class="route-strip" aria-label="Die vier Stationen der Reise"></nav>
     </div>
+    </section>
 
     <div class="planner page-width" id="planner" tabindex="-1">
-      <div class="planner-tabs" role="tablist" aria-label="Reiseplanung">
-        <button type="button" role="tab" id="tab-itinerary" aria-controls="panel-itinerary" aria-selected="true" data-view="itinerary"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg> Reiseplan</button>
-        <button type="button" role="tab" id="tab-travel" aria-controls="panel-travel" aria-selected="false" tabindex="-1" data-view="travel"><svg class="icon" aria-hidden="true"><use href="#icon-plane"/></svg> Flüge &amp; Anfahrt</button>
-        <button type="button" role="tab" id="tab-stays" aria-controls="panel-stays" aria-selected="false" tabindex="-1" data-view="stays"><svg class="icon" aria-hidden="true"><use href="#icon-bed"/></svg> Unterkünfte</button>
-        <button type="button" role="tab" id="tab-bases" aria-controls="panel-bases" aria-selected="false" tabindex="-1" data-view="bases"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> Basen &amp; Einkaufen</button>
-        <button type="button" role="tab" id="tab-dining" aria-controls="panel-dining" aria-selected="false" tabindex="-1" data-view="dining"><svg class="icon" aria-hidden="true"><use href="#icon-food"/></svg> Kulinarik</button>
-        <button type="button" role="tab" id="tab-festivals" aria-controls="panel-festivals" aria-selected="false" tabindex="-1" data-view="festivals"><svg class="icon" aria-hidden="true"><use href="#icon-spark"/></svg> Feste &amp; Feuerwerk</button>
-        <button type="button" role="tab" id="tab-checklist" aria-controls="panel-checklist" aria-selected="false" tabindex="-1" data-view="checklist"><svg class="icon" aria-hidden="true"><use href="#icon-list"/></svg> Checkliste <span class="tab-count" id="tab-check-count">0/8</span></button>
-      </div>
 
       <p class="startup-notice" id="startup-notice" role="status">Der Reiseplan wird geladen. Falls er nicht erscheint, bitte die Seite neu laden.</p>
       <noscript><p class="inline-notice">Für Tagesauswahl, Karten und Checkliste muss JavaScript aktiviert sein.</p></noscript>
 
-      <section id="panel-itinerary" class="tab-panel" role="tabpanel" aria-labelledby="tab-itinerary">
+      <section id="panel-itinerary" class="tab-panel" role="tabpanel" aria-labelledby="tab-itinerary" hidden>
         <div class="panel-heading">
           <div><h2>Jeder Tag ein kleines Abenteuer.</h2></div>
           <button type="button" class="button button-secondary calendar-download"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg> In den Kalender</button>

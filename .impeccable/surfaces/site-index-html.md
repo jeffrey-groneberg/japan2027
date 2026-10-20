@@ -7,6 +7,11 @@ related_targets: ["site/styles.css","site/app.js","site/guide-data.js","site/map
 
 Mode: Operate.
 
+Current navigation: Home is the default eighth main destination, owning the
+animated hero and station strip exclusively. Shared navigation sits above all
+panels. Mobile uses a compact sticky menu button that animates the full sitemap
+open/closed; focused day/item screens still use only their back controls.
+
 Scope: site/index.html, site/styles.css and site/app.js.
 
 Job: Help the traveler find one useful day and its practical transport details
