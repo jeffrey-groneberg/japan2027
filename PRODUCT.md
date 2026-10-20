@@ -28,6 +28,12 @@ The people planning and taking the trip described in the supplied itinerary.
   Keep the train in one row on every screen, horizontally scrollable when
   necessary. Nose and carriages share roof, floor and stripe baselines;
   continuously passing scenery and sleepers communicate forward travel.
+  The nose faces left without mirroring text; fixed full-width rails and
+  whole-pixel sleeper movement must not wobble or expose edge gaps.
+  Keep the train and carriage hit targets stationary on hover; only scenery
+  receives scroll/pointer parallax.
+  Each carriage has a transparent panoramic window showing the actual shared
+  mountain background, not a separate miniature scene. Labels remain readable.
 - Desktop/tablet navigation must not scroll horizontally: measure the real
   menu widths and move only overflowing destinations into a “Mehr” disclosure.
   Restore them on resize/font load and preserve selection and keyboard focus.

@@ -314,8 +314,16 @@ Home (`#view=home`, also the default URL) owns the animated banner and station
 overview. The other seven panels omit both and begin below the shared menu.
 Its destination selector is an original Shinkansen-style train: four clickable
 carriages, window illustrations, wheels, rails and a decorative mountain layer.
-Small scroll/pointer parallax offsets separate landscape, train and rails;
-seamlessly passing scenery and faster-moving sleepers create continuous
+Small scroll/pointer parallax offsets move only the landscape; the train and
+its clickable carriages remain fixed, including on hover. The nose
+faces left and the labels retain their normal reading order. Rails span the
+full scene with no transform or wheel bounce; only the sleepers move in
+whole-pixel steps toward the right, matching leftward travel. The sleepers are
+fixed-width SVG rectangles, not a shifting CSS gradient, with overscan at both edges.
+Each carriage has a transparent panoramic window: the same single mountain
+landscape is visible behind the train and through all windows, with no
+separate miniature scenes or independent window animation.
+Seamlessly passing scenery and faster-moving sleepers create continuous
 forward travel without moving the clickable carriages. The train never wraps:
 small screens scroll the single row horizontally, including its nose.
 All motion stops offscreen, in background tabs or with Reduce Motion. The train

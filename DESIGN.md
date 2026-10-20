@@ -223,9 +223,20 @@ Home's station strip is now an original Shinkansen composition. Four buttons
 form the carriages with blue side bands, wheel pairs and landmark windows;
 a separate SVG nose completes the silhouette, with roof, floor and stripe
 aligned to the carriage CSS geometry. Narrow views horizontally scroll the
-same single-row train; carriages never wrap. Mountains, train and rails use small differential
-scroll/pointer offsets bounded to 20px; wheel motion is decorative and never
-moves the buttons continuously. A repeating landscape tile passes slowly while
+same single-row train; carriages never wrap. The nose faces left without
+mirroring text or reversing destination order. Only the scenery uses
+scroll/pointer offsets bounded to 20px; the train never shifts on hover.
+Rails stay fixed across the
+whole scene and wheels do not bounce; only four-pixel SVG sleepers pass in
+whole-pixel steps. A 21px pattern and 84px overscan prevent scaling or edge gaps
+throughout the one-second cycle; no gradient-position interpolation is used.
+Wheel pseudo-elements use border-box sizing and an explicit top edge so their
+16px outer diameter never covers the sleeper band.
+Each carriage has a 40px-high ink-framed transparent window above its labels.
+Carriage backgrounds paint around the opening so the actual single mountain
+layer behind the train shows through. There are no cloned window landscapes
+or independent window animations; the same scenery continues above the roof.
+A repeating landscape tile passes slowly toward the right while
 rail sleepers pass faster, creating continuous forward travel. Offscreen/hidden states and Reduce Motion
 stop all train motion. This is symbolic navigation, not geographic rail routing.
 

@@ -850,6 +850,17 @@ test("station train preserves all destinations and uses bounded reduced-motion-a
     await page.locator(".route-train-scene").scrollIntoViewIfNeeded();
     await expect(page.locator(".route-stop")).toHaveCount(4);
     await expect(page.locator(".train-wheels")).toHaveCount(4);
+    await expect(page.locator(".carriage-window")).toHaveCount(4);
+    await expect(page.locator(".carriage-window svg, .carriage-window-landscape")).toHaveCount(0);
+    await expect(page.locator(".route-train-landscape")).toHaveCount(1);
+    await expect(page.locator(".route-strip")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await expect(page.locator(".carriage-window").first()).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    expect(await page.locator(".route-stop").evaluateAll((cars) => cars.every((car) => {
+      const window = car.querySelector(".carriage-window").getBoundingClientRect();
+      const copy = car.querySelector(".stop-copy").getBoundingClientRect();
+      const body = car.getBoundingClientRect();
+      return window.left >= body.left && window.right <= body.right && window.bottom <= copy.top;
+    }))).toBe(true);
     const alignment = await page.locator(".route-train").evaluate((train) => {
       const body = train.querySelector(".route-strip").getBoundingClientRect();
       const nose = train.querySelector(".train-nose-art").getBoundingClientRect();
@@ -859,50 +870,111 @@ test("station train preserves all destinations and uses bounded reduced-motion-a
       const car = last.getBoundingClientRect();
       const stripe = getComputedStyle(last, "::before");
       const stripeBottom = car.bottom - Number.parseFloat(stripe.bottom);
+      const rail = train.closest(".route-train-scene").querySelector(".route-train-rails");
+      const sleeperTop = rail.getBoundingClientRect().top + Number.parseFloat(getComputedStyle(rail).borderTopWidth);
       return [
         Math.abs(body.top - (nose.top - 1)),
         Math.abs(body.bottom - (nose.bottom + 1)),
-        Math.abs(body.right - nose.left),
+        Math.abs(body.left - nose.right),
         Math.abs(band.bottom - stripeBottom),
         Math.abs(band.top - (stripeBottom - Number.parseFloat(stripe.height))),
         ...cars.map((node) => Math.abs(node.getBoundingClientRect().top - cars[0].getBoundingClientRect().top)),
+        ...[...train.querySelectorAll(".train-wheels")].flatMap((wheel) => {
+          return ["::before", "::after"].map((pseudo) => {
+            const style = getComputedStyle(wheel, pseudo);
+            const border = style.boxSizing === "border-box" ? 0 : Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth);
+            const wheelBottom = wheel.getBoundingClientRect().top + Number.parseFloat(style.top) + Number.parseFloat(style.height) + border;
+            return Math.max(0, wheelBottom - sleeperTop);
+          });
+        }),
       ];
     });
     expect(Math.max(...alignment)).toBeLessThan(1);
     if (width < 840) {
       const window = page.locator(".route-train-window");
       expect(await window.evaluate((node) => node.scrollWidth > node.clientWidth)).toBe(true);
-      await window.evaluate((node) => node.scrollLeft = node.scrollWidth);
       await expect(page.locator(".route-train-nose")).toBeInViewport();
+      await window.evaluate((node) => node.scrollLeft = node.scrollWidth);
+      await expect(page.locator(".route-stop").last()).toBeInViewport();
       await window.evaluate((node) => node.scrollLeft = 0);
     }
+    expect(await page.locator(".route-stop").evaluateAll((nodes) => nodes.map((node) => node.dataset.destination))).toEqual(["tokyo", "kyoto", "osaka", "vietnam"]);
     expect(await page.locator(".stop-copy").evaluateAll((nodes) => nodes.every((node) => node.scrollWidth <= node.clientWidth + 1))).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
   await page.emulateMedia({ reducedMotion: "no-preference" });
   const scene = page.locator(".route-train-scene");
   await expect(scene).toHaveClass(/motion-active/);
-  await expect(page.locator(".train-wheels").first()).toHaveCSS("animation-name", "train-ride");
+  await page.locator("#panel-home").evaluate((node) => Promise.all(node.getAnimations().map((animation) => animation.finished)));
+  await expect(page.locator(".train-wheels").first()).toHaveCSS("animation-name", "none");
   const landscape = page.locator(".route-train-landscape");
   const rails = page.locator(".route-train-rails");
   await expect(landscape).toHaveCSS("animation-name", "train-landscape-pass");
-  await expect(rails).toHaveCSS("animation-name", "train-sleepers-pass");
+  const sleepers = page.locator(".train-sleepers");
+  const sleepersStyle = () => sleepers.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return { name: style.animationName, position: new DOMMatrixReadOnly(style.transform).m41 };
+  });
+  await expect.poll(async () => (await sleepersStyle()).name).toBe("train-sleepers-pass");
+  await expect(rails).toHaveCSS("transform", "none");
+  const railGeometry = () => rails.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    const scene = node.parentElement.getBoundingClientRect();
+    return { left: rect.left - scene.left, bottom: scene.bottom - rect.bottom, width: rect.width, height: rect.height };
+  });
+  const fixedRails = await railGeometry();
   const initialLandscape = await landscape.evaluate((node) => getComputedStyle(node).transform);
-  const initialRails = await rails.evaluate((node) => getComputedStyle(node).backgroundPositionX);
+  const initialRails = (await sleepersStyle()).position;
   await expect.poll(() => landscape.evaluate((node) => getComputedStyle(node).transform)).not.toBe(initialLandscape);
-  await expect.poll(() => rails.evaluate((node) => getComputedStyle(node).backgroundPositionX)).not.toBe(initialRails);
+  await expect.poll(async () => (await sleepersStyle()).position).not.toBe(initialRails);
+  expect(Number.isInteger((await sleepersStyle()).position)).toBe(true);
+  expect(await sleepers.evaluate((node) => {
+    const animation = node.getAnimations()[0];
+    animation.pause();
+    const rails = node.parentElement.getBoundingClientRect();
+    const widths = [0, 250, 500, 750, 999, 1000].map((time) => {
+      animation.currentTime = time;
+      const rect = node.getBoundingClientRect();
+      if (rect.left > rails.left || rect.right < rails.right) throw new Error("Sleeper strip leaves an edge gap");
+      const sleeper = node.querySelector("pattern rect");
+      const matrix = node.getScreenCTM();
+      return sleeper.width.baseVal.value * Math.hypot(matrix.a, matrix.b);
+    });
+    animation.play();
+    return widths;
+  })).toEqual([4, 4, 4, 4, 4, 4]);
   const rect = await scene.boundingBox();
+  const carriageGeometry = () => page.locator(".route-train").evaluate((train) => {
+    const parent = train.parentElement.getBoundingClientRect();
+    return [...train.querySelectorAll(".route-stop")].map((car) => {
+      const rect = car.getBoundingClientRect();
+      return { left: rect.left - parent.left, top: rect.top - parent.top, width: rect.width, height: rect.height };
+    });
+  });
+  const fixedCarriages = await carriageGeometry();
   await page.mouse.move(rect.x + 10, rect.y + 40);
   const shift = () => scene.evaluate((node) => node.style.getPropertyValue("--train-landscape-x"));
   await expect.poll(shift).not.toBe("");
   const left = await shift();
   await page.mouse.move(rect.x + rect.width - 10, rect.y + 40);
   await expect.poll(shift).not.toBe(left);
+  const lastCar = page.locator(".route-stop").last();
+  const carRect = await lastCar.boundingBox();
+  await page.mouse.move(carRect.x + carRect.width / 2, carRect.y + carRect.height / 2);
+  expect(await lastCar.evaluate((node) => node.matches(":hover"))).toBe(true);
+  await expect(page.locator(".route-train")).toHaveCSS("transform", "none");
+  expect(await carriageGeometry()).toEqual(fixedCarriages);
   expect(Math.abs(Number.parseFloat(await shift()))).toBeLessThanOrEqual(20);
+  expect(await railGeometry()).toEqual(fixedRails);
+  expect(await rails.evaluate((node) => {
+    const rail = node.getBoundingClientRect();
+    const scene = node.parentElement.getBoundingClientRect();
+    return Math.abs(rail.left - scene.left) < 1 && Math.abs(rail.right - scene.right) < 1;
+  })).toBe(true);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.locator(".train-wheels").first()).toHaveCSS("animation-name", "none");
   await expect(landscape).toHaveCSS("animation-name", "none");
-  await expect(rails).toHaveCSS("animation-name", "none");
+  await expect.poll(async () => (await sleepersStyle()).name).toBe("none");
   await expect.poll(shift).toBe("");
   await page.locator('.route-stop[data-destination="tokyo"]').click();
   await expect(page.locator("#panel-itinerary")).toBeVisible();

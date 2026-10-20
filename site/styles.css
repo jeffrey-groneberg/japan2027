@@ -97,31 +97,35 @@ html[data-theme="dark"] .year-stamp { color: var(--cp-accent-fg); }
 .route-train-scene { position: relative; isolation: isolate; overflow: hidden; padding: 64px 8px 12px; border-radius: 18px; }
 .route-train-window { overflow-x: auto; padding: 2px 4px 16px; scrollbar-width: thin; }
 .route-train-window:focus-visible { outline-offset: -3px; }
-.route-train-scenery { position: absolute; z-index: -1; left: -20px; bottom: 24px; width: calc(100% + 40px); height: 200px; transform: translateX(var(--train-landscape-x, 0px)); }
+.route-train-scenery { position: absolute; z-index: -1; left: -20px; bottom: 24px; width: calc(100% + 40px); height: 280px; transform: translateX(var(--train-landscape-x, 0px)); }
 .route-train-landscape { display: block; width: 200%; height: 100%; }
 .train-distant { fill: color-mix(in srgb, var(--cp-link) 12%, var(--cp-bg)); }
 .train-near { fill: color-mix(in srgb, var(--cp-success) 13%, var(--cp-bg)); }
 .train-catenary { fill: none; stroke: var(--cp-border-strong); stroke-width: 2; opacity: .45; }
-.route-train { position: relative; min-width: 840px; padding-right: 84px; transform: translateX(var(--train-body-x, 0px)); }
-.route-train-nose { position: absolute; right: 0; top: 0; width: 84px; height: 100%; }
+.route-train { position: relative; min-width: 840px; padding-left: 84px; }
+.route-train-nose { position: absolute; left: 0; top: 0; width: 84px; height: 100%; transform: scaleX(-1); }
 .train-nose-art { position: absolute; top: 1px; left: 0; width: 100%; height: calc(100% - 2px); overflow: visible; }
 .train-nose-art path { vector-effect: non-scaling-stroke; }
 .train-nose-band { position: absolute; left: 0; right: 0; bottom: 25px; height: 12px; background: var(--cp-link); clip-path: polygon(0 0, 71% 0, 82% 100%, 0 100%); }
 .train-nose-shell { fill: var(--cp-surface); stroke: var(--cp-text); stroke-width: 2; }
 .train-windscreen { fill: var(--cp-link); stroke: var(--cp-text); stroke-width: 2; }
 .train-headlight { fill: var(--cp-warning); stroke: var(--cp-text); stroke-width: 1.5; }
-.route-train-rails { position: absolute; z-index: -1; inset: auto 0 13px; height: 9px; border-block: 2px solid var(--cp-border-strong); background: repeating-linear-gradient(90deg, transparent 0 17px, var(--cp-border-strong) 17px 21px); transform: translateX(var(--train-track-x, 0px)); }
-.route-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--cp-surface); border: 2px solid var(--cp-text); border-right: 0; border-radius: 22px 0 0 12px; }
-.route-stop { position: relative; display: flex; align-items: center; gap: 10px; padding: 18px 12px 38px; min-height: 128px; background: none; border: none; text-align: left; min-width: 0; transition: background .2s, color .2s; }
-.route-stop:first-child { border-radius: 20px 0 0 10px; }
+.route-train-rails { position: absolute; z-index: -1; inset: auto 0 13px; height: 9px; border-block: 2px solid var(--cp-border-strong); overflow: hidden; }
+.train-sleepers { position: absolute; top: 0; left: -84px; width: calc(100% + 168px); height: 100%; }
+.route-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 2px solid var(--cp-text); border-left: 0; border-radius: 0 22px 12px 0; }
+/* Paint around the window opening so the shared landscape shows through. */
+.route-stop { --carriage-fill: var(--cp-surface); position: relative; display: flex; align-items: center; gap: 10px; padding: 18px 12px 38px; min-height: 128px; background: linear-gradient(var(--carriage-fill), var(--carriage-fill)) top / 100% 24px no-repeat, linear-gradient(var(--carriage-fill), var(--carriage-fill)) bottom / 100% calc(100% - 64px) no-repeat, linear-gradient(var(--carriage-fill), var(--carriage-fill)) left / 10px 100% no-repeat, linear-gradient(var(--carriage-fill), var(--carriage-fill)) right / 10px 100% no-repeat; border: none; text-align: left; min-width: 0; transition: color .2s; }
+.route-stop:last-child { border-radius: 0 20px 10px 0; }
+.route-train .route-stop { min-height: 180px; padding-top: 72px; }
+.carriage-window { position: absolute; top: 24px; left: 10px; right: 10px; height: 40px; border: 2px solid var(--cp-text); border-radius: 10px; pointer-events: none; }
 .route-stop:not(:last-child)::after { content: ""; position: absolute; right: 0; top: 10px; bottom: 12px; width: 3px; border-inline: 1px solid var(--cp-border-strong); background: var(--cp-bg); }
 .route-stop::before { content: ""; position: absolute; inset: auto 0 23px; height: 12px; background: var(--cp-link); }
-.route-stop:hover { background: var(--cp-bg-elevated); }
+.route-stop:hover { --carriage-fill: var(--cp-bg-elevated); }
 .route-stop:focus-visible { outline-offset: -5px; }
-.route-stop[aria-pressed="true"] { background: var(--cp-highlight); }
+.route-stop[aria-pressed="true"] { --carriage-fill: color-mix(in srgb, var(--cp-accent) 10%, var(--cp-surface)); }
 .route-stop[aria-pressed="true"]::before { background: var(--cp-danger); }
 .train-wheels { position: absolute; inset: auto 18px -9px; height: 16px; pointer-events: none; }
-.train-wheels::before, .train-wheels::after { content: ""; position: absolute; width: 16px; height: 16px; border: 4px solid var(--cp-text); border-radius: 50%; background: var(--cp-border-strong); }
+.train-wheels::before, .train-wheels::after { content: ""; box-sizing: border-box; position: absolute; top: 0; width: 16px; height: 16px; border: 4px solid var(--cp-text); border-radius: 50%; background: var(--cp-border-strong); }
 .train-wheels::before { left: 0; }
 .train-wheels::after { right: 0; }
 .stop-number { display: grid; place-items: center; width: 30px; height: 30px; flex-shrink: 0; border: 1.5px solid var(--cp-border); border-radius: 50%; font-size: .75rem; font-weight: 800; background: var(--cp-surface); }
@@ -684,17 +688,11 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 .print-content { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .route-train-scene.motion-active .train-wheels { animation: train-ride 3.2s ease-in-out infinite; }
   .route-train-scene.motion-active .route-train-landscape { animation: train-landscape-pass 28s linear infinite; }
-  .route-train-scene.motion-active .route-train-rails { animation: train-sleepers-pass 1s linear infinite; }
-  .route-train-scenery, .route-train-rails { transition: transform .16s ease-out; }
-  @keyframes train-landscape-pass { to { transform: translateX(-50%); } }
-  @keyframes train-sleepers-pass { to { background-position-x: -84px; } }
-  @keyframes train-ride {
-    0%, 100% { transform: translateY(0); }
-    35% { transform: translateY(-1px); }
-    70% { transform: translateY(1px); }
-  }
+  .route-train-scene.motion-active .train-sleepers { animation: train-sleepers-pass 1s steps(84, end) infinite; }
+  .route-train-scenery { transition: transform .16s ease-out; }
+  @keyframes train-landscape-pass { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  @keyframes train-sleepers-pass { to { transform: translateX(84px); } }
   .hero-art.motion-entered .festival-scene { animation: festival-arrival .75s var(--ease-out) both; }
   .hero-art.motion-active .hero-wash { animation: hero-wash 4.8s ease-in-out; }
   .hero-art.motion-active .hero-sun { animation: hero-sun 4.2s ease-in-out; }

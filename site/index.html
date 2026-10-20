@@ -72,8 +72,8 @@
     }
   </style>
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=31858ca">
-  <script type="module" src="./app.js?v=31858ca" id="app-module"></script>
+  <link rel="stylesheet" href="./styles.css?v=7a9a398">
+  <script type="module" src="./app.js?v=7a9a398" id="app-module"></script>
 </head>
 <body>
   <!--
@@ -275,7 +275,12 @@
           </div>
         </div>
         </div>
-        <div class="route-train-rails" aria-hidden="true"></div>
+        <div class="route-train-rails" aria-hidden="true">
+          <svg class="train-sleepers" width="100%" height="100%">
+            <defs><pattern id="train-sleeper-pattern" width="21" height="5" patternUnits="userSpaceOnUse"><rect x="17" width="4" height="5" fill="var(--cp-border-strong)"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#train-sleeper-pattern)"/>
+          </svg>
+        </div>
       </div>
     </div>
     </section>

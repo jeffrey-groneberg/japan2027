@@ -13,6 +13,15 @@ scroll/pointer parallax separates the layers, pauses offscreen/hidden and
 respects Reduce Motion. The train never wraps: mobile scrolls the single row
 horizontally. Roof, floor and stripe align at the nose; continuous scenery and
 sleeper movement create forward travel while buttons remain steady.
+The nose faces left, with readable labels in the original destination order.
+Rail borders remain fixed edge-to-edge; four-pixel SVG sleepers move in whole
+pixels toward the right with overscan at both ends. No wheel bounce, animated
+gradient or rail parallax is used.
+Hover and pointer motion never move the train or its buttons; parallax affects
+only the decorative scenery.
+Transparent panoramic windows above each carriage label show the actual single
+mountain background behind the train. No separate landscapes are drawn inside
+the windows.
 
 Current navigation: Home is the default eighth main destination, owning the
 animated hero and station strip exclusively. Shared navigation sits above all
