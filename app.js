@@ -321,6 +321,13 @@ function focusMobileDayList() {
   });
 }
 
+function positionMobileDayScreen(focusTitle = false) {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    $("#panel-itinerary").scrollIntoView({ block: "start" });
+    if (focusTitle) $("#day-title").focus({ preventScroll: true });
+  }));
+}
+
 function showMobileDayList() {
   if (!mobileItineraryQuery.matches) return;
   if (history.state?.mobileDayEntry) {
@@ -344,8 +351,7 @@ function chooseDay(day, focusTarget = "list") {
   renderItinerary(false);
   writeLocation(opensMobileDay ? "push" : "replace", opensMobileDay ? { mobileDayEntry: true } : {});
   if (opensMobileDay) {
-    $("#panel-itinerary").scrollIntoView({ block: "start" });
-    $("#day-title").focus({ preventScroll: true });
+    positionMobileDayScreen(true);
   } else if (focusTarget === "list") $(`[data-date="${day.date}"]`, $("#day-list"))?.focus({ preventScroll: true });
   else {
     const nextFocus = $(`.day-navigation [data-direction="${focusTarget}"]:not(:disabled)`) ?? $("#day-title");
@@ -617,6 +623,7 @@ function appendFlexNotes(container, notes = []) {
 
 function renderLaneDetail(container, block, showOnMap) {
   container.replaceChildren();
+  container.classList.toggle("lane-detail-empty-state", !block);
   if (!block) {
     container.append(
       element("h4", "", "Route genauer ansehen"),
@@ -990,6 +997,7 @@ function renderDayDetail(day, days) {
     );
     laneBoard = renderLaneBoard(laneSchedule, selectLaneBlock);
     planPanel.append(laneBoard, laneDetail);
+    if (mobileItineraryQuery.matches && mobileDayOpen) planPanel.prepend(laneBoard, laneDetail);
     renderLaneDetail(laneDetail, selectedLaneBlock ? blocksByKey.get(selectedLaneBlock) : null, showOnMap);
     if (guide.correction) {
       const correction = element("div", "planning-correction");
@@ -1447,7 +1455,7 @@ function bindEvents() {
     if ((focusDayListAfterNavigation || wasMobileDayOpen) && !mobileDayOpen && currentView === "itinerary") {
       focusDayListAfterNavigation = false;
       focusMobileDayList();
-    }
+    } else if (mobileItineraryQuery.matches && mobileDayOpen && currentView === "itinerary") positionMobileDayScreen();
   });
   mobileItineraryQuery.addEventListener("change", () => {
     if (currentView === "itinerary") renderItinerary();
@@ -1470,6 +1478,7 @@ function initialize() {
   bindEvents();
   $("#startup-notice").hidden = true;
   revealSelectedDay();
+  if (mobileItineraryQuery.matches && mobileDayOpen && currentView === "itinerary") positionMobileDayScreen();
 }
 
 try {

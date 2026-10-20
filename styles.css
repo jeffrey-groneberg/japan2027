@@ -770,6 +770,9 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   #panel-itinerary[data-mobile-screen="day"] .itinerary-layout { display: block; }
   #panel-itinerary[data-mobile-screen="day"] .day-detail { display: block; margin-inline: -16px; padding: 18px 16px 28px; border-inline: 0; border-radius: 0; }
   #panel-itinerary[data-mobile-screen="day"] .mobile-day-back { display: inline-flex; min-height: 44px; margin-bottom: 18px; padding: 8px 13px; font-size: .78rem; }
+  #panel-itinerary[data-mobile-screen="day"] .lane-intro,
+  #panel-itinerary[data-mobile-screen="day"] .lane-detail-empty-state { display: none; }
+  #panel-itinerary[data-mobile-screen="day"] .lane-board-scroll { max-height: max(360px, calc(100dvh - 470px)); }
   .mobile-day-back .icon { width: 17px; height: 17px; }
   .day-detail { padding: 22px 20px; }
   .place-item { gap: 10px; }
