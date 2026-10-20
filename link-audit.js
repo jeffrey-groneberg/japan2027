@@ -2502,6 +2502,56 @@ export const linkAudit = {
     "pageTitle": "Google Maps",
     "message": "Einzeln geprüft am 19.10.2026: HTTP 200; Zielname beziehungsweise abgeglichene Koordinaten bleiben im Google-Maps-Parameter erhalten."
   },
+  "https://en.hirakuza.net/sumolp2/": {
+    "label": "HIRAKUZA Ginza Tokyo · Sumo-Show mit Kaiseki",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-20T04:40:00+00:00",
+    "finalUrl": "https://en.hirakuza.net/sumolp2/",
+    "pageTitle": "THE SUMO LIVE RESTAURANT HIRAKUZA GINZA TOKYO",
+    "message": "Einzeln geprüft am 20.10.2026: HTTP 200; offizielle englische Betreiberseite mit Show, Essen, Preisen, Kinderangebot und Adresse abgeglichen. Spielplan, Preise und Plätze für Juli 2027 bleiben separat zu bestätigen."
+  },
+  "https://www.google.com/maps/search/?api=1&query=THE+SUMO+LIVE+RESTAURANT+HIRAKUZA+GINZA+TOKYO+1-9-13+Ginza+Chuo-ku+Tokyo": {
+    "label": "Google Maps: HIRAKUZA Ginza Tokyo · Sumo-Show mit Kaiseki",
+    "kind": "dining-map",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-20T04:40:00+00:00",
+    "finalUrl": "https://www.google.com/maps/search/?api=1&query=THE+SUMO+LIVE+RESTAURANT+HIRAKUZA+GINZA+TOKYO+1-9-13+Ginza+Chuo-ku+Tokyo&ucbcb=1",
+    "pageTitle": "Google Maps",
+    "message": "Einzeln geprüft am 20.10.2026: HTTP 200; Zielname und vollständige Ginza-Adresse bleiben im Google-Maps-Parameter erhalten."
+  },
+  "https://ars-hirakuzat.triplabo.com/home?lang=en": {
+    "label": "HIRAKUZA Ginza Tokyo · Sumo-Show mit Kaiseki: Reservierung",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-20T04:40:00+00:00",
+    "finalUrl": "https://ars-hirakuzat.triplabo.com/home?lang=en",
+    "pageTitle": "Triplabo | Book Your Tickets, Passes and Things To Do",
+    "message": "Einzeln geprüft am 20.10.2026: HTTP 200; der offizielle Tokyo-Buchungslink wurde von der HIRAKUZA-Betreiberseite übernommen. Konkrete Juli-2027-Termine bleiben zu bestätigen."
+  },
+  "https://hirakuza.net/tokyo/show_ticket/": {
+    "label": "Show, Preise, Kinderessen & Abgrenzung zum Profi-Sumo",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-20T04:40:00+00:00",
+    "finalUrl": "https://hirakuza.net/tokyo/show_ticket/",
+    "pageTitle": "SHOW & TICKET | THE SUMO LIVE RESTAURANT HIRAKUZA GINZA TOKYO",
+    "message": "Einzeln geprüft am 20.10.2026: HTTP 200; offizielle Angaben zu zweistündigem Programm, englischer Show, Kinderpreisen, Kinderessen, Sitzklassen und Stornierung abgeglichen."
+  },
+  "https://hirakuza.net/tokyo/access/": {
+    "label": "Offizielle Anreise aus Ginza und Yurakucho",
+    "kind": "official",
+    "status": "ok",
+    "httpStatus": 200,
+    "checkedAt": "2026-10-20T04:40:00+00:00",
+    "finalUrl": "https://hirakuza.net/tokyo/access/",
+    "pageTitle": "ACCESS | THE SUMO LIVE RESTAURANT HIRAKUZA GINZA TOKYO",
+    "message": "Einzeln geprüft am 20.10.2026: HTTP 200; Adresse sowie Fußwege ab Ginza-itchome, Ginza, Yurakucho und Takaracho abgeglichen."
+  },
   "https://hirakuza.net/osaka/": {
     "label": "HIRAKUZA Osaka · Sumo-Show mit Bento",
     "kind": "official",

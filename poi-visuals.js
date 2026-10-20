@@ -6,7 +6,7 @@ function sceneFor(point) {
   if (point.id === "crossing") return "crossing";
   if (point.id === "zauo-shinjuku") return "fishing";
   if (point.id === "kura-namba") return "sushi";
-  if (point.id === "hirakuza-osaka") return "sumo";
+  if (["hirakuza-osaka", "hirakuza-tokyo"].includes(point.id)) return "sumo";
   if (point.id === "uzumasa") return "ninja";
   if (["iriya-asagao", "sensoji-hozuki"].includes(point.id)) return "flowers";
   if (["gion-evening", "gion-parade"].includes(point.id)) return "float";
