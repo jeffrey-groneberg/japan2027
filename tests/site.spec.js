@@ -67,8 +67,8 @@ test("all destinations, date navigation, practical transport and search work", a
   await expect(page.locator("#day-title")).toHaveText("Fushimi Inari & Nintendo Museum");
   await expect(page.locator(".day-date")).toContainText("12. Juli");
   await page.getByRole("searchbox").fill("zz-not-a-place");
-  await expect(page.getByRole("heading", { name: "Hier ist gerade kein Reisetag." })).toBeVisible();
-  await page.getByRole("button", { name: "Alle Tage anzeigen" }).click();
+  await expect(page.getByRole("heading", { name: "Keine Reisetage gefunden" })).toBeVisible();
+  await page.getByRole("button", { name: "Filter zurücksetzen" }).click();
   await expect(page.locator(".day-option")).toHaveCount(30);
 });
 
@@ -89,7 +89,7 @@ test("favorites and booking progress persist without a backend", async ({ page }
   await page.getByRole("button", { name: /Gemerkte/ }).click();
   await expect(page.locator(".day-option")).toHaveCount(1);
   await page.getByRole("button", { name: "Tag aus Merkliste entfernen: Abflug", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Deine Merkliste wartet noch." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Keine gemerkten Tage" })).toBeVisible();
 });
 
 test("accommodation selections persist and actual bedroom problems are explained", async ({ page }) => {
@@ -414,8 +414,9 @@ test("day planning uses complete parallel lanes and reveals details on demand", 
   await expect(page.getByRole("tab", { name: "Alternativen" })).toHaveCount(0);
   await expect(page.locator(".lane-header")).toHaveCount(3);
   await expect(page.locator(".lane-block-travel").first()).toContainText("Unterkunft in Komagome");
-  await expect(page.locator("#lane-detail")).toContainText("Wähle einen Block");
+  await expect(page.locator("#lane-detail")).toBeHidden();
   await page.locator(".lane-track").first().locator('[data-place-id="nintendoTokyo"]').click();
+  await expect(page.locator("#lane-detail")).toBeVisible();
   await expect(page.locator("#lane-detail")).toContainText("Lieblingssouvenir");
   await expect(page.locator("#lane-detail .place-description")).toBeVisible();
   await expect(page.locator("#lane-detail .resource-links a").first()).toBeVisible();
@@ -480,7 +481,8 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
 });
 
 test("mobile navigates from the day list into a dedicated day screen and back", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 430, height: 932 });
   await ready(page, "/?clawpilotTheme=light&mobileScreen=1#view=itinerary");
   const panel = page.locator("#panel-itinerary");
   const selectedDay = page.getByRole("button", { name: "Samstag, 10. Juli: Akihabara & Tsukiji", exact: true });
@@ -499,16 +501,30 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.locator("#day-title")).toHaveText("Akihabara & Tsukiji");
   await expect(page.locator("#day-title")).toBeFocused();
   await expect(page).toHaveURL(/view=itinerary&day=2027-07-10&screen=day/);
-  await expect(page.locator(".lane-intro")).toBeHidden();
-  await expect(page.locator(".lane-detail-empty-state")).toBeHidden();
+  await expect(page.locator(".lane-intro, .lane-detail-empty-state")).toHaveCount(0);
+  await expect(page.locator("#lane-detail")).toBeHidden();
   const compactLayout = await page.evaluate(() => {
-    const board = document.querySelector(".lane-board-scroll").getBoundingClientRect();
+    const boardNode = document.querySelector(".lane-board-scroll");
+    const board = boardNode.getBoundingClientRect();
     const summary = document.querySelector(".day-summary").getBoundingClientRect();
-    return { boardTop: board.top, boardBottom: board.bottom, summaryTop: summary.top, viewportHeight: innerHeight };
+    const visualHeight = visualViewport?.height ?? innerHeight;
+    return {
+      boardTop: board.top,
+      boardBottom: board.bottom,
+      summaryTop: summary.top,
+      viewportHeight: visualHeight,
+      availableHeight: Number.parseFloat(getComputedStyle(boardNode).getPropertyValue("--lane-available-height")),
+      expectedHeight: Math.max(240, Math.floor(visualHeight - board.top - 12)),
+    };
   });
   expect(compactLayout.boardTop).toBeLessThan(compactLayout.viewportHeight * 0.62);
   expect(compactLayout.boardBottom).toBeLessThanOrEqual(compactLayout.viewportHeight + 4);
   expect(compactLayout.summaryTop).toBeGreaterThanOrEqual(compactLayout.boardBottom);
+  expect(Math.abs(compactLayout.availableHeight - compactLayout.expectedHeight)).toBeLessThanOrEqual(2);
+
+  await page.setViewportSize({ width: 430, height: 760 });
+  await expect.poll(() => page.locator(".lane-board-scroll").evaluate((board) => board.getBoundingClientRect().bottom)).toBeLessThanOrEqual(764);
+  await page.setViewportSize({ width: 430, height: 932 });
 
   await page.goBack();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
@@ -535,6 +551,36 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeHidden();
 });
 
+test("mobile lane sizing falls back without Visual Viewport or container-unit assumptions", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: undefined });
+  });
+  await page.setViewportSize({ width: 430, height: 932 });
+  await ready(page, "/?clawpilotTheme=light&fallbackSizing=1#view=itinerary&day=2027-07-10");
+  const sizing = await page.locator(".lane-board-scroll").evaluate((scroll) => {
+    const board = scroll.querySelector(".lane-board");
+    const viewport = scroll.getBoundingClientRect();
+    const axis = scroll.querySelector(".lane-time-axis").getBoundingClientRect();
+    const visibleLanes = [...scroll.querySelectorAll(".lane-track")].filter((track) => {
+      const rect = track.getBoundingClientRect();
+      return Math.min(rect.right, viewport.right) - Math.max(rect.left, axis.right) > 2;
+    }).length;
+    return {
+      availableHeight: getComputedStyle(scroll).getPropertyValue("--lane-available-height"),
+      laneWidth: getComputedStyle(board).getPropertyValue("--lane-mobile-width"),
+      columns: getComputedStyle(board).gridTemplateColumns,
+      bottom: viewport.bottom,
+      viewportHeight: innerHeight,
+      visibleLanes,
+    };
+  });
+  expect(sizing.availableHeight).toMatch(/px$/);
+  expect(sizing.laneWidth).toMatch(/px$/);
+  expect(sizing.columns).toMatch(/px/);
+  expect(sizing.bottom).toBeLessThanOrEqual(sizing.viewportHeight + 4);
+  expect(sizing.visibleLanes).toBe(1);
+});
+
 test("all lane headers use the same opaque surface in light and dark mode", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   for (const theme of ["light", "dark"]) {
@@ -543,6 +589,21 @@ test("all lane headers use the same opaque surface in light and dark mode", asyn
     expect(new Set(colors).size, theme).toBe(1);
     expect(colors[0], theme).not.toMatch(/^rgba\([^)]*,\s*(?:0|0?\.\d+)\)$/);
   }
+});
+
+test("the planner carries the festival rhythm visual language into its work surfaces", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light&rhythmVisuals=1#view=itinerary&day=2027-07-10");
+  await expect(page.locator(".lane-route-mark")).toHaveCount(4);
+  const laneStyling = await page.locator(".lane-header").evaluateAll((headers) => ({
+    topBorders: headers.map((header) => getComputedStyle(header).borderTopColor),
+    backgrounds: headers.map((header) => getComputedStyle(header).backgroundColor),
+  }));
+  expect(new Set(laneStyling.topBorders).size).toBe(4);
+  expect(new Set(laneStyling.backgrounds).size).toBe(1);
+  await expect(page.locator(".lane-track").first()).toHaveCSS("background-image", /radial-gradient/);
+  await expect(page.locator(".lane-block-activity").first()).toHaveCSS("border-bottom-width", "3px");
+  await expect(page.locator(".day-option[aria-pressed='true'] .day-option-date strong")).toHaveCSS("border-top-style", "double");
+  expect(await page.locator(".panel-heading h2").first().evaluate((heading) => getComputedStyle(heading, "::after").backgroundImage)).toContain("linear-gradient");
 });
 
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
@@ -572,7 +633,7 @@ test("removed source, budget and footer blocks no longer occupy any planner pane
   for (const view of Object.keys(tabs)) {
     await show(page, view);
     const text = await page.locator("body").innerText();
-    expect(text).not.toMatch(/Vorlage|Budget|Planungsstand|Ein Sommer, den wir nicht vergessen|Reiseplan drucken/);
+    expect(text).not.toMatch(/Vorlage|Budget|Planungsstand|Ein Sommer, den wir nicht vergessen|Reiseplan drucken|Jede Spalte ist eine vollständige Route|Wähle einen Block|Route genauer ansehen|Eine Nummer antippen|Alle Routenstopps gemeinsam|Spontan heißt|Schritt für Schritt/);
   }
   await page.goto("/#view=budget&day=2027-07-07");
   await expect(page.locator("#panel-itinerary")).toBeVisible();

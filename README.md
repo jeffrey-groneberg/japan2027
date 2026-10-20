@@ -24,8 +24,12 @@ vendored locally; optional background maps come from OpenStreetMap.
   search, filters and the compact day list. Selecting a day opens a dedicated
   full-width day screen with an “Alle Reisetage” back action. Browser Back and
   direct day links preserve the same navigation model. On that screen the lane
-  board comes immediately after title/tabs and fits the remaining Pro-Max
-  viewport with internal scrolling; summaries and festival notes follow below.
+  board comes immediately after title/tabs. Its height is calculated from the
+  live Visual Viewport and current board position, so Safari chrome, rotation
+  and safe-area changes are reflected without device-model detection.
+- The planner carries the original festival/rhythm identity beyond the hero:
+  route drums, four festival lane colors, beat dots, ticket-like activity
+  blocks and destination-colored day marks replace a spreadsheet-like surface.
 - Select a numbered stop to open descriptions, official links, Google Maps and
   culinary advice directly below the lanes.
   Compact photo thumbnails and larger, credited local photos make places
@@ -235,15 +239,24 @@ Development checks require Node.js 22 or newer:
 npm ci
 npm run check
 npm test
-npx playwright install chromium
+npx playwright install chromium webkit
 npm run test:browser
+npm run test:browser:webkit
 ```
 
-The browser suite covers interactions, persistence and storage failures,
+The browser suites cover Chromium plus WebKit (Safari and iPhone browsers such
+as Brave). Firefox-compatible fallbacks avoid relying on Visual Viewport,
+container units or dynamic viewport units alone; Gecko can additionally be run
+with `npx playwright test --browser=firefox` on hosts supported by the bundled
+Firefox runner. The suite covers interactions, persistence and storage failures,
 calendar export, keyboard controls, light/dark
 accessibility, responsive layouts, map consent, numbered points, popups, map
 failures and shopping bases. It also captures desktop and mobile
 previews under the ignored `test-results/previews/` directory.
+
+Interface copy stays terse: controls, statuses and factual travel/safety
+information remain; tutorial prose explaining how to operate lanes, maps or
+filters is intentionally omitted.
 
 Culinary tips distinguish an individual restaurant from an explicitly labeled
 food area or seasonal stand. Children's suitability is practical guidance,

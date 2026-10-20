@@ -31,6 +31,9 @@ The people planning and taking the trip described in the supplied itinerary.
   scope; factual source data may remain internally for provenance.
 - The source includes Vietnam as well as Japan; retain both countries.
 - Keep the itinerary in German.
+- Keep interface copy terse. Preserve actions, status messages and factual
+  travel/safety/booking guidance, but do not add tutorial prose explaining how
+  lanes, maps, filters or detail panels work.
 - Distinguish source estimates and suggestions from confirmed bookings or
   independently verified travel information.
 - Personal selections and checklist progress belong to the current browser;
@@ -64,7 +67,13 @@ The people planning and taking the trip described in the supplied itinerary.
   opens a dedicated full-width detail screen with a clear back action. Existing
   day deep links and browser Back must open/close that detail state correctly.
   Put the route board before summaries and optional event notes, hide redundant
-  lane instructions there and size the board to the remaining dynamic viewport.
+  lane instructions there and size the board from the actual Visual Viewport,
+  measured board position and safe-area inset rather than a device-specific
+  height or fixed subtraction.
+- Support modern WebKit, Chromium and Gecko behavior through progressive
+  enhancement: Visual Viewport falls back to `innerHeight`, container-unit lane
+  sizing receives a measured pixel value, and dynamic viewport CSS has `vh`
+  fallbacks.
 - The user explicitly chose a culinary recommendation for every individual
   sightseeing place or district, not only one per city. Explain what makes it
   worthwhile, what may suit children, practical access restrictions and links.

@@ -96,14 +96,27 @@ with a current-route counter and arrow/keyboard controls as equivalents.
 The mobile Reiseplan itself is master/detail: tools and the compact day list
 form the first screen, while selecting a date opens a dedicated full-width day
 screen with an “Alle Reisetage” action and browser-history support. The route
-carousel appears immediately after the title/tabs and uses the remaining
-dynamic viewport; summary and festival context move below it. Desktop retains
+carousel appears immediately after the title/tabs. Its internal height comes
+from the live Visual Viewport, rendered board top and safe-area inset rather
+than a fixed device size; summary and festival context move below it. Desktop retains
 the side-by-side selector and detail. The day map is opened from a
 single icon in the day header and appears in a closable modal. Every one of the 48 places
 has one of 33 local food recommendations, including why it is worthwhile,
 child-aware options/caveats, practical access restrictions, official links
 and named Google Maps searches. Food recommendations live as nested
 disclosures inside the selected lane detail.
+
+The work surface now carries the hero's festival/rhythm character: destination-
+colored double-ring day marks, four equally structured route drum badges,
+matching beat-dot tracks, ticket-like activity blocks and four-color heading
+bars. No copied game characters or assets are used. Tutorial UI prose is
+removed; controls and structure carry interaction, while factual travel,
+booking, safety and child guidance remains.
+
+Browser behavior is progressively enhanced: live Visual Viewport sizing falls
+back to `innerHeight`, JavaScript supplies pixel lane widths when container
+units are unavailable, and `vh` fallbacks precede `dvh`. Chromium and WebKit
+are automated, with standards-based Gecko fallbacks retained.
 
 Vietnam is intentionally quieter: only Hoi An, Marble Mountains and Ba Na
 Hills remain external excursions. All other resort days are simple hotel,

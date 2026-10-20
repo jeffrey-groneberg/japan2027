@@ -9,6 +9,7 @@
     "check": "node --check site/app.js && node --check site/lib.js && node --check site/trip-data.js && node --check site/guide-data.js && node --check site/extras.js && node --check site/map.js && node --check site/link-audit.js && node --check site/dining-data.js && node --check site/festival-data.js && node --check site/lane-data.js && node --check site/travel-data.js && node --check site/poi-photos.js && node --check site/poi-visuals.js",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
+    "test:browser:webkit": "playwright test --browser=webkit",
     "deploy": "node scripts/publish-pages.mjs"
   },
   "devDependencies": {

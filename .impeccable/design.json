@@ -194,13 +194,15 @@
   ],
   "narrative": {
     "northStar": "Japanese summer-festival rhythm-arcade",
-    "overview": "“Playful, but clean” is expressed through rounded display lettering, festival red, blue and amber, and original outlined SVG scenery. Fuji, the train, torii, onigiri and suitcase belong to the same flat-vector world. The reference is a Japanese summer festival with a light rhythm-arcade influence, not copied game characters, logos or artwork.\n\nThe working interface is deliberately quieter than its illustration. Neutral surfaces, thin dividers, clear labels and compact disclosures make practical detail readable. Expression lives in lettering, drawn geometry and a few purposeful accents; it does not turn every planning row into decorative artwork.\n\nLocation detail pairs compact, numbered thumbnails with larger photo postcards on expansion. Licensed archive photographs show real places; clearly labeled original scenes cover missing or seasonally misleading imagery and the family dinner/festival options. This extends the incumbent festival world without changing the hero or introducing another visual system.",
+    "overview": "“Playful, but clean” is expressed through rounded display lettering, festival red, blue and amber, and original outlined SVG scenery. Fuji, the train, torii, onigiri and suitcase belong to the same flat-vector world. The reference is a Japanese summer festival with a light rhythm-arcade influence, not copied game characters, logos or artwork.\n\nThe working interface is deliberately quieter than its illustration while carrying the same rhythm language. Neutral surfaces, thin dividers, clear labels and compact disclosures make practical detail readable; destination-colored day rings, four equal route tones, drum-like badges, beat-dot tracks, ticket edges and short four-color bars keep the planner from feeling like a spreadsheet. Controls and structure teach the interaction without tutorial prose.\n\nLocation detail pairs compact, numbered thumbnails with larger photo postcards on expansion. Licensed archive photographs show real places; clearly labeled original scenes cover missing or seasonally misleading imagery and the family dinner/festival options. This extends the incumbent festival world without changing the hero or introducing another visual system.",
     "keyCharacteristics": [
       "Original outlined SVG festival geometry and locally hosted rounded lettering.",
       "Festival red, blue and amber above quiet, theme-aware neutrals.",
+      "Four equally structured route tones with drum badges, beat tracks and ticket-like activity blocks.",
       "One selected day, labeled task tabs and closed-by-default detail.",
       "Credited archive photos and explicit illustration labels, with booking/date status visible before expansion.",
-      "Visible keyboard states and responsive desktop-to-phone reflow."
+      "One-lane mobile route swiping, dedicated mobile day screens and visible keyboard alternatives.",
+      "Controls remain self-explanatory without tutorial or hand-holding copy."
     ],
     "rules": [
       {
@@ -223,7 +225,9 @@
       "**Do** use the exact existing `--cp-*` variables and their light/dark assignments for every component color.",
       "**Do** pair locally hosted Lilita One headings with the recorded local UI body stack.",
       "**Do** keep the selected-day overview compact, with complete route lanes, explicit travel and selected place/food detail behind the two labeled day-local tabs.",
+      "**Do** repeat the original rhythm signature through destination day rings, equal route tones, drum badges, beat dots, ticket edges and short four-color bars.",
       "**Do** use original, consistent SVG icons and scenery; preserve visible focus, meaningful state and reduced-motion behavior.",
+      "**Do** let controls, grouping and status labels explain interaction; retain factual travel, booking, safety, child and uncertainty guidance.",
       "**Do** credit local archive photos with author, source, license and crop wording; explicitly label original illustrations and explain image failures without hiding independent links.",
       "**Do** expose booking requirements and unconfirmed festival dates before expansion, keeping family evening choices optional.",
       "**Do** keep map consent, attribution, recoverable loading states and independent place links visible where relevant."
@@ -232,6 +236,7 @@
       "**Don't** copy game or film characters, logos, artwork or music into authored UI assets to strengthen the festival reference.",
       "**Don't** replace the primary display face with an installed system display font or use emoji/glyphs as the icon system.",
       "**Don't** add invented kickers, hard-offset card shadows or a synthetic color palette as inherited house style.",
+      "**Don't** restore tutorial prose that explains how to click, swipe, expand, read route lanes or use the day map.",
       "**Don't** restore removed budget, template/source-reference, print or footer UI on the authority of dormant selectors or stale notes.",
       "**Don't** treat automated map fixture tiles, unused theme effects or tiny one-off artwork lettering as reusable design tokens.",
       "**Don't** present an illustration as a location photograph, a walk-in policy as guaranteed availability or an annual festival rule as a confirmed 2027 programme."

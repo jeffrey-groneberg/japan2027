@@ -83,7 +83,7 @@ export async function createPlaceMap(container, points, { popupFor, onStatus }) 
     tiles.on("tileload", () => {
       receivedTile = true;
       clearTimeout(timeout);
-      if (!tileFailures) onStatus("Karte geladen. Die Nummern gehören zur Ortsliste darunter.", false);
+      if (!tileFailures) onStatus("Karte geladen.", false);
     });
     tiles.on("tileerror", () => {
       tileFailures += 1;
