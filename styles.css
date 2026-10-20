@@ -111,6 +111,9 @@ html[data-theme="dark"] .year-stamp { color: var(--cp-accent-fg); }
 .stop-art { width: 66px; height: 58px; margin-left: auto; }
 
 .planner { padding-bottom: 56px; }
+.planner-nav { position: sticky; top: 0; z-index: 8; background: var(--cp-bg); }
+.mobile-menu-toggle { display: none; }
+#panel-home { padding-top: 0; }
 .planner:focus { outline: none; }
 .planner-tabs { position: sticky; top: 0; z-index: 5; display: flex; align-items: stretch; gap: 24px; background: var(--cp-bg); border-bottom: 1px solid var(--cp-border); padding-top: 8px; overflow-x: auto; scrollbar-width: thin; }
 .planner-tabs [role="tab"] { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 60px; padding: 12px 2px 14px; flex-shrink: 0; border: none; border-bottom: 3px solid var(--cp-bg); background: none; color: var(--cp-text-soft); font-size: .9rem; font-weight: 700; white-space: nowrap; }
@@ -763,9 +766,16 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   body.mobile-day-view .masthead,
   body.mobile-day-view .hero,
   body.mobile-day-view .route-area,
+  body.mobile-day-view .planner-nav,
   body.mobile-day-view .planner-tabs { display: none; }
   body.mobile-day-view .planner { padding-bottom: 0; }
   .page-width { width: calc(100% - 32px); }
+  .planner-nav { padding-block: 8px; }
+  .mobile-menu-toggle { display: inline-flex; min-height: 44px; padding: 8px 14px; font-size: .8rem; }
+  .planner-nav .planner-tabs { display: none; }
+  .planner-nav:is(.menu-open, .menu-closing) .planner-tabs { position: absolute; top: 100%; left: 0; right: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 12px; background: var(--cp-surface); border: 1px solid var(--cp-border-strong); border-radius: 14px; animation: menu-arrival .22s var(--ease-out); }
+  .planner-nav.menu-closing .planner-tabs { animation: menu-departure .18s ease-in both; pointer-events: none; }
+  .planner-nav:is(.menu-open, .menu-closing) .planner-tabs [role="tab"] { justify-content: start; min-width: 0; min-height: 48px; padding: 10px; white-space: normal; text-align: left; border-radius: 8px; }
   .day-map-dialog { width: calc(100vw - 16px); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: 14px; }
   .day-map-dialog-header { min-height: 58px; padding: 9px 9px 9px 16px; }
   .day-map-dialog-header h4 { font-size: 1.05rem; }
@@ -928,6 +938,9 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .footer-inner { gap: 20px; }
   .privacy-note { font-size: .7rem; }
 }
+
+@keyframes menu-arrival { from { opacity: .2; clip-path: inset(0 0 100%); transform: translateY(-6px); } to { opacity: 1; clip-path: inset(0); transform: translateY(0); } }
+@keyframes menu-departure { to { opacity: 0; clip-path: inset(0 0 100%); transform: translateY(-6px); } }
 
 @media (max-width: 360px) {
   .countdown { display: none; }
