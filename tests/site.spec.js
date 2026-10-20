@@ -299,6 +299,7 @@ test("delivery previews and browser errors", async ({ page }) => {
   await page.locator("#day-detail").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 80));
   await capture("mobile-shibuya-guide");
   await page.getByRole("button", { name: "Tageskarte schließen" }).click();
+  await page.getByRole("button", { name: "Alle Reisetage" }).click();
   await show(page, "bases");
   await plannerTop();
   await capture("mobile-bases");
@@ -426,14 +427,15 @@ test("day planning uses complete parallel lanes and reveals details on demand", 
   await expect(page.locator("#day-panel-plan")).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
-  await expect(page.locator(".lane-board-scroll")).toHaveCSS("overflow-x", "auto");
+  await expect(page.locator(".lane-board-scroll")).toHaveCSS("overflow-x", "hidden");
+  await expect(page.locator(".lane-board-scroll")).toHaveCSS("touch-action", "pan-y");
   expect(await page.locator(".lane-board-scroll").evaluate((node) => node.scrollWidth > node.clientWidth)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await daySection(page, "Anfahrt & Tickets");
   await expect(page.locator("#day-panel-transit .transit-steps")).toBeVisible();
 });
 
-test("mobile shows exactly one lane and snaps between routes by swipe, buttons and keyboard", async ({ page }) => {
+test("mobile shows exactly one lane and changes routes only with buttons", async ({ page }) => {
   const visibleLaneCount = () => page.locator(".lane-board-scroll").evaluate((scroll) => {
     const viewport = scroll.getBoundingClientRect();
     const axis = scroll.querySelector(".lane-time-axis").getBoundingClientRect();
@@ -451,11 +453,15 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
     await expect(status).toContainText("Route A · Empfohlene Route");
     await expect(status).toContainText("1 von 4");
     await expect(page.locator(".lane-mobile-route-mark")).toHaveText("A");
-    await expect(scroll).toHaveCSS("scroll-snap-type", "x mandatory");
+    await expect(scroll).toHaveCSS("overflow-x", "hidden");
+    await expect(scroll).toHaveCSS("scroll-snap-type", "none");
+    await expect(scroll).toHaveCSS("touch-action", "pan-y");
     await expect.poll(visibleLaneCount).toBe(1);
     expect(await scroll.evaluate((node) => {
+      const viewport = node.getBoundingClientRect();
+      const axis = node.querySelector(".lane-time-axis").getBoundingClientRect();
       const track = node.querySelector(".lane-track").getBoundingClientRect();
-      return Math.abs(track.width - (node.clientWidth - 62));
+      return Math.abs(track.width - (node.clientWidth - (axis.right - viewport.left)));
     })).toBeLessThan(2);
 
     await page.getByRole("button", { name: "Nächste Route" }).click();
@@ -464,21 +470,57 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
     await expect.poll(() => scroll.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
     await expect.poll(visibleLaneCount).toBe(1);
 
-    await scroll.evaluate((node) => node.scrollBy({ left: node.clientWidth * 0.9, behavior: "auto" }));
+    await page.getByRole("button", { name: "Nächste Route" }).click();
     await expect(status).toContainText("Route C · Mehr Gaming, kein Ginza");
+    await expect(page.locator(".lane-mobile-route-mark")).toHaveText("C");
     await expect.poll(visibleLaneCount).toBe(1);
 
-    await scroll.focus();
-    await page.keyboard.press("End");
+    await page.getByRole("button", { name: "Nächste Route" }).click();
     await expect(status).toContainText("Route D · HIRAKUZA Ginza statt Akihabara");
+    await expect(page.locator(".lane-mobile-route-mark")).toHaveText("D");
     await expect(page.getByRole("button", { name: "Nächste Route" })).toBeDisabled();
     await expect.poll(visibleLaneCount).toBe(1);
+    await page.getByRole("button", { name: "Vorherige Route" }).click();
+    await expect(status).toContainText("Route C · Mehr Gaming, kein Ginza");
   }
 
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-10");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(page.locator(".lane-mobile-nav")).toBeHidden();
+});
+
+test("mobile opens lane items as a third-level detail screen", async ({ page }) => {
+  await page.setViewportSize({ width: 430, height: 932 });
+  await ready(page, "/?clawpilotTheme=light&itemScreen=1#view=itinerary&day=2027-07-05&screen=day");
+  const panel = page.locator("#panel-itinerary");
+  const block = page.locator('.lane-track').first().locator('[data-place-id="nintendoTokyo"]');
+  const blockKey = await block.getAttribute("data-lane-block");
+
+  await block.click();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "item");
+  await expect(page.locator("body")).toHaveClass(/mobile-item-view/);
+  await expect(page).toHaveURL(new RegExp(`screen=item&item=${encodeURIComponent(blockKey)}`));
+  await expect(page.getByRole("button", { name: "Zur Tagesroute" })).toBeVisible();
+  await expect(page.locator(".lane-board-shell")).toBeHidden();
+  await expect(page.locator("#day-title")).toBeHidden();
+  await expect(page.locator("#lane-detail")).toBeVisible();
+  await expect(page.locator("#lane-detail")).toBeFocused();
+  await expect(page.locator("#lane-detail")).toContainText("Nintendo TOKYO");
+  await expect(page.locator("#lane-detail .resource-links a").first()).toBeVisible();
+
+  await page.getByRole("button", { name: "Zur Tagesroute" }).click();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "day");
+  await expect(page.locator("body")).not.toHaveClass(/mobile-item-view/);
+  await expect(page).toHaveURL(/screen=day/);
+  await expect(page).not.toHaveURL(/item=/);
+  await expect(page.locator(".lane-board-shell")).toBeVisible();
+  await expect(page.locator("#lane-detail")).toBeHidden();
+  await expect(block).toBeFocused();
+
+  await page.goForward();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "item");
+  await expect(page.locator("#lane-detail")).toContainText("Nintendo TOKYO");
 });
 
 test("mobile navigates from the day list into a dedicated day screen and back", async ({ page }) => {
@@ -598,6 +640,15 @@ test("mobile lane sizing falls back without Visual Viewport or container-unit as
 });
 
 test("all lane headers use the same opaque surface in light and dark mode", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await ready(page, "/?clawpilotTheme=light&equalHeaders=1#view=itinerary&day=2027-07-13");
+  const headerGeometry = await page.locator(".lane-header").evaluateAll((headers) => headers.map((header) => {
+    const rect = header.getBoundingClientRect();
+    return { top: rect.top, bottom: rect.bottom, height: rect.height };
+  }));
+  expect(Math.max(...headerGeometry.map(({ bottom }) => bottom)) - Math.min(...headerGeometry.map(({ bottom }) => bottom))).toBeLessThan(1);
+  expect(Math.max(...headerGeometry.map(({ height }) => height)) - Math.min(...headerGeometry.map(({ height }) => height))).toBeLessThan(1);
+
   await page.setViewportSize({ width: 390, height: 844 });
   for (const theme of ["light", "dark"]) {
     await ready(page, `/?clawpilotTheme=${theme}&opaqueHeaders=1#view=itinerary&day=2027-07-10`);
@@ -653,6 +704,10 @@ test("culinary recommendations describe the experience, children and actual acce
   await point.locator(".food-recommendation").scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${previewDirectory}/desktop-food-tip.png`, animations: "disabled" });
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('.lane-track').first().locator('[data-place-id="takeshita"]').click();
+  point = page.locator("#lane-detail");
+  await expect(page.locator("#panel-itinerary")).toHaveAttribute("data-mobile-screen", "item");
+  await point.locator(".food-recommendation > summary").click();
   await point.locator(".food-recommendation").scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${previewDirectory}/mobile-food-tip.png`, animations: "disabled" });
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-12");
@@ -854,7 +909,7 @@ test("festival proposals are connected to the right day and never promise 2027 f
 
 test("inline POIs show credited local photographs and clearly labeled original illustrations", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
-  const point = await openPoint(page, "takeshita");
+  let point = await openPoint(page, "takeshita");
   const photo = point.locator(".poi-figure img");
   await photo.scrollIntoViewIfNeeded();
   await expect.poll(() => photo.evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -864,7 +919,10 @@ test("inline POIs show credited local photographs and clearly labeled original i
   const preview = process.env.PREVIEW_DIR ?? "test-results/previews";
   await point.screenshot({ path: `${preview}/desktop-poi-postcard.png`, animations: "disabled" });
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('.lane-track').first().locator('[data-place-id="takeshita"]').click();
+  point = page.locator("#lane-detail");
   await point.screenshot({ path: `${preview}/mobile-poi-postcard.png`, animations: "disabled" });
+  await page.getByRole("button", { name: "Zur Tagesroute" }).click();
   const crossing = await openPoint(page, "crossing");
   await expect(crossing.locator(".poi-figure")).toContainText("keine Ortsaufnahme");
   await expect(crossing.locator(".poi-figure svg use")).toHaveAttribute("href", /poi-illustrations\.svg#scene-crossing$/);

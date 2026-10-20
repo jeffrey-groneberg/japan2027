@@ -17,9 +17,9 @@ vendored locally; optional background maps come from OpenStreetMap.
   height reflects approximate duration; named train, metro, bus, taxi, flight
   and walking blocks start from the actual preceding stop. Meals, recovery and
   deliberate free time are visible instead of looking like missing plan data.
-- On phones, the time axis stays fixed beside exactly one route. Swipe
-  horizontally to the next or previous lane; the visible route label, arrow
-  controls and keyboard navigation provide equivalent non-gesture access.
+- On phones, the time axis stays fixed beside exactly one route. Horizontal
+  touch panning is disabled; the visible previous/next buttons are the only
+  way to change lanes.
 - The mobile itinerary uses a list/detail flow: the Reiseplan tab first shows
   search, filters and the compact day list. Selecting a day opens a dedicated
   full-width day screen with an “Alle Reisetage” back action. Browser Back and
@@ -27,12 +27,13 @@ vendored locally; optional background maps come from OpenStreetMap.
   the global masthead, hero, station strip and planner tabs; its compact route
   switcher replaces the duplicate lane header so the timeline receives the
   remaining live Visual Viewport. Safari chrome, rotation and safe-area changes
-  are reflected without device-model detection.
+  are reflected without device-model detection. Selecting a lane item opens a
+  third, history-backed item screen with a “Zur Tagesroute” action.
 - The planner carries the original festival/rhythm identity beyond the hero:
   route drums, four festival lane colors, beat dots, ticket-like activity
   blocks and destination-colored day marks replace a spreadsheet-like surface.
 - Select a numbered stop to open descriptions, official links, Google Maps and
-  culinary advice directly below the lanes.
+  culinary advice inline on desktop or on its own mobile detail screen.
   Compact photo thumbnails and larger, credited local photos make places
   recognizable; original Japanese-style illustrations fill clearly labeled
   gaps rather than pretending to be photographs.

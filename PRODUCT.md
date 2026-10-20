@@ -59,9 +59,9 @@ The people planning and taking the trip described in the supplied itinerary.
   shared approximate time axis. Put concrete transport from the preceding stop,
   pauses and deliberate free time in the lane. Pacing-only choices become flex
   notes instead of visually duplicate lanes.
-- On mobile, show exactly one lane beside the sticky time axis and use native
-  horizontal swipe snapping to switch routes. Keep a visible route counter and
-  previous/next controls for keyboard and non-gesture access.
+- On mobile, show exactly one lane beside the sticky time axis. Disable
+  horizontal touch panning and switch routes only with the visible
+  previous/next buttons and route counter.
 - Treat the mobile itinerary as master/detail navigation, not one long page:
   the default Reiseplan screen contains tools and the day list; selecting a day
   opens a dedicated full-width detail screen with a clear back action. Existing
@@ -71,6 +71,8 @@ The people planning and taking the trip described in the supplied itinerary.
   its duplicate mobile lane header with the compact route switcher, and size
   the board from the actual Visual Viewport, measured board position and
   safe-area inset rather than a device-specific height or fixed subtraction.
+- Selecting a mobile lane block opens a third-level item screen with its own
+  “Zur Tagesroute” action. Do not append item details below the mobile lane.
 - Support modern WebKit, Chromium and Gecko behavior through progressive
   enhancement: Visual Viewport falls back to `innerHeight`, container-unit lane
   sizing receives a measured pixel value, and dynamic viewport CSS has `vh`

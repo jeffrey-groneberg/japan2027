@@ -313,7 +313,7 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-board-scroll { container-type: inline-size; max-height: min(74vh, 760px); margin-top: 14px; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--cp-border); border-radius: 14px; background: var(--cp-bg-elevated); scrollbar-width: thin; }
 .lane-board-scroll:focus-visible { outline-offset: 4px; }
 .lane-board { display: grid; gap: 8px; align-items: start; padding: 10px; }
-.lane-corner, .lane-header { position: sticky; top: 0; z-index: 5; min-height: 98px; padding: 10px; border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated); }
+.lane-corner, .lane-header { position: sticky; top: 0; z-index: 5; align-self: stretch; min-height: 98px; padding: 10px; border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated); }
 .lane-corner { left: 0; z-index: 7; display: flex; align-items: end; color: var(--cp-text-soft); font-size: .68rem; font-weight: 700; }
 .lane-header { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-content: start; gap: 9px; min-width: 0; border-top: 4px solid var(--lane-accent); background: var(--cp-bg-elevated); }
 .lane-header .lane-route-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 4px double var(--lane-accent); border-radius: 50%; background: var(--cp-surface); color: var(--cp-text); font-family: var(--font-display); font-size: 1rem; line-height: 1; }
@@ -785,6 +785,23 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   #panel-itinerary[data-mobile-screen="day"] .itinerary-layout { display: block; }
   #panel-itinerary[data-mobile-screen="day"] .day-detail { display: block; min-height: 100vh; min-height: 100dvh; margin-inline: -16px; padding: 14px 16px 28px; padding-top: max(14px, env(safe-area-inset-top, 0px)); border-inline: 0; border-radius: 0; }
   #panel-itinerary[data-mobile-screen="day"] .mobile-day-back { display: inline-flex; min-height: 44px; margin-bottom: 12px; padding: 8px 13px; font-size: .78rem; }
+  #panel-itinerary[data-mobile-screen="day"] #lane-detail { display: none; }
+  #panel-itinerary[data-mobile-screen="item"] { padding-top: 0; }
+  #panel-itinerary[data-mobile-screen="item"] > .panel-heading,
+  #panel-itinerary[data-mobile-screen="item"] > .itinerary-tools,
+  #panel-itinerary[data-mobile-screen="item"] > .destination-filters,
+  #panel-itinerary[data-mobile-screen="item"] .day-selector,
+  #panel-itinerary[data-mobile-screen="item"] .day-topline,
+  #panel-itinerary[data-mobile-screen="item"] .day-date,
+  #panel-itinerary[data-mobile-screen="item"] #day-title,
+  #panel-itinerary[data-mobile-screen="item"] .day-tabs { display: none; }
+  #panel-itinerary[data-mobile-screen="item"] .itinerary-layout { display: block; }
+  #panel-itinerary[data-mobile-screen="item"] .day-detail { display: block; min-height: 100vh; min-height: 100dvh; margin-inline: -16px; padding: 14px 16px 28px; padding-top: max(14px, env(safe-area-inset-top, 0px)); border-inline: 0; border-radius: 0; }
+  #panel-itinerary[data-mobile-screen="item"] .mobile-day-back { display: inline-flex; min-height: 44px; margin-bottom: 18px; padding: 8px 13px; font-size: .78rem; }
+  #panel-itinerary[data-mobile-screen="item"] #day-panel-plan { padding-top: 0; }
+  #panel-itinerary[data-mobile-screen="item"] #day-panel-plan > :not(#lane-detail) { display: none; }
+  #panel-itinerary[data-mobile-screen="item"] #lane-detail { display: block; margin-top: 0; padding: 0; border: 0; border-radius: 0; background: transparent; }
+  #panel-itinerary[data-mobile-screen="item"] #day-panel-transit { display: none; }
   #panel-itinerary[data-mobile-screen="day"] .lane-board-scroll { max-height: var(--lane-available-height, 60vh); max-height: calc(var(--lane-available-height, 60dvh) - env(safe-area-inset-bottom, 0px)); }
   .mobile-day-back .icon { width: 17px; height: 17px; }
   .day-detail { padding: 22px 20px; }
@@ -810,14 +827,13 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .lane-mobile-nav-single { justify-content: center; }
   .lane-mobile-nav-single .lane-route-button { display: none; }
   .lane-route-button { flex: 0 0 44px; min-width: 44px; width: 44px; height: 44px; padding: 10px; }
-  .lane-board-scroll { margin-top: 8px; scroll-snap-type: x mandatory; scroll-padding-left: 56px; overscroll-behavior-inline: contain; touch-action: pan-x pan-y; }
+  .lane-board-scroll { margin-top: 8px; overflow-x: hidden; overflow-y: auto; scroll-snap-type: none; overscroll-behavior-inline: none; touch-action: pan-y; }
   .lane-board { width: max-content; min-width: max-content !important; grid-template-columns: 44px repeat(var(--lane-count), var(--lane-mobile-width, calc(100cqw - 62px))) !important; gap: 6px; padding: 6px; }
   .lane-board-multiple { padding-right: 46px; }
   body.mobile-day-view .lane-corner,
   body.mobile-day-view .lane-header { display: none; }
   .lane-corner, .lane-time-axis { left: 6px; box-shadow: -7px 0 0 var(--cp-bg-elevated), 6px 0 0 var(--cp-bg-elevated); }
   .lane-time-axis { min-width: 44px; }
-  .lane-track { scroll-snap-align: start; scroll-snap-stop: always; }
   .lane-corner, .lane-header { padding: 9px 8px; }
   .lane-header-title { font-size: .75rem; }
   .lane-header-difference { font-size: .61rem; }
