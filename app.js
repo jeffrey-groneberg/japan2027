@@ -611,11 +611,32 @@ function renderLaneDetail(container, block, showOnMap) {
 }
 
 function renderLaneBoard(schedule, selectBlock) {
+  const shell = element("section", "lane-board-shell");
   const scroll = element("div", "lane-board-scroll");
   scroll.setAttribute("role", "region");
   scroll.setAttribute("aria-label", "Parallele Tagesrouten mit ungefährer Zeitachse");
   scroll.tabIndex = 0;
+  let activeLaneIndex = 0;
+  let goToLane = () => {};
+  const mobileNavigation = element("div", "lane-mobile-nav");
+  mobileNavigation.setAttribute("role", "group");
+  mobileNavigation.setAttribute("aria-label", "Zwischen Tagesrouten wechseln");
+  const previousLane = button("", "icon-button lane-route-button", () => goToLane(activeLaneIndex - 1));
+  previousLane.setAttribute("aria-label", "Vorherige Route");
+  previousLane.append(graphic("icon-chevron", "icon previous-icon"));
+  const routeStatus = element("p", "lane-mobile-status");
+  routeStatus.id = "lane-mobile-status";
+  routeStatus.setAttribute("aria-live", "polite");
+  routeStatus.setAttribute("aria-atomic", "true");
+  const nextLane = button("", "icon-button lane-route-button", () => goToLane(activeLaneIndex + 1));
+  nextLane.setAttribute("aria-label", "Nächste Route");
+  nextLane.append(graphic("icon-chevron"));
+  mobileNavigation.append(previousLane, routeStatus, nextLane);
+  mobileNavigation.hidden = schedule.lanes.length < 2;
+  scroll.setAttribute("aria-describedby", routeStatus.id);
   const board = element("div", "lane-board");
+  if (schedule.lanes.length > 1) board.classList.add("lane-board-multiple");
+  board.style.setProperty("--lane-count", schedule.lanes.length);
   const scale = 1.8;
   const trackHeight = Math.max(280, (schedule.end - schedule.start) * scale);
   board.style.gridTemplateColumns = `56px repeat(${schedule.lanes.length}, minmax(220px, 1fr))`;
@@ -682,7 +703,65 @@ function renderLaneBoard(schedule, selectBlock) {
     board.append(track);
   }
   scroll.append(board);
-  return scroll;
+  const headers = [...board.querySelectorAll(".lane-header")];
+  let renderedLaneIndex = -1;
+  function snapOffset() {
+    return Number.parseFloat(getComputedStyle(scroll).scrollPaddingLeft) || 0;
+  }
+  function updateNavigation(index) {
+    activeLaneIndex = Math.max(0, Math.min(schedule.lanes.length - 1, index));
+    if (activeLaneIndex === renderedLaneIndex) return;
+    renderedLaneIndex = activeLaneIndex;
+    const lane = schedule.lanes[activeLaneIndex];
+    routeStatus.replaceChildren(
+      element("strong", "", `${lane.label} · ${lane.title}`),
+      element("span", "", `${activeLaneIndex + 1} von ${schedule.lanes.length} · nach links oder rechts wischen`),
+    );
+    previousLane.disabled = activeLaneIndex === 0;
+    nextLane.disabled = activeLaneIndex === schedule.lanes.length - 1;
+  }
+  goToLane = (index, behavior = "smooth") => {
+    const targetIndex = Math.max(0, Math.min(schedule.lanes.length - 1, index));
+    const header = headers[targetIndex];
+    if (!header) return;
+    updateNavigation(targetIndex);
+    scroll.scrollTo({
+      left: Math.max(0, header.offsetLeft - snapOffset()),
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : behavior,
+    });
+  };
+  let scrollFrame;
+  let settleTimer;
+  scroll.addEventListener("scroll", () => {
+    cancelAnimationFrame(scrollFrame);
+    clearTimeout(settleTimer);
+    scrollFrame = requestAnimationFrame(() => {
+      const target = scroll.scrollLeft + snapOffset();
+      let nearestIndex = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+      headers.forEach((header, index) => {
+        const distance = Math.abs(header.offsetLeft - target);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+      updateNavigation(nearestIndex);
+    });
+    settleTimer = setTimeout(() => {
+      if (matchMedia("(max-width: 600px)").matches) goToLane(activeLaneIndex);
+    }, 120);
+  }, { passive: true });
+  scroll.addEventListener("keydown", (event) => {
+    if (event.target !== scroll || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === "Home") goToLane(0);
+    else if (event.key === "End") goToLane(schedule.lanes.length - 1);
+    else goToLane(activeLaneIndex + (event.key === "ArrowLeft" ? -1 : 1));
+  });
+  updateNavigation(0);
+  shell.append(mobileNavigation, scroll);
+  return shell;
 }
 
 function renderDayDetail(day, days) {
