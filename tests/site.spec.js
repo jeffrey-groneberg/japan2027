@@ -535,6 +535,13 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.locator(".itinerary-tools")).toBeVisible();
   await expect(page).not.toHaveURL(/day=/);
 
+  await page.evaluate(() => {
+    const focus = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function patchedFocus(options) {
+      focus.call(this, options);
+      if (this.classList.contains("mobile-day-back")) window.scrollTo(0, 120);
+    };
+  });
   await selectedDay.click();
   await expect(panel).toHaveAttribute("data-mobile-screen", "day");
   await expect(page.locator("body")).toHaveClass(/mobile-day-view/);
@@ -546,7 +553,8 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.locator(".itinerary-tools")).toBeHidden();
   await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeVisible();
   await expect(page.locator("#day-title")).toHaveText("Akihabara & Tsukiji");
-  await expect(page.locator("#day-title")).toBeFocused();
+  await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeFocused();
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThanOrEqual(2);
   await expect(page).toHaveURL(/view=itinerary&day=2027-07-10&screen=day/);
   await expect(page.locator(".lane-intro, .lane-detail-empty-state")).toHaveCount(0);
   await expect(page.locator("#lane-detail")).toBeHidden();

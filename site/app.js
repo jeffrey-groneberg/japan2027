@@ -183,8 +183,10 @@ function writeLocation(mode = "replace", statePatch = {}) {
 
 function syncMobileDayView() {
   const mobileItinerary = mobileItineraryQuery.matches && currentView === "itinerary";
-  document.body.classList.toggle("mobile-day-view", mobileItinerary && mobileDayOpen);
-  document.body.classList.toggle("mobile-item-view", mobileItinerary && mobileItemOpen);
+  for (const root of [document.documentElement, document.body]) {
+    root.classList.toggle("mobile-day-view", mobileItinerary && mobileDayOpen);
+    root.classList.toggle("mobile-item-view", mobileItinerary && mobileItemOpen);
+  }
 }
 
 function setView(view, updateLocation = true) {
@@ -352,6 +354,14 @@ function scrollIntoViewImmediately(node) {
   root.style.scrollBehavior = previousBehavior;
 }
 
+function scrollMobileScreenToTop() {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto";
+  window.scrollTo(0, 0);
+  root.style.scrollBehavior = previousBehavior;
+}
+
 function focusMobileDayList() {
   requestAnimationFrame(() => {
     scrollIntoViewImmediately($("#panel-itinerary"));
@@ -381,11 +391,14 @@ function fitMobileLaneBoard() {
   });
 }
 
-function positionMobileDayScreen(focusTitle = false) {
+function positionMobileDayScreen(focusBack = false) {
   requestAnimationFrame(() => {
-    scrollIntoViewImmediately($("#panel-itinerary"));
-    if (focusTitle) $("#day-title").focus({ preventScroll: true });
-    requestAnimationFrame(fitMobileLaneBoard);
+    scrollMobileScreenToTop();
+    if (focusBack) $(".mobile-day-back", $("#day-detail"))?.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      scrollMobileScreenToTop();
+      fitMobileLaneBoard();
+    });
   });
 }
 
@@ -399,8 +412,9 @@ function focusSelectedLaneBlock() {
 
 function positionMobileItemScreen(focusDetail = false) {
   requestAnimationFrame(() => {
-    scrollIntoViewImmediately($("#panel-itinerary"));
+    scrollMobileScreenToTop();
     if (focusDetail) $("#lane-detail")?.focus({ preventScroll: true });
+    requestAnimationFrame(scrollMobileScreenToTop);
   });
 }
 

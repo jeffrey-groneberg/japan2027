@@ -713,6 +713,7 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 
 @media (max-width: 600px) {
   html { scroll-padding-top: 76px; }
+  html.mobile-day-view { scroll-behavior: auto; scroll-padding-top: 0; overflow-anchor: none; }
   body.mobile-day-view .masthead,
   body.mobile-day-view .hero,
   body.mobile-day-view .route-area,
