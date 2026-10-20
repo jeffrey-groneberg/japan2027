@@ -326,6 +326,10 @@ test("the site is build-free, project-path-safe and keeps its design contract", 
   assert.doesNotMatch(html, /(?:src|href)="\/(?:app|styles|assets|trip)/);
   assert.doesNotMatch(html, /<script[^>]+src="https?:/);
   assert.doesNotMatch(html, /<link[^>]+href="https?:/);
+  const styleVersion = html.match(/styles\.css\?v=([a-f0-9]{7})/)?.[1];
+  const appVersion = html.match(/app\.js\?v=([a-f0-9]{7})/)?.[1];
+  assert.ok(styleVersion);
+  assert.equal(appVersion, styleVersion);
   assert.match(html, /clawpilotTheme/);
   assert.match(html, /--cp-bg: #f7f4ef/);
   assert.match(html, /--cp-bg: #3d3b3a/);

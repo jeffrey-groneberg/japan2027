@@ -297,7 +297,9 @@ rate limits or access controls, and does not infer bookability from a response.
 Pages serves the root of the **`gh-pages`** branch. That branch contains only
 `site/`, not development files or dependencies. `.nojekyll` keeps the plain
 HTML, CSS, font and ES modules unchanged. Relative paths support the repository
-project URL.
+project URL. GitHub Pages caches assets for ten minutes, so `site/index.html`
+uses one shared `?v=` value for `styles.css` and `app.js`; update that value
+whenever either core asset changes.
 
 To publish a new version, first commit the source changes, then run:
 
