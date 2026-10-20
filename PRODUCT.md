@@ -59,6 +59,10 @@ The people planning and taking the trip described in the supplied itinerary.
 - On mobile, show exactly one lane beside the sticky time axis and use native
   horizontal swipe snapping to switch routes. Keep a visible route counter and
   previous/next controls for keyboard and non-gesture access.
+- Treat the mobile itinerary as master/detail navigation, not one long page:
+  the default Reiseplan screen contains tools and the day list; selecting a day
+  opens a dedicated full-width detail screen with a clear back action. Existing
+  day deep links and browser Back must open/close that detail state correctly.
 - The user explicitly chose a culinary recommendation for every individual
   sightseeing place or district, not only one per city. Explain what makes it
   worthwhile, what may suit children, practical access restrictions and links.

@@ -20,6 +20,10 @@ vendored locally; optional background maps come from OpenStreetMap.
 - On phones, the time axis stays fixed beside exactly one route. Swipe
   horizontally to the next or previous lane; the visible route label, arrow
   controls and keyboard navigation provide equivalent non-gesture access.
+- The mobile itinerary uses a list/detail flow: the Reiseplan tab first shows
+  search, filters and the compact day list. Selecting a day opens a dedicated
+  full-width day screen with an “Alle Reisetage” back action. Browser Back and
+  direct day links preserve the same navigation model.
 - Select a numbered stop to open descriptions, official links, Google Maps and
   culinary advice directly below the lanes.
   Compact photo thumbnails and larger, credited local photos make places

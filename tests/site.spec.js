@@ -197,6 +197,10 @@ test("all 30 day lanes stay separated and visually cover their timeline on deskt
   for (const width of [390, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     for (let index = 0; index < 30; index += 1) {
+      if (width === 390 && await page.locator("#panel-itinerary").getAttribute("data-mobile-screen") === "day") {
+        await page.getByRole("button", { name: "Alle Reisetage" }).click();
+        await expect(page.locator("#panel-itinerary")).toHaveAttribute("data-mobile-screen", "list");
+      }
       await page.locator(".day-option").nth(index).click();
       await expect(page.locator(".lane-track").first()).toBeVisible();
       const defects = await page.locator(".lane-track").evaluateAll((tracks) => tracks.flatMap((track, laneIndex) => {
@@ -261,11 +265,13 @@ test("delivery previews and browser errors", async ({ page }) => {
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await show(page, "itinerary");
-  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await page.goto("/?clawpilotTheme=light#view=itinerary");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await page.evaluate(() => window.scrollTo(0, 0));
   await capture("mobile-home");
   await plannerTop();
+  await capture("mobile-itinerary-list");
+  await page.getByRole("button", { name: "Montag, 5. Juli: Shibuya & Harajuku", exact: true }).click();
   await capture("mobile-itinerary");
   await page.locator(".lane-block-activity").first().click();
   await page.locator("#lane-detail").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 84));
@@ -287,6 +293,8 @@ test("delivery previews and browser errors", async ({ page }) => {
   await capture("desktop-bases");
   await page.setViewportSize({ width: 390, height: 844 });
   await show(page, "itinerary");
+  await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
+  await expect(page.locator("#startup-notice")).toBeHidden();
   await daySection(page, "Tagesrouten");
   await openDayMap(page);
   await page.locator("#day-detail").evaluate((node) => window.scrollTo(0, node.getBoundingClientRect().top + window.scrollY - 80));
@@ -469,6 +477,50 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
   await page.goto("/?clawpilotTheme=light#view=itinerary&day=2027-07-10");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(page.locator(".lane-mobile-nav")).toBeHidden();
+});
+
+test("mobile navigates from the day list into a dedicated day screen and back", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await ready(page, "/?clawpilotTheme=light&mobileScreen=1#view=itinerary");
+  const panel = page.locator("#panel-itinerary");
+  const selectedDay = page.getByRole("button", { name: "Samstag, 10. Juli: Akihabara & Tsukiji", exact: true });
+  await expect(panel).toHaveAttribute("data-mobile-screen", "list");
+  await expect(page.locator(".day-selector")).toBeVisible();
+  await expect(page.locator("#day-detail")).toBeHidden();
+  await expect(page.locator(".itinerary-tools")).toBeVisible();
+  await expect(page).not.toHaveURL(/day=/);
+
+  await selectedDay.click();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "day");
+  await expect(page.locator(".day-selector")).toBeHidden();
+  await expect(page.locator("#day-detail")).toBeVisible();
+  await expect(page.locator(".itinerary-tools")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeVisible();
+  await expect(page.locator("#day-title")).toHaveText("Akihabara & Tsukiji");
+  await expect(page.locator("#day-title")).toBeFocused();
+  await expect(page).toHaveURL(/view=itinerary&day=2027-07-10&screen=day/);
+
+  await page.goBack();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "list");
+  await expect(page.locator(".day-selector")).toBeVisible();
+  await expect(page.locator("#day-detail")).toBeHidden();
+  await expect(selectedDay).toBeFocused();
+  await expect(page).not.toHaveURL(/day=/);
+
+  await page.goto("/?clawpilotTheme=light&mobileScreen=direct#view=itinerary&day=2027-07-05");
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "day");
+  await expect(page.locator("#day-title")).toHaveText("Shibuya & Harajuku");
+  await page.getByRole("button", { name: "Alle Reisetage" }).click();
+  await expect(panel).toHaveAttribute("data-mobile-screen", "list");
+  await expect(page).not.toHaveURL(/day=/);
+
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.goto("/?clawpilotTheme=light&mobileScreen=desktop#view=itinerary&day=2027-07-10");
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(page.locator(".day-selector")).toBeVisible();
+  await expect(page.locator("#day-detail")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeHidden();
 });
 
 test("all lane headers use the same opaque surface in light and dark mode", async ({ page }) => {
