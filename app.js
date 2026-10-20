@@ -239,8 +239,70 @@ function toggleMobileMenu(open, restoreFocus = false) {
   if (restoreFocus) $("#mobile-menu-toggle").focus({ preventScroll: true });
 }
 
+function toggleOverflowMenu(open, restoreFocus = false) {
+  $("#nav-overflow").hidden = !open;
+  $("#nav-more").setAttribute("aria-expanded", String(open));
+  if (restoreFocus) $("#nav-more").focus({ preventScroll: true });
+}
+
+function fitPlannerNavigation() {
+  const rail = $(".planner-tabs");
+  const tabs = views.map((view) => $(`#tab-${view}`));
+  const more = $("#nav-more");
+  const overflow = $("#nav-overflow");
+  const focusedView = document.activeElement?.dataset.view;
+  const focusWasInMenu = overflow.contains(document.activeElement);
+  const focusWasOnMore = document.activeElement === more;
+  for (const tab of tabs) {
+    tab.hidden = false;
+    tab.tabIndex = tab.getAttribute("aria-selected") === "true" ? 0 : -1;
+  }
+  more.hidden = true;
+  overflow.replaceChildren();
+  if (mobileItineraryQuery.matches) {
+    toggleOverflowMenu(false);
+    if (focusWasOnMore || focusWasInMenu) $("#mobile-menu-toggle").focus({ preventScroll: true });
+    return;
+  }
+  const gap = Number.parseFloat(getComputedStyle(rail).columnGap) || 0;
+  const widths = tabs.map((tab) => tab.getBoundingClientRect().width);
+  const total = widths.reduce((sum, width) => sum + width, 0) + gap * (tabs.length - 1);
+  let visibleCount = tabs.length;
+  if (total > rail.clientWidth) {
+    more.hidden = false;
+    const available = rail.clientWidth;
+    let used = 0;
+    visibleCount = 0;
+    for (const width of widths) {
+      const next = used + (visibleCount ? gap : 0) + width;
+      if (next > available) break;
+      used = next;
+      visibleCount += 1;
+    }
+    tabs.forEach((tab, index) => {
+      tab.hidden = index >= visibleCount;
+      if (!tab.hidden) return;
+      const option = button(tab.textContent.trim(), "nav-overflow-option", () => {
+        activatePlannerView(tab.dataset.view);
+        focusActiveNavigation();
+      });
+      option.dataset.view = tab.dataset.view;
+      option.setAttribute("aria-pressed", tab.getAttribute("aria-selected"));
+      overflow.append(option);
+    });
+  } else toggleOverflowMenu(false);
+  const activeHidden = $(`#tab-${currentView}`).hidden;
+  more.classList.toggle("nav-more-selected", activeHidden);
+  more.setAttribute("aria-label", activeHidden ? `Mehr · ${$(`#tab-${currentView}`).textContent.trim()}` : "Mehr");
+  if (activeHidden && visibleCount) tabs[0].tabIndex = 0;
+  if (focusedView && $(`#tab-${focusedView}`)?.hidden) more.focus({ preventScroll: true });
+  else if (focusWasInMenu && focusedView) $(`#tab-${focusedView}`)?.focus({ preventScroll: true });
+  else if (focusWasOnMore && more.hidden) $(`#tab-${currentView}`).focus({ preventScroll: true });
+}
+
 function focusActiveNavigation() {
-  const control = mobileItineraryQuery.matches ? $("#mobile-menu-toggle") : $(`#tab-${currentView}`);
+  const tab = $(`#tab-${currentView}`);
+  const control = mobileItineraryQuery.matches ? $("#mobile-menu-toggle") : tab.hidden ? $("#nav-more") : tab;
   control.focus({ preventScroll: true });
 }
 
@@ -254,11 +316,8 @@ function setView(view, updateLocation = true) {
     tab.tabIndex = selected ? 0 : -1;
     $(`#panel-${id}`).hidden = !selected;
   }
-  const rail = $(".planner-tabs");
-  const activeTab = $(`#tab-${view}`);
-  const tabEnd = activeTab.offsetLeft + activeTab.offsetWidth;
-  if (activeTab.offsetLeft < rail.scrollLeft) rail.scrollLeft = activeTab.offsetLeft;
-  else if (tabEnd > rail.scrollLeft + rail.clientWidth) rail.scrollLeft = tabEnd - rail.clientWidth;
+  toggleOverflowMenu(false);
+  fitPlannerNavigation();
   document.title = `${$(`#tab-${view}`).textContent.trim()} · Japan & Vietnam 2027`;
   $("#mobile-menu-label").textContent = `Menü · ${$(`#tab-${view}`).textContent.trim()}`;
   toggleMobileMenu(false);
@@ -1365,6 +1424,7 @@ function updateChecklistProgress() {
   $("#tab-check-count").textContent = `${count}/${trip.checklist.length}`;
   $("#checklist-progress").value = count;
   $("#checklist-progress").max = trip.checklist.length;
+  fitPlannerNavigation();
 }
 
 function renderChecklist() {
@@ -1578,6 +1638,25 @@ function downloadCalendar() {
 }
 
 function bindEvents() {
+  $("#nav-more").addEventListener("click", () => {
+    toggleOverflowMenu($("#nav-more").getAttribute("aria-expanded") !== "true");
+  });
+  let navigationFitFrame;
+  const resizeNavigation = () => {
+    cancelAnimationFrame(navigationFitFrame);
+    navigationFitFrame = requestAnimationFrame(fitPlannerNavigation);
+  };
+  if ("ResizeObserver" in window) {
+    let previousWidth;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width === previousWidth) return;
+      previousWidth = entry.contentRect.width;
+      resizeNavigation();
+    });
+    observer.observe($(".planner-nav"));
+  }
+  window.addEventListener("resize", resizeNavigation);
+  document.fonts?.ready.then(resizeNavigation);
   $(".planner-tabs").addEventListener("animationend", (event) => {
     if (event.target === $(".planner-tabs")) $(".planner-nav").classList.remove("menu-closing");
   });
@@ -1588,9 +1667,15 @@ function bindEvents() {
     if (event.key === "Escape" && $("#mobile-menu-toggle").getAttribute("aria-expanded") === "true") {
       toggleMobileMenu(false, true);
     }
+    if (event.key === "Escape" && $("#nav-more").getAttribute("aria-expanded") === "true") {
+      toggleOverflowMenu(false, true);
+    }
   });
   document.addEventListener("click", (event) => {
-    if (!event.target.closest(".planner-nav")) toggleMobileMenu(false);
+    if (!event.target.closest(".planner-nav")) {
+      toggleMobileMenu(false);
+      toggleOverflowMenu(false);
+    }
   });
   $("#day-search").addEventListener("input", (event) => {
     filters.query = event.target.value;
@@ -1614,18 +1699,20 @@ function bindEvents() {
       updateTheme();
     }
   });
+  const navigatePlanner = (event) => {
+    const index = views.indexOf(event.currentTarget.dataset.view ?? currentView);
+    const target = { ArrowRight: views[(index + 1) % views.length], ArrowLeft: views[(index + views.length - 1) % views.length], Home: views[0], End: views.at(-1) }[event.key];
+    if (target) {
+      event.preventDefault();
+      activatePlannerView(target);
+      if (mobileItineraryQuery.matches) $("#mobile-menu-toggle").focus({ preventScroll: true });
+      else focusActiveNavigation();
+    }
+  };
+  $("#nav-more").addEventListener("keydown", navigatePlanner);
   for (const tab of document.querySelectorAll('.planner-tabs [role="tab"]')) {
     tab.addEventListener("click", () => activatePlannerView(tab.dataset.view));
-    tab.addEventListener("keydown", (event) => {
-      const index = views.indexOf(tab.dataset.view);
-      const target = { ArrowRight: views[(index + 1) % views.length], ArrowLeft: views[(index + views.length - 1) % views.length], Home: views[0], End: views.at(-1) }[event.key];
-      if (target) {
-        event.preventDefault();
-        activatePlannerView(target);
-        if (mobileItineraryQuery.matches) $("#mobile-menu-toggle").focus({ preventScroll: true });
-        else $(`#tab-${target}`).focus();
-      }
-    });
+    tab.addEventListener("keydown", navigatePlanner);
   }
   for (const control of document.querySelectorAll(".calendar-download")) control.addEventListener("click", downloadCalendar);
   window.addEventListener("hashchange", () => {
