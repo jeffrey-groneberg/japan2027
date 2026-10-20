@@ -709,6 +709,11 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 
 @media (max-width: 600px) {
   html { scroll-padding-top: 76px; }
+  body.mobile-day-view .masthead,
+  body.mobile-day-view .hero,
+  body.mobile-day-view .route-area,
+  body.mobile-day-view .planner-tabs { display: none; }
+  body.mobile-day-view .planner { padding-bottom: 0; }
   .page-width { width: calc(100% - 32px); }
   .day-map-dialog { width: calc(100vw - 16px); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: 14px; }
   .day-map-dialog-header { min-height: 58px; padding: 9px 9px 9px 16px; }
@@ -772,14 +777,14 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .day-option-star { position: absolute; right: 9px; top: 14px; }
   .day-list .empty-state { width: 100%; }
   #panel-itinerary[data-mobile-screen="list"] .day-detail { display: none; }
-  #panel-itinerary[data-mobile-screen="day"] { padding-top: 12px; }
+  #panel-itinerary[data-mobile-screen="day"] { padding-top: 0; }
   #panel-itinerary[data-mobile-screen="day"] > .panel-heading,
   #panel-itinerary[data-mobile-screen="day"] > .itinerary-tools,
   #panel-itinerary[data-mobile-screen="day"] > .destination-filters,
   #panel-itinerary[data-mobile-screen="day"] .day-selector { display: none; }
   #panel-itinerary[data-mobile-screen="day"] .itinerary-layout { display: block; }
-  #panel-itinerary[data-mobile-screen="day"] .day-detail { display: block; margin-inline: -16px; padding: 18px 16px 28px; border-inline: 0; border-radius: 0; }
-  #panel-itinerary[data-mobile-screen="day"] .mobile-day-back { display: inline-flex; min-height: 44px; margin-bottom: 18px; padding: 8px 13px; font-size: .78rem; }
+  #panel-itinerary[data-mobile-screen="day"] .day-detail { display: block; min-height: 100vh; min-height: 100dvh; margin-inline: -16px; padding: 14px 16px 28px; padding-top: max(14px, env(safe-area-inset-top, 0px)); border-inline: 0; border-radius: 0; }
+  #panel-itinerary[data-mobile-screen="day"] .mobile-day-back { display: inline-flex; min-height: 44px; margin-bottom: 12px; padding: 8px 13px; font-size: .78rem; }
   #panel-itinerary[data-mobile-screen="day"] .lane-board-scroll { max-height: var(--lane-available-height, 60vh); max-height: calc(var(--lane-available-height, 60dvh) - env(safe-area-inset-bottom, 0px)); }
   .mobile-day-back .icon { width: 17px; height: 17px; }
   .day-detail { padding: 22px 20px; }
@@ -800,11 +805,16 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .day-header-actions .icon-button { min-width: 34px; width: 34px; height: 34px; padding: 7px; }
   .day-header-actions .favorite-button { margin-left: 0; }
   .day-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin-top: 18px; }
-  .lane-mobile-nav { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 8px 10px; border: 1px solid var(--cp-border); border-radius: 12px; background: var(--cp-bg-elevated); }
+  .lane-mobile-nav { display: flex; align-items: center; gap: 9px; margin-top: 14px; padding: 8px 10px; border: 1px solid var(--cp-border); border-radius: 12px; background: var(--cp-bg-elevated); }
+  .lane-mobile-route-mark { display: grid; place-items: center; flex: 0 0 34px; width: 34px; height: 34px; border: 3px double var(--lane-accent); border-radius: 50%; background: var(--cp-surface); font-family: var(--font-display); font-size: .92rem; line-height: 1; }
+  .lane-mobile-nav-single { justify-content: center; }
+  .lane-mobile-nav-single .lane-route-button { display: none; }
   .lane-route-button { flex: 0 0 44px; min-width: 44px; width: 44px; height: 44px; padding: 10px; }
   .lane-board-scroll { margin-top: 8px; scroll-snap-type: x mandatory; scroll-padding-left: 56px; overscroll-behavior-inline: contain; touch-action: pan-x pan-y; }
   .lane-board { width: max-content; min-width: max-content !important; grid-template-columns: 44px repeat(var(--lane-count), var(--lane-mobile-width, calc(100cqw - 62px))) !important; gap: 6px; padding: 6px; }
   .lane-board-multiple { padding-right: 46px; }
+  body.mobile-day-view .lane-corner,
+  body.mobile-day-view .lane-header { display: none; }
   .lane-corner, .lane-time-axis { left: 6px; box-shadow: -7px 0 0 var(--cp-bg-elevated), 6px 0 0 var(--cp-bg-elevated); }
   .lane-time-axis { min-width: 44px; }
   .lane-track { scroll-snap-align: start; scroll-snap-stop: always; }

@@ -66,10 +66,11 @@ The people planning and taking the trip described in the supplied itinerary.
   the default Reiseplan screen contains tools and the day list; selecting a day
   opens a dedicated full-width detail screen with a clear back action. Existing
   day deep links and browser Back must open/close that detail state correctly.
-  Put the route board before summaries and optional event notes, hide redundant
-  lane instructions there and size the board from the actual Visual Viewport,
-  measured board position and safe-area inset rather than a device-specific
-  height or fixed subtraction.
+  Hide the global masthead, hero, station strip and planner tabs in that detail
+  state. Put the route board before summaries and optional event notes, replace
+  its duplicate mobile lane header with the compact route switcher, and size
+  the board from the actual Visual Viewport, measured board position and
+  safe-area inset rather than a device-specific height or fixed subtraction.
 - Support modern WebKit, Chromium and Gecko behavior through progressive
   enhancement: Visual Viewport falls back to `innerHeight`, container-unit lane
   sizing receives a measured pixel value, and dynamic viewport CSS has `vh`

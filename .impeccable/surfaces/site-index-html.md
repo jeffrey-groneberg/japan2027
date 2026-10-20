@@ -95,10 +95,12 @@ visible beside the sticky time axis; horizontal swiping snaps between routes,
 with a current-route counter and arrow/keyboard controls as equivalents.
 The mobile Reiseplan itself is master/detail: tools and the compact day list
 form the first screen, while selecting a date opens a dedicated full-width day
-screen with an “Alle Reisetage” action and browser-history support. The route
-carousel appears immediately after the title/tabs. Its internal height comes
-from the live Visual Viewport, rendered board top and safe-area inset rather
-than a fixed device size; summary and festival context move below it. Desktop retains
+screen with an “Alle Reisetage” action and browser-history support. The
+masthead, hero, station strip and global planner tabs leave that detail state.
+A compact route switcher with the active drum mark replaces the duplicate
+in-board lane header, and the timeline uses the remaining live Visual Viewport,
+rendered board top and safe-area inset rather than a fixed device size; summary
+and festival context move below it. Desktop retains
 the side-by-side selector and detail. The day map is opened from a
 single icon in the day header and appears in a closable modal. Every one of the 48 places
 has one of 33 local food recommendations, including why it is worthwhile,

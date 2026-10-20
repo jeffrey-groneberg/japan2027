@@ -237,8 +237,7 @@ test("all 30 day lanes stay separated and visually cover their timeline on deskt
           };
         });
         expect(mobileVisibility.visibleCount, `mobile day ${index + 1}`).toBe(1);
-        if (mobileVisibility.laneCount > 1) await expect(page.locator(".lane-mobile-nav")).toBeVisible();
-        else await expect(page.locator(".lane-mobile-nav")).toBeHidden();
+        await expect(page.locator(".lane-mobile-nav")).toBeVisible();
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `day ${index + 1} at ${width}px`).toBe(true);
     }
@@ -451,6 +450,7 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
     await expect(page.locator(".lane-mobile-nav")).toBeVisible();
     await expect(status).toContainText("Route A · Empfohlene Route");
     await expect(status).toContainText("1 von 4");
+    await expect(page.locator(".lane-mobile-route-mark")).toHaveText("A");
     await expect(scroll).toHaveCSS("scroll-snap-type", "x mandatory");
     await expect.poll(visibleLaneCount).toBe(1);
     expect(await scroll.evaluate((node) => {
@@ -460,6 +460,7 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
 
     await page.getByRole("button", { name: "Nächste Route" }).click();
     await expect(status).toContainText("Route B · Mehr Markt, weniger Geschäfte");
+    await expect(page.locator(".lane-mobile-route-mark")).toHaveText("B");
     await expect.poll(() => scroll.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
     await expect.poll(visibleLaneCount).toBe(1);
 
@@ -494,6 +495,10 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
 
   await selectedDay.click();
   await expect(panel).toHaveAttribute("data-mobile-screen", "day");
+  await expect(page.locator("body")).toHaveClass(/mobile-day-view/);
+  for (const selector of [".masthead", ".hero", ".route-area", ".planner-tabs"]) {
+    await expect(page.locator(selector)).toBeHidden();
+  }
   await expect(page.locator(".day-selector")).toBeHidden();
   await expect(page.locator("#day-detail")).toBeVisible();
   await expect(page.locator(".itinerary-tools")).toBeHidden();
@@ -511,23 +516,32 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
     return {
       boardTop: board.top,
       boardBottom: board.bottom,
+      boardHeight: board.height,
       summaryTop: summary.top,
       viewportHeight: visualHeight,
+      trackTop: document.querySelector(".lane-track").getBoundingClientRect().top,
       availableHeight: Number.parseFloat(getComputedStyle(boardNode).getPropertyValue("--lane-available-height")),
       expectedHeight: Math.max(240, Math.floor(visualHeight - board.top - 12)),
     };
   });
   expect(compactLayout.boardTop).toBeLessThan(compactLayout.viewportHeight * 0.62);
   expect(compactLayout.boardBottom).toBeLessThanOrEqual(compactLayout.viewportHeight + 4);
+  expect(compactLayout.boardHeight).toBeGreaterThan(400);
+  expect(compactLayout.trackTop - compactLayout.boardTop).toBeLessThan(16);
   expect(compactLayout.summaryTop).toBeGreaterThanOrEqual(compactLayout.boardBottom);
   expect(Math.abs(compactLayout.availableHeight - compactLayout.expectedHeight)).toBeLessThanOrEqual(2);
+  await expect(page.locator(".lane-header").first()).toBeHidden();
+  await expect(page.locator(".lane-corner")).toBeHidden();
 
   await page.setViewportSize({ width: 430, height: 760 });
   await expect.poll(() => page.locator(".lane-board-scroll").evaluate((board) => board.getBoundingClientRect().bottom)).toBeLessThanOrEqual(764);
+  await expect.poll(() => page.locator(".lane-board-scroll").evaluate((board) => board.getBoundingClientRect().height)).toBeGreaterThan(360);
   await page.setViewportSize({ width: 430, height: 932 });
 
   await page.goBack();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
+  await expect(page.locator("body")).not.toHaveClass(/mobile-day-view/);
+  await expect(page.locator(".planner-tabs")).toBeVisible();
   await expect(page.locator(".day-selector")).toBeVisible();
   await expect(page.locator("#day-detail")).toBeHidden();
   await expect(selectedDay).toBeFocused();
@@ -536,8 +550,9 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await page.goto("/?clawpilotTheme=light&mobileScreen=direct#view=itinerary&day=2027-07-05");
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(panel).toHaveAttribute("data-mobile-screen", "day");
+  await expect(page.locator("body")).toHaveClass(/mobile-day-view/);
   await expect(page.locator("#day-title")).toHaveText("Shibuya & Harajuku");
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThanOrEqual(2);
   await expect.poll(() => page.locator(".lane-board-scroll").evaluate((board) => board.getBoundingClientRect().top / innerHeight)).toBeLessThan(0.62);
   await page.getByRole("button", { name: "Alle Reisetage" }).click();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
@@ -546,6 +561,7 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/?clawpilotTheme=light&mobileScreen=desktop#view=itinerary&day=2027-07-10");
   await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(page.locator("body")).not.toHaveClass(/mobile-day-view/);
   await expect(page.locator(".day-selector")).toBeVisible();
   await expect(page.locator("#day-detail")).toBeVisible();
   await expect(page.getByRole("button", { name: "Alle Reisetage" })).toBeHidden();

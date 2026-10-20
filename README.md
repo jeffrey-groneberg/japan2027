@@ -23,10 +23,11 @@ vendored locally; optional background maps come from OpenStreetMap.
 - The mobile itinerary uses a list/detail flow: the Reiseplan tab first shows
   search, filters and the compact day list. Selecting a day opens a dedicated
   full-width day screen with an “Alle Reisetage” back action. Browser Back and
-  direct day links preserve the same navigation model. On that screen the lane
-  board comes immediately after title/tabs. Its height is calculated from the
-  live Visual Viewport and current board position, so Safari chrome, rotation
-  and safe-area changes are reflected without device-model detection.
+  direct day links preserve the same navigation model. That detail screen hides
+  the global masthead, hero, station strip and planner tabs; its compact route
+  switcher replaces the duplicate lane header so the timeline receives the
+  remaining live Visual Viewport. Safari chrome, rotation and safe-area changes
+  are reflected without device-model detection.
 - The planner carries the original festival/rhythm identity beyond the hero:
   route drums, four festival lane colors, beat dots, ticket-like activity
   blocks and destination-colored day marks replace a spreadsheet-like surface.
