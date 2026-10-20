@@ -26,6 +26,7 @@ let currentView = "itinerary";
 let selectedDate = trip.startDate;
 let mobileDayOpen = false;
 let focusDayListAfterNavigation = false;
+let mobileLaneFitFrame;
 let filters = { destination: "all", query: "", savedOnly: false };
 const diningFilters = { destination: "all", category: "all", spontaneous: false };
 
@@ -312,20 +313,46 @@ function revealSelectedDay() {
   }
 }
 
+function scrollIntoViewImmediately(node) {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto";
+  node.scrollIntoView({ block: "start" });
+  root.style.scrollBehavior = previousBehavior;
+}
+
 function focusMobileDayList() {
   requestAnimationFrame(() => {
-    $("#panel-itinerary").scrollIntoView({ block: "start" });
+    scrollIntoViewImmediately($("#panel-itinerary"));
     const selected = $(`[data-date="${selectedDate}"]`, $("#day-list"));
     selected?.focus({ preventScroll: true });
     revealSelectedDay();
   });
 }
 
+function fitMobileLaneBoard() {
+  cancelAnimationFrame(mobileLaneFitFrame);
+  mobileLaneFitFrame = requestAnimationFrame(() => {
+    if (!mobileItineraryQuery.matches || !mobileDayOpen || currentView !== "itinerary") return;
+    const board = $(".lane-board-scroll", $("#day-detail"));
+    if (!board?.getClientRects().length) return;
+    const viewport = window.visualViewport;
+    const viewportHeight = viewport?.height ?? innerHeight;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const boardTop = Math.max(0, board.getBoundingClientRect().top - viewportTop);
+    const availableHeight = Math.max(240, Math.floor(viewportHeight - boardTop - 12));
+    const laneWidth = Math.max(160, board.clientWidth - 62);
+    board.style.setProperty("--lane-available-height", `${availableHeight}px`);
+    $(".lane-board", board)?.style.setProperty("--lane-mobile-width", `${laneWidth}px`);
+  });
+}
+
 function positionMobileDayScreen(focusTitle = false) {
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    $("#panel-itinerary").scrollIntoView({ block: "start" });
+  requestAnimationFrame(() => {
+    scrollIntoViewImmediately($("#panel-itinerary"));
     if (focusTitle) $("#day-title").focus({ preventScroll: true });
-  }));
+    requestAnimationFrame(fitMobileLaneBoard);
+  });
 }
 
 function showMobileDayList() {
@@ -373,6 +400,7 @@ function renderDayList(days) {
   for (const day of days) {
     const option = button("", "day-option", () => chooseDay(day));
     option.dataset.date = day.date;
+    option.dataset.dayDestination = day.destination;
     option.setAttribute("aria-pressed", String(day.date === selectedDate));
     option.setAttribute("aria-label", `${formatDate(day.date)}: ${day.title}`);
     const date = element("span", "day-option-date");
@@ -443,9 +471,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
   section.id = `${key}-places`;
   const heading = element("h4", "places-heading", headingText);
   const mappedPoints = points.filter((point) => Array.isArray(point.coordinates));
-  section.append(heading, element("p", "places-intro", showList
-    ? "Eine Nummer antippen oder einen Ort für Details aufklappen."
-    : "Alle Routenstopps gemeinsam. Kennungen wie A1 oder B2 gehören zur jeweiligen Lane; Stopps im selben Gebäude teilen sich einen Marker. Das ist keine berechnete Geh- oder Bahnroute."));
+  section.append(heading);
   const mapShell = element("div", "map-shell");
   const showAll = button("Alle Stopps zeigen", "text-button map-show-all", () => context.map.showAll());
   showAll.hidden = true;
@@ -462,7 +488,7 @@ function placeExplorer(points, key, headingText = "Die Orte dieses Tages", { sho
     mapsPermitted = true;
     enableMap();
   });
-  placeholder.append(graphic("icon-pin"), element("p", "", "Alle bestätigten Punkte gemeinsam sehen."), load, permission);
+  placeholder.append(graphic("icon-pin"), load, permission);
   mapShell.append(placeholder);
   if (showReset) mapShell.append(showAll);
   mapShell.append(canvas, message);
@@ -623,14 +649,8 @@ function appendFlexNotes(container, notes = []) {
 
 function renderLaneDetail(container, block, showOnMap) {
   container.replaceChildren();
-  container.classList.toggle("lane-detail-empty-state", !block);
-  if (!block) {
-    container.append(
-      element("h4", "", "Route genauer ansehen"),
-      element("p", "lane-detail-empty", "Wähle einen Block in einer Lane. Hier erscheinen Beschreibung, Tickets, Kartenlink und Kulinarik, ohne die Zeitachse aufzublähen."),
-    );
-    return;
-  }
+  container.hidden = !block;
+  if (!block) return;
   const heading = element("div", "lane-detail-heading");
   const copy = element("div");
   copy.append(
@@ -707,13 +727,18 @@ function renderLaneBoard(schedule, selectBlock) {
   board.style.gridTemplateColumns = `56px repeat(${schedule.lanes.length}, minmax(220px, 1fr))`;
   board.style.minWidth = `${56 + schedule.lanes.length * 220}px`;
   board.append(element("div", "lane-corner", "Zeit"));
-  for (const lane of schedule.lanes) {
-    const header = element("div", `lane-header${lane.isPrimary ? " lane-header-primary" : ""}`);
-    header.append(
+  for (const [laneIndex, lane] of schedule.lanes.entries()) {
+    const tone = laneIndex % 4;
+    const header = element("div", `lane-header lane-tone-${tone}${lane.isPrimary ? " lane-header-primary" : ""}`);
+    const routeMark = element("span", "lane-route-mark", lane.letter);
+    routeMark.setAttribute("aria-hidden", "true");
+    const headerCopy = element("div", "lane-header-copy");
+    headerCopy.append(
       element("strong", "", lane.label),
       element("span", "lane-header-title", lane.title),
       element("small", "lane-header-difference", lane.difference),
     );
+    header.append(routeMark, headerCopy);
     board.append(header);
   }
   const axis = element("div", "lane-time-axis");
@@ -724,8 +749,8 @@ function renderLaneBoard(schedule, selectBlock) {
     axis.append(label);
   }
   board.append(axis);
-  for (const lane of schedule.lanes) {
-    const track = element("div", "lane-track");
+  for (const [laneIndex, lane] of schedule.lanes.entries()) {
+    const track = element("div", `lane-track lane-tone-${laneIndex % 4}`);
     track.style.height = `${trackHeight}px`;
     track.setAttribute("aria-label", `${lane.label}: ${lane.title}`);
     for (const block of lane.blocks) {
@@ -778,9 +803,10 @@ function renderLaneBoard(schedule, selectBlock) {
     if (activeLaneIndex === renderedLaneIndex) return;
     renderedLaneIndex = activeLaneIndex;
     const lane = schedule.lanes[activeLaneIndex];
+    for (let tone = 0; tone < 4; tone += 1) mobileNavigation.classList.toggle(`lane-tone-${tone}`, tone === activeLaneIndex % 4);
     routeStatus.replaceChildren(
       element("strong", "", `${lane.label} · ${lane.title}`),
-      element("span", "", `${activeLaneIndex + 1} von ${schedule.lanes.length} · nach links oder rechts wischen`),
+      element("span", "", `${activeLaneIndex + 1} von ${schedule.lanes.length}`),
     );
     previousLane.disabled = activeLaneIndex === 0;
     nextLane.disabled = activeLaneIndex === schedule.lanes.length - 1;
@@ -835,11 +861,8 @@ function renderDayDetail(day, days) {
   detail.replaceChildren();
   if (!day) {
     detail.append(
-      element("h3", "", filters.savedOnly ? "Deine Merkliste wartet noch." : "Hier ist gerade kein Reisetag."),
-      element("p", "intro-copy", filters.savedOnly
-        ? "Merke dir mit dem Stern die Tage, auf die du dich besonders freust. Oder entferne einen Suchfilter."
-        : "Versuche einen anderen Suchbegriff oder zeige wieder alle Tage an."),
-      button("Alle Tage anzeigen", "button button-secondary", resetFilters),
+      element("h3", "", filters.savedOnly ? "Keine gemerkten Tage" : "Keine Reisetage gefunden"),
+      button("Filter zurücksetzen", "button button-secondary", resetFilters),
     );
     return;
   }
@@ -926,6 +949,7 @@ function renderDayDetail(day, days) {
       tab.setAttribute("aria-selected", String(key === id));
       tab.tabIndex = key === id ? 0 : -1;
     }
+    if (id === "plan") fitMobileLaneBoard();
   }
   detail.append(dayTabs);
   const planPanel = daySections.get("plan").panel;
@@ -992,9 +1016,6 @@ function renderDayDetail(day, days) {
         });
       };
     }
-    planPanel.append(
-      element("p", "lane-intro", "Jede Spalte ist eine vollständige Route inklusive Anreise, Umstiegen, Pausen und Rückweg. Die vertikale Position zeigt das ungefähre Zeitfenster; die Blockhöhe steht für die grobe Dauer. Konkrete Abfahrtszeit, Gleis und reservierte Einlasszeit am Reisetag prüfen."),
-    );
     laneBoard = renderLaneBoard(laneSchedule, selectLaneBlock);
     planPanel.append(laneBoard, laneDetail);
     if (mobileItineraryQuery.matches && mobileDayOpen) planPanel.prepend(laneBoard, laneDetail);
@@ -1069,7 +1090,7 @@ function renderTravel() {
   const railHeading = element("h3", "", "Bahnfahren ohne Vorwissen");
   railHeading.id = "rail-guide-heading";
   railHeading.tabIndex = -1;
-  railSection.append(railHeading, element("p", "intro-copy", "Erst das Grundprinzip, dann die konkrete Anfahrt. Die Schrittfolge für jeden Ausflug steht zusätzlich bei seinem Reisetag."));
+  railSection.append(railHeading);
   for (const item of railGuide) {
     const block = element("details", "rail-guide-item");
     block.open = railGuide.indexOf(item) < 2;
@@ -1078,7 +1099,6 @@ function renderTravel() {
     railSection.append(block);
   }
   container.append(railSection, element("h3", "content-subheading", "Die geplanten Flüge"));
-  container.append(element("p", "intro-copy", "Hinflug über Hanoi nach Tokyo-Haneda, Weiterflug von Osaka nach Da Nang, Rückflug über Saigon nach Frankfurt. Die Osaka-Direktstrecke ist offiziell angekündigt; den konkreten Flug für den 20. Juli bei der Airline prüfen."));
   const flights = element("div", "flight-list");
   for (const flight of trip.flights) {
     const card = element("article", "flight-card");
@@ -1101,7 +1121,6 @@ function renderTravel() {
 function renderStays() {
   const container = $("#stays-content");
   container.append(
-    element("p", "intro-copy stays-intro", "Ferienwohnungen und Apartments mit Platz für die Familie. Die passende Zimmerkategorie direkt beim Anbieter wählen."),
     element("p", "base-note", accommodationTransportNote),
   );
   for (const city of trip.accommodations) {
@@ -1188,7 +1207,6 @@ function updateChecklistProgress() {
   $("#tab-check-count").textContent = `${count}/${trip.checklist.length}`;
   $("#checklist-progress").value = count;
   $("#checklist-progress").max = trip.checklist.length;
-  $("#checklist-cheer").textContent = count === trip.checklist.length ? "Alles vorbereitet. Das Abenteuer kann kommen!" : "Schritt für Schritt wird die Reise startklar.";
 }
 
 function renderChecklist() {
@@ -1458,8 +1476,13 @@ function bindEvents() {
     } else if (mobileItineraryQuery.matches && mobileDayOpen && currentView === "itinerary") positionMobileDayScreen();
   });
   mobileItineraryQuery.addEventListener("change", () => {
-    if (currentView === "itinerary") renderItinerary();
+    if (currentView === "itinerary") {
+      renderItinerary();
+      if (mobileItineraryQuery.matches && mobileDayOpen) positionMobileDayScreen();
+    }
   });
+  window.addEventListener("resize", fitMobileLaneBoard);
+  window.visualViewport?.addEventListener("resize", fitMobileLaneBoard);
 }
 
 function initialize() {

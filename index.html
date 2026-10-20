@@ -246,11 +246,11 @@
 
       <section id="panel-itinerary" class="tab-panel" role="tabpanel" aria-labelledby="tab-itinerary">
         <div class="panel-heading">
-          <div><h2>Jeder Tag ein kleines Abenteuer.</h2><p>Von der ersten Vorfreude bis zum letzten Strandtag.</p></div>
+          <div><h2>Jeder Tag ein kleines Abenteuer.</h2></div>
           <button type="button" class="button button-secondary calendar-download"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg> In den Kalender</button>
         </div>
         <div class="itinerary-tools">
-          <label class="search-field"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><span class="sr-only">Tagesplan durchsuchen</span><input type="search" id="day-search" placeholder="Was möchtest du entdecken?" autocomplete="off"></label>
+          <label class="search-field"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><span class="sr-only">Tagesplan durchsuchen</span><input type="search" id="day-search" placeholder="Suchen" autocomplete="off"></label>
           <button type="button" id="saved-filter" class="button button-secondary" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-star"/></svg> Gemerkte <span id="saved-count">0</span></button>
         </div>
         <div class="destination-filters" role="group" aria-label="Tage nach Station filtern" id="destination-filters"></div>
@@ -264,36 +264,34 @@
       </section>
 
       <section id="panel-travel" class="tab-panel" role="tabpanel" aria-labelledby="tab-travel" hidden>
-        <div class="panel-heading"><div><h2>Gut ankommen. Entspannt weiter.</h2><p>Die Flüge und alles Wichtige für unterwegs.</p></div></div>
+        <div class="panel-heading"><div><h2>Gut ankommen. Entspannt weiter.</h2></div></div>
         <div id="travel-content"></div>
       </section>
 
       <section id="panel-stays" class="tab-panel" role="tabpanel" aria-labelledby="tab-stays" hidden>
-        <div class="panel-heading"><div><h2>Ein Zuhause auf Zeit.</h2><p>Unterkünfte ansehen und deine Auswahl merken.</p></div></div>
+        <div class="panel-heading"><div><h2>Ein Zuhause auf Zeit.</h2></div></div>
         <div id="stays-content"></div>
       </section>
 
       <section id="panel-bases" class="tab-panel" role="tabpanel" aria-labelledby="tab-bases" hidden>
-        <div class="panel-heading"><div><h2>Gut versorgt an jeder Basis.</h2><p>Lebensmittel für den Alltag. Lieblingsläden und Souvenirs für unterwegs.</p></div></div>
+        <div class="panel-heading"><div><h2>Gut versorgt an jeder Basis.</h2></div></div>
         <div id="base-filters" class="destination-filters" role="group" aria-label="Einkaufsbasis auswählen"></div>
         <div id="bases-content"></div>
       </section>
 
       <section id="panel-dining" class="tab-panel" role="tabpanel" aria-labelledby="tab-dining" hidden>
-        <div class="panel-heading"><div><h2>Heute Abend mal etwas Besonderes.</h2><p>Familientaugliche Erlebnisrestaurants und Essen mit Aussicht in Tokyo, Kyoto und Osaka.</p></div></div>
+        <div class="panel-heading"><div><h2>Heute Abend mal etwas Besonderes.</h2></div></div>
         <div id="dining-destinations" class="destination-filters" role="group" aria-label="Restaurantstadt"></div>
         <div id="dining-categories" class="destination-filters dining-categories" role="group" aria-label="Art des Restaurantbesuchs"></div>
         <div class="dining-options-bar">
           <label class="dining-spontaneous"><input type="checkbox" id="dining-spontaneous"> Nur spontan versuchbar</label>
           <span id="dining-results" role="status"></span>
         </div>
-        <p class="dining-note">Spontan heißt ohne Pflichtreservierung, nicht garantiert freier Tisch. Vorbuchbare Highlights sind klar gekennzeichnet; die aktuellen Menüs und Abendzeiten bitte beim Betreiber prüfen.</p>
         <div id="dining-list" class="dining-list"></div>
       </section>
 
       <section id="panel-festivals" class="tab-panel" role="tabpanel" aria-labelledby="tab-festivals" hidden>
-        <div class="panel-heading"><div><h2>Japan feiert. Ihr mittendrin.</h2><p>Passende Festoptionen für eure Tage in Tokyo, Kyoto und Osaka – mit Rückzugsplan für die Kids.</p></div></div>
-        <p class="festival-intro">Die jährlichen Termine helfen bei der Planung, sind aber keine bestätigten Programme für 2027. Alles bleibt optional; kein Fest wird zusätzlich zu einem ohnehin vollen Tagesausflug erzwungen.</p>
+        <div class="panel-heading"><div><h2>Japan feiert. Ihr mittendrin.</h2></div></div>
         <div id="festival-list" class="festival-list"></div>
         <details class="fireworks-context-note">
           <summary>Und die großen Feuerwerke?</summary>
@@ -303,9 +301,9 @@
       </section>
 
       <section id="panel-checklist" class="tab-panel" role="tabpanel" aria-labelledby="tab-checklist" hidden>
-        <div class="panel-heading"><div><h2>Vorfreude? Abgehakt.</h2><p>Die wichtigen Buchungen und Fristen, an einem Ort.</p></div></div>
+        <div class="panel-heading"><div><h2>Vorfreude? Abgehakt.</h2></div></div>
         <div class="checklist-progress">
-          <div><strong id="checklist-progress-text">0 von 8 erledigt</strong><span id="checklist-cheer">Schritt für Schritt wird die Reise startklar.</span></div>
+          <div><strong id="checklist-progress-text">0 von 8 erledigt</strong></div>
           <progress id="checklist-progress" value="0" max="8" aria-label="Buchungsvorbereitungen erledigt"></progress>
         </div>
         <div id="checklist-items"></div>
