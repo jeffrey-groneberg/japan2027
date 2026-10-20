@@ -471,6 +471,16 @@ test("mobile shows exactly one lane and snaps between routes by swipe, buttons a
   await expect(page.locator(".lane-mobile-nav")).toBeHidden();
 });
 
+test("all lane headers use the same opaque surface in light and dark mode", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const theme of ["light", "dark"]) {
+    await ready(page, `/?clawpilotTheme=${theme}&opaqueHeaders=1#view=itinerary&day=2027-07-10`);
+    const colors = await page.locator(".lane-header").evaluateAll((headers) => headers.map((header) => getComputedStyle(header).backgroundColor));
+    expect(new Set(colors).size, theme).toBe(1);
+    expect(colors[0], theme).not.toMatch(/^rgba\([^)]*,\s*(?:0|0?\.\d+)\)$/);
+  }
+});
+
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   let point = await openPoint(page, "takeshita");
