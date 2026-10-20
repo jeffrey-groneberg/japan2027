@@ -603,6 +603,26 @@ test("the planner carries the festival rhythm visual language into its work surf
   await expect(page.locator(".lane-track").first()).toHaveCSS("background-image", /radial-gradient/);
   await expect(page.locator(".lane-block-activity").first()).toHaveCSS("border-bottom-width", "3px");
   await expect(page.locator(".day-option[aria-pressed='true'] .day-option-date strong")).toHaveCSS("border-top-style", "double");
+  const routeMarkAlignment = await page.locator(".lane-route-mark").first().evaluate((mark) => {
+    const markRect = mark.getBoundingClientRect();
+    const textRange = document.createRange();
+    textRange.selectNodeContents(mark);
+    const textRect = textRange.getBoundingClientRect();
+    return {
+      display: getComputedStyle(mark).display,
+      horizontalOffset: Math.abs((textRect.left + textRect.width / 2) - (markRect.left + markRect.width / 2)),
+      verticalOffset: Math.abs((textRect.top + textRect.height / 2) - (markRect.top + markRect.height / 2)),
+    };
+  });
+  expect(routeMarkAlignment.display).toBe("grid");
+  expect(routeMarkAlignment.horizontalOffset).toBeLessThan(1);
+  expect(routeMarkAlignment.verticalOffset).toBeLessThan(2);
+  const pointNumberAlignment = await page.locator(".lane-block .poi-thumb + .lane-block-number").first().evaluate((number) => {
+    const numberRect = number.getBoundingClientRect();
+    const imageRect = number.previousElementSibling.getBoundingClientRect();
+    return Math.abs(numberRect.left - imageRect.left);
+  });
+  expect(pointNumberAlignment).toBeLessThan(1);
   expect(await page.locator(".panel-heading h2").first().evaluate((heading) => getComputedStyle(heading, "::after").backgroundImage)).toContain("linear-gradient");
 });
 
