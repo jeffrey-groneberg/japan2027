@@ -117,6 +117,13 @@ bars. No copied game characters or assets are used. Tutorial UI prose is
 removed; controls and structure carry interaction, while factual travel,
 booking, safety and child guidance remains.
 
+Motion carries the same hierarchy. The original hero scene has one authored
+arrival followed by quiet sun/cloud/train/onigiri/suitcase/ticket/rhythm loops
+that run only while the illustration is visible. Planner motion is shorter and
+functional: tabs, panels, day drums, filters, favorites, route buttons,
+disclosures, the map dialog and mobile day/item screens acknowledge their state
+or spatial relationship. Reduced Motion removes all authored movement.
+
 Browser behavior is progressively enhanced: live Visual Viewport sizing falls
 back to `innerHeight`, JavaScript supplies pixel lane widths when container
 units are unavailable, and `vh` fallbacks precede `dvh`. Chromium and WebKit

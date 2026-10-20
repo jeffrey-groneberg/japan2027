@@ -32,6 +32,15 @@ vendored locally; optional background maps come from OpenStreetMap.
 - The planner carries the original festival/rhythm identity beyond the hero:
   route drums, four festival lane colors, beat dots, ticket-like activity
   blocks and destination-colored day marks replace a spreadsheet-like surface.
+- The original banner scene is animated as a small festival performance:
+  clouds drift, the train travels, the onigiri friend and suitcase move, and
+  rhythm marks pulse. Across the planner, short transitions acknowledge tabs,
+  filters, selected days, routes, disclosures, favorites and mobile screens.
+  Banner loops pause when offscreen or when the tab is hidden; Reduce Motion
+  disables every authored animation.
+- Hero metadata, station captions and editorial day summaries are omitted.
+  Original ring patterns and stronger route outlines reference the supplied
+  game screenshots without embedding their sprites, logos or characters.
 - Select a numbered stop to open descriptions, official links, Google Maps and
   culinary advice inline on desktop or on its own mobile detail screen.
   Compact photo thumbnails and larger, credited local photos make places

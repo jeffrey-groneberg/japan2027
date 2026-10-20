@@ -561,13 +561,11 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   const compactLayout = await page.evaluate(() => {
     const boardNode = document.querySelector(".lane-board-scroll");
     const board = boardNode.getBoundingClientRect();
-    const summary = document.querySelector(".day-summary").getBoundingClientRect();
     const visualHeight = visualViewport?.height ?? innerHeight;
     return {
       boardTop: board.top,
       boardBottom: board.bottom,
       boardHeight: board.height,
-      summaryTop: summary.top,
       viewportHeight: visualHeight,
       trackTop: document.querySelector(".lane-track").getBoundingClientRect().top,
       availableHeight: Number.parseFloat(getComputedStyle(boardNode).getPropertyValue("--lane-available-height")),
@@ -578,7 +576,7 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   expect(compactLayout.boardBottom).toBeLessThanOrEqual(compactLayout.viewportHeight + 4);
   expect(compactLayout.boardHeight).toBeGreaterThan(400);
   expect(compactLayout.trackTop - compactLayout.boardTop).toBeLessThan(16);
-  expect(compactLayout.summaryTop).toBeGreaterThanOrEqual(compactLayout.boardBottom);
+  await expect(page.locator(".day-summary")).toHaveCount(0);
   expect(Math.abs(compactLayout.availableHeight - compactLayout.expectedHeight)).toBeLessThanOrEqual(2);
   await expect(page.locator(".lane-header").first()).toBeHidden();
   await expect(page.locator(".lane-corner")).toBeHidden();
@@ -708,6 +706,46 @@ test("the planner carries the festival rhythm visual language into its work surf
   expect(await page.locator(".panel-heading h2").first().evaluate((heading) => getComputedStyle(heading, "::after").backgroundImage)).toContain("linear-gradient");
 });
 
+test("motion animates the festival world, explains state and respects reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await ready(page, "/?clawpilotTheme=light&motionSystem=1");
+  const hero = page.locator(".hero-art");
+  await expect(hero).toHaveClass(/motion-entered/);
+  await expect(hero).toHaveClass(/motion-active/);
+  await expect(page.locator(".hero-train")).toHaveCSS("animation-name", "hero-train");
+  await expect(page.locator(".hero-train")).toHaveCSS("animation-iteration-count", "infinite");
+  await expect(page.locator("#motion-toggle")).toHaveCount(0);
+  await expect(page.locator(".hero-clouds")).toHaveCSS("animation-name", "hero-clouds");
+  await expect(page.locator(".hero-rice-motion")).toHaveCSS("animation-name", "hero-rice");
+
+  await show(page, "travel");
+  await expect(page.locator("#panel-travel")).toHaveCSS("animation-name", "panel-arrival");
+  await show(page, "itinerary");
+  await page.locator('.route-stop[data-destination="kyoto"]').click();
+  await expect(page.locator('.route-stop[data-destination="kyoto"] .stop-art')).toHaveCSS("animation-name", "landmark-arrival");
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  await expect(hero).not.toHaveClass(/motion-active/);
+
+  await page.setViewportSize({ width: 430, height: 760 });
+  await page.goto("/?clawpilotTheme=light&motionSystem=mobile#view=itinerary&day=2027-07-10&screen=day");
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await page.getByRole("button", { name: "Nächste Route" }).click();
+  await expect(page.locator(".lane-mobile-status")).toContainText("Route B");
+  expect(await page.locator(".lane-mobile-route-mark").evaluate((mark) => mark.getAnimations().some((animation) => animation.playState === "running"))).toBe(true);
+  await page.locator(".lane-track").nth(1).locator(".lane-block-activity").first().click();
+  await expect(page.locator("#lane-detail")).toHaveCSS("animation-name", "item-screen-arrival");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/?clawpilotTheme=light&motionSystem=reduce");
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect(page.locator(".hero-train")).toHaveCSS("animation-name", "none");
+  await expect(page.locator("#panel-itinerary")).toHaveCSS("animation-name", "none");
+});
+
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   let point = await openPoint(page, "takeshita");
@@ -736,6 +774,7 @@ test("culinary recommendations describe the experience, children and actual acce
 test("removed source, budget and footer blocks no longer occupy any planner panel", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-07");
   await expect(page.locator("footer, #panel-budget, #print-plan, #source-footer, #link-audit")).toHaveCount(0);
+  await expect(page.locator(".trip-date, .hero-footnote, .route-caption, .day-summary")).toHaveCount(0);
   for (const view of Object.keys(tabs)) {
     await show(page, view);
     const text = await page.locator("body").innerText();
@@ -825,7 +864,7 @@ test("the expired flight offer is not confused with the announced direct route",
 test("Ghibli has conditional booking, its own transport and child-aware cafe details", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-08");
   await expect(page.locator("#day-title")).toHaveText("Wandertag: Mount Takao");
-  await expect(page.locator(".day-summary")).toContainText("Ghibli");
+  await expect(page.locator(".day-summary")).toHaveCount(0);
   await expect(page.locator(".lane-header")).toHaveCount(3);
   await expect(page.locator(".lane-header").filter({ hasText: "Ghibli Museum statt Mount Takao" })).toContainText("Entfällt: Mount Takao · Gipfel");
   const option = await openPoint(page, "ghibli");
@@ -871,7 +910,7 @@ test("DisneySea is later, teamLab is Tuesday and Miraikan is not falsely offered
   await expect(page.locator(".planning-correction")).toContainText("dienstags geschlossen");
   await page.getByRole("button", { name: "Freitag, 9. Juli: DisneySea", exact: true }).click();
   await expect(page.locator("#day-title")).toHaveText("DisneySea");
-  await expect(page.locator(".day-summary")).toContainText("vier vollen Tagen");
+  await expect(page.locator(".day-date")).toContainText("9. Juli");
   await page.locator(".day-booking-note > summary").click();
   await expect(page.locator(".day-booking-note")).toContainText("bisherigen 6. Juli");
   await expect(page.locator(".day-booking-note")).toContainText("nicht automatisch gültig");
@@ -973,7 +1012,7 @@ test("the dinner shortcut opens ideas for the selected Japanese city", async ({ 
 test("UZUMASA appears as a full-day ninja replacement rather than an addition to Nara", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-13");
   await expect(page.locator("#day-title")).toContainText("Nara");
-  await expect(page.locator(".day-summary")).toContainText("ersetzt die UZUMASA-Route");
+  await expect(page.locator(".day-summary")).toHaveCount(0);
   await expect(page.locator(".lane-header").filter({ hasText: "UZUMASA Ninja-Haus statt Nara" })).toContainText("Entfällt: Nara-Park");
   const option = await openPoint(page, "uzumasa");
   await expect(option).toContainText("Nicht anschließend noch nach Nara");

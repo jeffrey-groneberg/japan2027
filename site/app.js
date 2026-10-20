@@ -15,8 +15,10 @@ import { buildDayLanes, formatLaneTime } from "./lane-data.js";
 const $ = (selector, root = document) => root.querySelector(selector);
 const views = ["itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
 const mobileItineraryQuery = matchMedia("(max-width: 600px)");
+const reducedMotionQuery = matchMedia("(prefers-reduced-motion: reduce)");
 const accommodationTransportNote = "Die Anfahrten im Tagesplan beziehen sich weiterhin auf die ursprünglichen Hauptunterkünfte; eine andere Auswahl ändert sie nicht automatisch.";
 const mapContexts = new Map();
+const transientAnimations = new Map();
 let mapsPermitted = false;
 let selectedBase = "tokyo";
 let selectedDaySection = "plan";
@@ -50,6 +52,44 @@ function graphic(symbol, className = "icon", viewBox = "0 0 24 24") {
   use.setAttribute("href", `#${symbol}`);
   svg.append(use);
   return svg;
+}
+
+function playMotion(node, keyframes, options) {
+  if (!node?.animate || reducedMotionQuery.matches) return;
+  transientAnimations.get(node)?.cancel();
+  const animation = node.animate(keyframes, options);
+  transientAnimations.set(node, animation);
+  const release = () => {
+    if (transientAnimations.get(node) === animation) transientAnimations.delete(node);
+  };
+  animation.addEventListener("finish", release, { once: true });
+  animation.addEventListener("cancel", release, { once: true });
+}
+
+function bindMotion() {
+  const heroArt = $(".hero-art");
+  if (!heroArt) return;
+  let visible = true;
+  const sync = () => heroArt.classList.toggle("motion-active", visible && !document.hidden && !reducedMotionQuery.matches);
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) heroArt.classList.add("motion-entered");
+      sync();
+    }, { threshold: 0.12 });
+    observer.observe(heroArt);
+  } else {
+    heroArt.classList.add("motion-entered");
+    sync();
+  }
+  document.addEventListener("visibilitychange", sync);
+  reducedMotionQuery.addEventListener("change", () => {
+    if (reducedMotionQuery.matches) {
+      for (const animation of transientAnimations.values()) animation.cancel();
+      transientAnimations.clear();
+    }
+    sync();
+  });
 }
 
 function button(text, className, action) {
@@ -884,6 +924,7 @@ function renderLaneBoard(schedule, selectBlock, { initialBlockKey = null, initia
   function updateNavigation(index) {
     activeLaneIndex = Math.max(0, Math.min(schedule.lanes.length - 1, index));
     if (activeLaneIndex === renderedLaneIndex) return;
+    const animateSwitch = renderedLaneIndex >= 0;
     renderedLaneIndex = activeLaneIndex;
     const lane = schedule.lanes[activeLaneIndex];
     for (let tone = 0; tone < 4; tone += 1) mobileNavigation.classList.toggle(`lane-tone-${tone}`, tone === activeLaneIndex % 4);
@@ -894,6 +935,17 @@ function renderLaneBoard(schedule, selectBlock, { initialBlockKey = null, initia
     );
     previousLane.disabled = activeLaneIndex === 0;
     nextLane.disabled = activeLaneIndex === schedule.lanes.length - 1;
+    if (animateSwitch) {
+      playMotion(mobileRouteMark, [
+        { transform: "scale(.82) rotate(-10deg)" },
+        { transform: "scale(1.12) rotate(4deg)", offset: .55 },
+        { transform: "scale(1) rotate(0)" },
+      ], { duration: 360, easing: "cubic-bezier(.16, 1, .3, 1)" });
+      playMotion(routeStatus, [
+        { opacity: .35, transform: "translateX(8px)" },
+        { opacity: 1, transform: "translateX(0)" },
+      ], { duration: 280, easing: "cubic-bezier(.16, 1, .3, 1)" });
+    }
   }
   goToLane = (index, behavior = "smooth") => {
     const targetIndex = Math.max(0, Math.min(schedule.lanes.length - 1, index));
@@ -1022,7 +1074,6 @@ function renderDayDetail(day, days) {
   const planPanel = daySections.get("plan").panel;
   const transitPanel = daySections.get("transit").panel;
   if (guide) {
-    planPanel.append(element("p", "day-summary", guide.summary));
     for (const event of festivalsForDay(day.date)) {
       const note = element("div", "festival-day-note");
       note.append(
@@ -1598,6 +1649,7 @@ function initialize() {
   renderChecklist();
   renderItinerary();
   bindEvents();
+  bindMotion();
   $("#startup-notice").hidden = true;
   revealSelectedDay();
   if (mobileItineraryQuery.matches && mobileItemOpen && currentView === "itinerary") positionMobileItemScreen();

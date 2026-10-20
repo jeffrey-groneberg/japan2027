@@ -34,6 +34,8 @@ The people planning and taking the trip described in the supplied itinerary.
 - Keep interface copy terse. Preserve actions, status messages and factual
   travel/safety/booking guidance, but do not add tutorial prose explaining how
   lanes, maps, filters or detail panels work.
+- Omit the hero date/family line, hero footnote, station-strip caption and
+  editorial day-summary paragraphs. Keep the concrete itinerary facts.
 - Distinguish source estimates and suggestions from confirmed bookings or
   independently verified travel information.
 - Personal selections and checklist progress belong to the current browser;
@@ -73,6 +75,11 @@ The people planning and taking the trip described in the supplied itinerary.
   safe-area inset rather than a device-specific height or fixed subtraction.
 - Selecting a mobile lane block opens a third-level item screen with its own
   “Zur Tagesroute” action. Do not append item details below the mobile lane.
+- Carry the Matsuri/rhythm character through motion: animate the original hero
+  scene and use short state transitions for tabs, filters, selected days,
+  route switches, disclosures, favorites and mobile detail navigation.
+  Decorative loops must pause offscreen or in a hidden tab, and Reduce Motion
+  must remove all authored animation without hiding content.
 - Support modern WebKit, Chromium and Gecko behavior through progressive
   enhancement: Visual Viewport falls back to `innerHeight`, container-unit lane
   sizing receives a measured pixel value, and dynamic viewport CSS has `vh`

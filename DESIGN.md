@@ -211,7 +211,7 @@ There is no authored tonal ladder. Do not synthesize additional production shade
 - Dining and festival summary names use regular Lilita One at (1.2rem), reducing to (1.1rem) at (760px) and below. Their UI booking/date lines remain subordinate; this contextual pair does not add a new type scale.
 - **Body:** the `body` role is the root reading baseline. Detailed paragraphs use the smaller, more open `body-detail` treatment; surrounding functional copy varies by context rather than following an invented modular ratio.
 - **Label:** the `label` role captures the shared bold control/navigation voice. Day-local tabs are more compact (.74rem), while action buttons use leading (1.3).
-- Agenda and place descriptions repeatedly stop at a readable measure (70ch); the day summary is tighter (65ch). These are content limits, not fixed-width columns.
+- Agenda and place descriptions repeatedly stop at a readable measure (70ch). Editorial day summaries, hero metadata and station-strip captions are omitted.
 
 **The Display/Detail Rule.** Lilita One gives headings and meaningful route/date numerals their character; the local UI stack carries controls and long practical copy.
 
@@ -250,9 +250,15 @@ The authored planner is flat: one-pixel borders and neutral/tonal layering estab
 
 **The No-Tutorial-Copy Rule.** Controls and structure teach the interface. Keep concise action labels, status messages and factual travel/safety copy; remove prose that explains how to click, swipe, expand, read lanes or use maps.
 
-Motion is small and local. Buttons transition background and border over (.18s), with a one-pixel hover/press shift using the recorded ease-out curve. A single festival-art arrival runs for (.75s) at desktop widths of at least (960px), only with no reduced-motion preference; it combines a slight vertical/rotational settle with a clip reveal from an already visible image. Other sections do not repeat that entrance.
+The supplied game screenshots inform only abstract visual traits: original
+subtle ring/fan patterns in the banner, ink-outlined route drums and a segmented
+festival-color selection rail. No supplied game artwork is embedded.
 
-Reduced motion removes authored animations and transitions, changes smooth scrolling to automatic scrolling and disables Leaflet fade/zoom animation. Map focusing itself is nonanimated.
+Motion follows a festival performance hierarchy. The hero is the single authored focal sequence: its scene settles through a (.75s) clipped arrival, then the sun, clouds, train, onigiri friend, suitcase, ticket, spark and beat marks move on quiet, differently timed transform/opacity loops. An `IntersectionObserver` runs those loops only while the illustration is visible; document visibility pauses them in a hidden tab.
+
+The planner uses shorter motion to explain state rather than decorate every surface. Active tabs and panels arrive over roughly (.3s); day drums, destination landmarks, filter stamps, favorites and checklist marks acknowledge selection; route-button changes pulse the active drum and move its label; disclosures, the map dialog and mobile day/item screens reveal their spatial relationship. Routine hover/press feedback remains (.18s) and all state changes use the recorded exponential ease-out.
+
+Reduced motion removes authored animations and transitions, changes smooth scrolling to automatic scrolling and disables Leaflet fade/zoom animation. Content is visible before motion classes are applied, and map focusing itself remains nonanimated.
 
 ## Shapes
 
