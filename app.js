@@ -172,8 +172,16 @@ function writeLocation(mode = "replace", statePatch = {}) {
   history[mode === "push" ? "pushState" : "replaceState"](nextState, "", `${location.pathname}${location.search}#${hash}`);
 }
 
+function syncMobileDayView() {
+  document.body.classList.toggle(
+    "mobile-day-view",
+    mobileItineraryQuery.matches && currentView === "itinerary" && mobileDayOpen,
+  );
+}
+
 function setView(view, updateLocation = true) {
   currentView = view;
+  syncMobileDayView();
   for (const id of views) {
     const selected = id === view;
     const tab = $(`#tab-${id}`);
@@ -705,7 +713,6 @@ function renderLaneBoard(schedule, selectBlock) {
   let goToLane = () => {};
   const mobileNavigation = element("div", "lane-mobile-nav");
   mobileNavigation.setAttribute("role", "group");
-  mobileNavigation.setAttribute("aria-label", "Zwischen Tagesrouten wechseln");
   const previousLane = button("", "icon-button lane-route-button", () => goToLane(activeLaneIndex - 1));
   previousLane.setAttribute("aria-label", "Vorherige Route");
   previousLane.append(graphic("icon-chevron", "icon previous-icon"));
@@ -713,11 +720,14 @@ function renderLaneBoard(schedule, selectBlock) {
   routeStatus.id = "lane-mobile-status";
   routeStatus.setAttribute("aria-live", "polite");
   routeStatus.setAttribute("aria-atomic", "true");
+  const mobileRouteMark = element("span", "lane-mobile-route-mark");
+  mobileRouteMark.setAttribute("aria-hidden", "true");
   const nextLane = button("", "icon-button lane-route-button", () => goToLane(activeLaneIndex + 1));
   nextLane.setAttribute("aria-label", "Nächste Route");
   nextLane.append(graphic("icon-chevron"));
-  mobileNavigation.append(previousLane, routeStatus, nextLane);
-  mobileNavigation.hidden = schedule.lanes.length < 2;
+  mobileNavigation.append(previousLane, mobileRouteMark, routeStatus, nextLane);
+  mobileNavigation.classList.toggle("lane-mobile-nav-single", schedule.lanes.length === 1);
+  mobileNavigation.setAttribute("aria-label", schedule.lanes.length > 1 ? "Zwischen Tagesrouten wechseln" : "Tagesroute");
   scroll.setAttribute("aria-describedby", routeStatus.id);
   const board = element("div", "lane-board");
   if (schedule.lanes.length > 1) board.classList.add("lane-board-multiple");
@@ -793,7 +803,7 @@ function renderLaneBoard(schedule, selectBlock) {
     board.append(track);
   }
   scroll.append(board);
-  const headers = [...board.querySelectorAll(".lane-header")];
+  const tracks = [...board.querySelectorAll(".lane-track")];
   let renderedLaneIndex = -1;
   function snapOffset() {
     return Number.parseFloat(getComputedStyle(scroll).scrollPaddingLeft) || 0;
@@ -804,6 +814,7 @@ function renderLaneBoard(schedule, selectBlock) {
     renderedLaneIndex = activeLaneIndex;
     const lane = schedule.lanes[activeLaneIndex];
     for (let tone = 0; tone < 4; tone += 1) mobileNavigation.classList.toggle(`lane-tone-${tone}`, tone === activeLaneIndex % 4);
+    mobileRouteMark.textContent = lane.letter;
     routeStatus.replaceChildren(
       element("strong", "", `${lane.label} · ${lane.title}`),
       element("span", "", `${activeLaneIndex + 1} von ${schedule.lanes.length}`),
@@ -813,11 +824,11 @@ function renderLaneBoard(schedule, selectBlock) {
   }
   goToLane = (index, behavior = "smooth") => {
     const targetIndex = Math.max(0, Math.min(schedule.lanes.length - 1, index));
-    const header = headers[targetIndex];
-    if (!header) return;
+    const track = tracks[targetIndex];
+    if (!track) return;
     updateNavigation(targetIndex);
     scroll.scrollTo({
-      left: Math.max(0, header.offsetLeft - snapOffset()),
+      left: Math.max(0, track.offsetLeft - snapOffset()),
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : behavior,
     });
   };
@@ -830,8 +841,8 @@ function renderLaneBoard(schedule, selectBlock) {
       const target = scroll.scrollLeft + snapOffset();
       let nearestIndex = 0;
       let nearestDistance = Number.POSITIVE_INFINITY;
-      headers.forEach((header, index) => {
-        const distance = Math.abs(header.offsetLeft - target);
+      tracks.forEach((track, index) => {
+        const distance = Math.abs(track.offsetLeft - target);
         if (distance < nearestDistance) {
           nearestDistance = distance;
           nearestIndex = index;
@@ -1072,6 +1083,7 @@ function renderDayDetail(day, days) {
 }
 
 function renderItinerary(updateLocation = true) {
+  syncMobileDayView();
   const days = filterDays(trip.days, filters, state.favorites);
   if (!days.some((day) => day.date === selectedDate) && days.length) {
     selectedDate = days[0].date;
