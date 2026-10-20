@@ -72,8 +72,8 @@
     }
   </style>
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="./styles.css?v=59e3644">
-  <script type="module" src="./app.js?v=59e3644" id="app-module"></script>
+  <link rel="stylesheet" href="./styles.css?v=31858ca">
+  <script type="module" src="./app.js?v=31858ca" id="app-module"></script>
 </head>
 <body>
   <!--
@@ -251,20 +251,29 @@
 
     <div class="page-width route-area">
       <div class="route-train-scene">
-        <svg class="route-train-landscape" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <div class="route-train-scenery" aria-hidden="true">
+        <svg class="route-train-landscape" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <g id="train-landscape-tile">
           <path class="train-distant" d="M0 180 110 100l60 46L300 20l178 160 100-72 86 72 144-130 174 130 100-65 118 65v20H0Z"/>
           <path class="scene-paper" d="m254 65 46-45 54 49-30-7-16 13-20-18-15 10Z"/>
-          <path class="train-near" d="M0 185q130-42 260 0t260 0 260 0 260 0 260 0v30H0Z"/>
-          <path class="train-catenary" d="M80 190V62h70M560 190V62h70M1040 190V62h70M0 78h1200"/>
+          <path class="train-near" d="M0 185q100-42 200 0t200 0 200 0 200 0 200 0 200 0v15H0Z"/>
+          <path class="train-catenary" d="M80 190V62h70M480 190V62h70M880 190V62h70M0 78h1200"/>
+          </g>
+          <use href="#train-landscape-tile" x="1200"/>
         </svg>
+        </div>
+        <div class="route-train-window" tabindex="0" role="region" aria-label="Stationszug">
         <div class="route-train">
           <nav id="route-stops" class="route-strip" aria-label="Die vier Stationen der Reise"></nav>
-          <svg class="route-train-nose" viewBox="0 0 100 128" preserveAspectRatio="none" aria-hidden="true">
-            <path class="train-nose-shell" d="M0 2h8c26 0 38 22 50 48l36 51q10 19-10 25H0"/>
+          <div class="route-train-nose" aria-hidden="true">
+          <svg class="train-nose-art" viewBox="0 0 100 128" preserveAspectRatio="none">
+            <path class="train-nose-shell" d="M0 0h8c26 0 38 24 50 50l36 51q10 21-10 27H0"/>
             <path class="train-windscreen" d="M13 17h7c15 2 23 16 31 34H13Z"/>
-            <path class="scene-blue" d="M0 86h68l11 16H0Z"/>
             <path class="train-headlight" d="m73 105 11 8H69l-4-8Z"/>
           </svg>
+          <span class="train-nose-band"></span>
+          </div>
+        </div>
         </div>
         <div class="route-train-rails" aria-hidden="true"></div>
       </div>

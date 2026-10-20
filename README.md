@@ -315,7 +315,10 @@ overview. The other seven panels omit both and begin below the shared menu.
 Its destination selector is an original Shinkansen-style train: four clickable
 carriages, window illustrations, wheels, rails and a decorative mountain layer.
 Small scroll/pointer parallax offsets separate landscape, train and rails;
-all motion stops offscreen, in background tabs or with Reduce Motion. The train
+seamlessly passing scenery and faster-moving sleepers create continuous
+forward travel without moving the clickable carriages. The train never wraps:
+small screens scroll the single row horizontally, including its nose.
+All motion stops offscreen, in background tabs or with Reduce Motion. The train
 is a visual trip selector, not a claim of rail service to Vietnam.
 When the desktop/tablet menu cannot fit, measured overflow destinations move
 into “Mehr” instead of creating a horizontal scrollbar. They return as space

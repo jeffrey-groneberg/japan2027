@@ -10,7 +10,9 @@ Mode: Operate.
 The Home station selector is an original Shinkansen: four clickable carriages,
 landmark windows, blue waist stripe, wheels, rails and mountain scenery. Subtle
 scroll/pointer parallax separates the layers, pauses offscreen/hidden and
-respects Reduce Motion. Mobile preserves two-by-two destinations.
+respects Reduce Motion. The train never wraps: mobile scrolls the single row
+horizontally. Roof, floor and stripe align at the nose; continuous scenery and
+sleeper movement create forward travel while buttons remain steady.
 
 Current navigation: Home is the default eighth main destination, owning the
 animated hero and station strip exclusively. Shared navigation sits above all
