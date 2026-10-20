@@ -92,6 +92,57 @@ function bindMotion() {
   });
 }
 
+function bindRouteTrainMotion() {
+  const scene = $(".route-train-scene");
+  if (!scene) return;
+  let visible = false;
+  let pointer = 0;
+  let frame;
+  const active = () => visible && !document.hidden && !reducedMotionQuery.matches;
+  const update = () => {
+    if (!active()) return;
+    const rect = scene.getBoundingClientRect();
+    const progress = Math.max(-1, Math.min(1, (innerHeight / 2 - rect.top - rect.height / 2) / innerHeight));
+    const offset = progress * 12 + pointer * 8;
+    scene.style.setProperty("--train-landscape-x", `${-offset}px`);
+    scene.style.setProperty("--train-body-x", `${offset * .2}px`);
+    scene.style.setProperty("--train-track-x", `${offset * .6}px`);
+  };
+  const schedule = () => {
+    if (!active()) return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(update);
+  };
+  const sync = () => {
+    scene.classList.toggle("motion-active", active());
+    if (active()) schedule();
+    else {
+      cancelAnimationFrame(frame);
+      for (const name of ["landscape", "body", "track"]) scene.style.removeProperty(`--train-${name}-x`);
+    }
+  };
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(scene);
+  } else {
+    visible = true;
+    sync();
+  }
+  scene.addEventListener("pointermove", (event) => {
+    const rect = scene.getBoundingClientRect();
+    pointer = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
+    schedule();
+  }, { passive: true });
+  scene.addEventListener("pointerleave", () => { pointer = 0; schedule(); });
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  document.addEventListener("visibilitychange", sync);
+  reducedMotionQuery.addEventListener("change", sync);
+}
+
 function button(text, className, action) {
   const node = element("button", className, text);
   node.type = "button";
@@ -422,6 +473,9 @@ function renderRouteControls() {
       copy,
       graphic(destination.symbol, "stop-art", "0 0 200 140"),
     );
+    const wheels = element("span", "train-wheels");
+    wheels.setAttribute("aria-hidden", "true");
+    stop.append(wheels);
     route.append(stop);
   });
   const filterOptions = [
@@ -1771,6 +1825,7 @@ function initialize() {
   renderItinerary();
   bindEvents();
   bindMotion();
+  bindRouteTrainMotion();
   $("#startup-notice").hidden = true;
   revealSelectedDay();
   if (mobileItineraryQuery.matches && mobileItemOpen && currentView === "itinerary") positionMobileItemScreen();

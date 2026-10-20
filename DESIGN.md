@@ -219,6 +219,14 @@ Tiny logo lettering, artwork labels and narrow metadata are not a reusable minim
 
 ## Layout
 
+Home's station strip is now an original Shinkansen composition. Four buttons
+form the carriages with blue side bands, wheel pairs and landmark windows;
+a separate SVG nose completes the wide silhouette. Narrow views retain a
+two-by-two carriage layout. Mountains, train and rails use small differential
+scroll/pointer offsets bounded to 20px; wheel motion is decorative and never
+moves the buttons continuously. Offscreen/hidden states and Reduce Motion
+stop all train motion. This is symbolic navigation, not geographic rail routing.
+
 The desktop/tablet tab rail is overflow-free: real rendered tab widths plus
 gaps determine how many fit beside “Mehr”. Remaining destinations appear as
 standard buttons in its disclosure. Resizing restores inline destinations;

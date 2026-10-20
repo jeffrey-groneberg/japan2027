@@ -843,6 +843,37 @@ test("motion animates the festival world, explains state and respects reduced mo
   await expect(page.locator("#panel-itinerary")).toHaveCSS("animation-name", "none");
 });
 
+test("station train preserves all destinations and uses bounded reduced-motion-aware parallax", async ({ page }) => {
+  for (const width of [320, 430, 900, 1440]) {
+    await page.setViewportSize({ width, height: 932 });
+    await ready(page, "/?clawpilotTheme=light#view=home");
+    await page.locator(".route-train-scene").scrollIntoViewIfNeeded();
+    await expect(page.locator(".route-stop")).toHaveCount(4);
+    await expect(page.locator(".train-wheels")).toHaveCount(4);
+    expect(await page.locator(".stop-copy").evaluateAll((nodes) => nodes.every((node) => node.scrollWidth <= node.clientWidth + 1))).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  const scene = page.locator(".route-train-scene");
+  await expect(scene).toHaveClass(/motion-active/);
+  await expect(page.locator(".train-wheels").first()).toHaveCSS("animation-name", "train-ride");
+  const rect = await scene.boundingBox();
+  await page.mouse.move(rect.x + 10, rect.y + 40);
+  const shift = () => scene.evaluate((node) => node.style.getPropertyValue("--train-landscape-x"));
+  await expect.poll(shift).not.toBe("");
+  const left = await shift();
+  await page.mouse.move(rect.x + rect.width - 10, rect.y + 40);
+  await expect.poll(shift).not.toBe(left);
+  expect(Math.abs(Number.parseFloat(await shift()))).toBeLessThanOrEqual(20);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".train-wheels").first()).toHaveCSS("animation-name", "none");
+  await expect.poll(shift).toBe("");
+  await page.locator('.route-stop[data-destination="tokyo"]').click();
+  await expect(page.locator("#panel-itinerary")).toBeVisible();
+  await expect(page.locator(".day-option")).toHaveCount(7);
+  await expect(scene).not.toHaveClass(/motion-active/);
+});
+
 test("culinary recommendations describe the experience, children and actual access rules", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-05");
   let point = await openPoint(page, "takeshita");

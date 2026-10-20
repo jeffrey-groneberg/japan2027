@@ -22,6 +22,9 @@ The people planning and taking the trip described in the supplied itinerary.
 
 ## Capabilities and constraints
 
+- Home's four-destination selector uses an original Japanese bullet-train
+  silhouette with restrained parallax. All destination controls stay usable;
+  decorative motion stops offscreen/hidden and respects Reduce Motion.
 - Desktop/tablet navigation must not scroll horizontally: measure the real
   menu widths and move only overflowing destinations into a “Mehr” disclosure.
   Restore them on resize/font load and preserve selection and keyboard focus.
