@@ -94,21 +94,39 @@ html[data-theme="dark"] .year-stamp { color: var(--cp-accent-fg); }
 .festival-trim { height: 9px; background: radial-gradient(circle at 9px -1px, var(--cp-surface) 8px, var(--cp-bg) 9px) 0 0 / 20px 10px repeat-x; }
 
 .route-area { padding-block: 32px 28px; }
-.route-strip { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--cp-surface); border: 2px solid var(--cp-border-strong); border-radius: var(--radius-panel); overflow: hidden; }
-.route-stop { position: relative; display: flex; align-items: center; gap: 12px; padding: 20px; background: none; border: none; text-align: left; min-width: 0; transition: background .2s, color .2s; }
-.route-stop:not(:last-child)::after { content: ""; position: absolute; right: 0; height: 44px; width: 1px; background: var(--cp-border); }
+.route-train-scene { position: relative; isolation: isolate; overflow: hidden; padding: 64px 8px 28px; border-radius: 18px; }
+.route-train-landscape { position: absolute; z-index: -1; left: -20px; bottom: 24px; width: calc(100% + 40px); height: 200px; transform: translateX(var(--train-landscape-x, 0px)); }
+.train-distant { fill: color-mix(in srgb, var(--cp-link) 12%, var(--cp-bg)); }
+.train-near { fill: color-mix(in srgb, var(--cp-success) 13%, var(--cp-bg)); }
+.train-catenary { fill: none; stroke: var(--cp-border-strong); stroke-width: 2; opacity: .45; }
+.route-train { position: relative; padding-right: 82px; transform: translateX(var(--train-body-x, 0px)); }
+.route-train-nose { position: absolute; right: 0; top: 0; width: 84px; height: 100%; }
+.train-nose-shell { fill: var(--cp-surface); stroke: var(--cp-text); stroke-width: 2; }
+.train-windscreen { fill: var(--cp-link); stroke: var(--cp-text); stroke-width: 2; }
+.train-headlight { fill: var(--cp-warning); stroke: var(--cp-text); stroke-width: 1.5; }
+.route-train-rails { position: absolute; z-index: -1; inset: auto 0 13px; height: 9px; border-block: 2px solid var(--cp-border-strong); background: repeating-linear-gradient(90deg, transparent 0 17px, var(--cp-border-strong) 17px 21px); transform: translateX(var(--train-track-x, 0px)); }
+.route-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--cp-surface); border: 2px solid var(--cp-text); border-right: 0; border-radius: 22px 0 0 12px; }
+.route-stop { position: relative; display: flex; align-items: center; gap: 10px; padding: 18px 12px 38px; min-height: 128px; background: none; border: none; text-align: left; min-width: 0; transition: background .2s, color .2s; }
+.route-stop:first-child { border-radius: 20px 0 0 10px; }
+.route-stop:not(:last-child)::after { content: ""; position: absolute; right: 0; top: 10px; bottom: 12px; width: 3px; border-inline: 1px solid var(--cp-border-strong); background: var(--cp-bg); }
+.route-stop::before { content: ""; position: absolute; inset: auto 0 23px; height: 12px; background: var(--cp-link); }
 .route-stop:hover { background: var(--cp-bg-elevated); }
 .route-stop:focus-visible { outline-offset: -5px; }
 .route-stop[aria-pressed="true"] { background: var(--cp-highlight); }
-.route-stop[aria-pressed="true"]::before { content: ""; position: absolute; inset: auto 12px 0; height: 4px; border-radius: 4px 4px 0 0; background: repeating-linear-gradient(90deg, var(--cp-danger) 0 14px, var(--cp-warning) 14px 23px, var(--cp-link) 23px 37px, var(--cp-surface) 37px 43px); }
+.route-stop[aria-pressed="true"]::before { background: var(--cp-danger); }
+.train-wheels { position: absolute; inset: auto 18px -9px; height: 16px; pointer-events: none; }
+.train-wheels::before, .train-wheels::after { content: ""; position: absolute; width: 16px; height: 16px; border: 4px solid var(--cp-text); border-radius: 50%; background: var(--cp-border-strong); }
+.train-wheels::before { left: 0; }
+.train-wheels::after { right: 0; }
 .stop-number { display: grid; place-items: center; width: 30px; height: 30px; flex-shrink: 0; border: 1.5px solid var(--cp-border); border-radius: 50%; font-size: .75rem; font-weight: 800; background: var(--cp-surface); }
 .route-stop[aria-pressed="true"] .stop-number { background: var(--cp-danger); border-color: var(--cp-danger); color: var(--cp-accent-fg); }
+.route-train .stop-number { position: absolute; left: 12px; top: 5px; width: 18px; height: 18px; font-size: .55rem; }
 .route-stop[aria-pressed="true"] .stop-dates, .route-stop[aria-pressed="true"] .stop-nights { color: var(--cp-text); }
 .stop-copy { min-width: 0; }
 .stop-name { display: block; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.2; }
 .stop-dates { display: block; color: var(--cp-text-soft); font-size: .73rem; margin-top: 5px; white-space: nowrap; }
 .stop-nights { display: block; font-size: .69rem; color: var(--cp-text-soft); }
-.stop-art { width: 66px; height: 58px; margin-left: auto; }
+.stop-art { width: 56px; height: 48px; margin-left: auto; padding: 3px; border: 2px solid var(--cp-text); border-radius: 10px; background: color-mix(in srgb, var(--cp-link) 8%, var(--cp-surface)); }
 
 .planner { padding-bottom: 56px; }
 .planner-nav { position: sticky; top: 0; z-index: 8; display: flex; align-items: center; gap: 16px; background: var(--cp-bg); }
@@ -660,6 +678,13 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 .print-content { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
+  .route-train-scene.motion-active .train-wheels { animation: train-ride 3.2s ease-in-out infinite; }
+  .route-train-landscape, .route-train-rails { transition: transform .16s ease-out; }
+  @keyframes train-ride {
+    0%, 100% { transform: translateY(0); }
+    35% { transform: translateY(-1px); }
+    70% { transform: translateY(1px); }
+  }
   .hero-art.motion-entered .festival-scene { animation: festival-arrival .75s var(--ease-out) both; }
   .hero-art.motion-active .hero-wash { animation: hero-wash 4.8s ease-in-out; }
   .hero-art.motion-active .hero-sun { animation: hero-sun 4.2s ease-in-out; }
@@ -724,7 +749,7 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 }
 
 @media (max-width: 1100px) {
-  .route-stop { padding: 18px 14px; gap: 8px; }
+  .route-stop { padding: 16px 10px 38px; gap: 8px; }
   .stop-art { width: 50px; }
   .stop-name { font-size: 1.1rem; }
   .stop-number { width: 26px; height: 26px; }
@@ -746,11 +771,15 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .vietnam-title { font-size: 2.3rem; }
   .year-stamp { width: 48px; height: 48px; font-size: 1.6rem; }
   .hero-art { margin-left: -10px; margin-right: -16px; }
-  .route-strip { grid-template-columns: repeat(2, 1fr); }
-  .route-stop { padding: 16px 20px; }
+  .route-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; border-right: 2px solid var(--cp-text); border-radius: 22px 22px 12px 12px; background: transparent; border: 0; }
+  .route-stop { padding: 16px 12px 38px; background-color: var(--cp-surface); border-block: 2px solid var(--cp-text); }
+  .route-stop:nth-child(odd) { border-left: 2px solid var(--cp-text); border-radius: 18px 0 0 12px; }
+  .route-stop:nth-child(even) { border-right: 2px solid var(--cp-text); border-radius: 0 36px 12px 0; }
   .route-stop:nth-child(2)::after { display: none; }
-  .route-stop:nth-child(-n+2) { border-bottom: 1px solid var(--cp-border); }
-  .stop-art { width: 66px; }
+  .route-train { padding-right: 0; }
+  .route-train-nose { display: none; }
+  .route-train-rails { inset-inline: 0; }
+  .stop-art { width: 48px; }
   .stop-name { font-size: 1.2rem; }
   .planner-tabs { gap: 22px; }
   .panel-heading { align-items: start; }
@@ -807,7 +836,7 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .hero-actions .button { padding: 13px 18px; font-size: .83rem; }
   .hero-art { max-width: 400px; margin: 4px auto 0; width: 100%; }
   .route-area { padding-block: 20px 18px; }
-  .route-stop { padding: 16px 12px; gap: 8px; }
+  .route-stop { padding: 16px 10px 38px; gap: 6px; }
   .stop-number { width: 23px; height: 23px; font-size: .65rem; }
   .stop-name { font-size: 1.08rem; }
   .stop-dates { font-size: .65rem; margin-top: 4px; }
