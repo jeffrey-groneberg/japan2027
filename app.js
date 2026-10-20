@@ -105,8 +105,6 @@ function bindRouteTrainMotion() {
     const progress = Math.max(-1, Math.min(1, (innerHeight / 2 - rect.top - rect.height / 2) / innerHeight));
     const offset = progress * 12 + pointer * 8;
     scene.style.setProperty("--train-landscape-x", `${-offset}px`);
-    scene.style.setProperty("--train-body-x", `${offset * .2}px`);
-    scene.style.setProperty("--train-track-x", `${offset * .6}px`);
   };
   const schedule = () => {
     if (!active()) return;
@@ -118,7 +116,7 @@ function bindRouteTrainMotion() {
     if (active()) schedule();
     else {
       cancelAnimationFrame(frame);
-      for (const name of ["landscape", "body", "track"]) scene.style.removeProperty(`--train-${name}-x`);
+      scene.style.removeProperty("--train-landscape-x");
     }
   };
   if ("IntersectionObserver" in window) {
@@ -473,6 +471,9 @@ function renderRouteControls() {
       copy,
       graphic(destination.symbol, "stop-art", "0 0 200 140"),
     );
+    const window = element("span", "carriage-window");
+    window.setAttribute("aria-hidden", "true");
+    stop.append(window);
     const wheels = element("span", "train-wheels");
     wheels.setAttribute("aria-hidden", "true");
     stop.append(wheels);
