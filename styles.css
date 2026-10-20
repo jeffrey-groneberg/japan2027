@@ -309,7 +309,7 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-header strong { color: var(--cp-text); font-size: .7rem; }
 .lane-header-title { margin-top: 5px; font-size: .78rem; font-weight: 700; line-height: 1.35; }
 .lane-header-difference { display: block; margin-top: 7px; color: var(--cp-text); font-size: .63rem; font-weight: 600; line-height: 1.45; }
-.lane-header-primary { background: var(--cp-accent-soft); }
+.lane-header-primary { background: var(--cp-bg-elevated); }
 .lane-time-axis { position: sticky; left: 0; z-index: 3; min-width: 56px; background: var(--cp-bg-elevated); border-right: 1px solid var(--cp-border); }
 .lane-time-label { position: absolute; left: 3px; color: var(--cp-text-soft); font-size: .64rem; font-variant-numeric: tabular-nums; transform: translateY(-50%); }
 .lane-track { position: relative; min-width: 0; border: 1px solid var(--cp-border); border-radius: 10px; background: repeating-linear-gradient(to bottom, var(--cp-surface) 0, var(--cp-surface) 215px, var(--cp-border) 216px); overflow: hidden; }
