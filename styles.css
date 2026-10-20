@@ -94,13 +94,19 @@ html[data-theme="dark"] .year-stamp { color: var(--cp-accent-fg); }
 .festival-trim { height: 9px; background: radial-gradient(circle at 9px -1px, var(--cp-surface) 8px, var(--cp-bg) 9px) 0 0 / 20px 10px repeat-x; }
 
 .route-area { padding-block: 32px 28px; }
-.route-train-scene { position: relative; isolation: isolate; overflow: hidden; padding: 64px 8px 28px; border-radius: 18px; }
-.route-train-landscape { position: absolute; z-index: -1; left: -20px; bottom: 24px; width: calc(100% + 40px); height: 200px; transform: translateX(var(--train-landscape-x, 0px)); }
+.route-train-scene { position: relative; isolation: isolate; overflow: hidden; padding: 64px 8px 12px; border-radius: 18px; }
+.route-train-window { overflow-x: auto; padding: 2px 4px 16px; scrollbar-width: thin; }
+.route-train-window:focus-visible { outline-offset: -3px; }
+.route-train-scenery { position: absolute; z-index: -1; left: -20px; bottom: 24px; width: calc(100% + 40px); height: 200px; transform: translateX(var(--train-landscape-x, 0px)); }
+.route-train-landscape { display: block; width: 200%; height: 100%; }
 .train-distant { fill: color-mix(in srgb, var(--cp-link) 12%, var(--cp-bg)); }
 .train-near { fill: color-mix(in srgb, var(--cp-success) 13%, var(--cp-bg)); }
 .train-catenary { fill: none; stroke: var(--cp-border-strong); stroke-width: 2; opacity: .45; }
-.route-train { position: relative; padding-right: 82px; transform: translateX(var(--train-body-x, 0px)); }
+.route-train { position: relative; min-width: 840px; padding-right: 84px; transform: translateX(var(--train-body-x, 0px)); }
 .route-train-nose { position: absolute; right: 0; top: 0; width: 84px; height: 100%; }
+.train-nose-art { position: absolute; top: 1px; left: 0; width: 100%; height: calc(100% - 2px); overflow: visible; }
+.train-nose-art path { vector-effect: non-scaling-stroke; }
+.train-nose-band { position: absolute; left: 0; right: 0; bottom: 25px; height: 12px; background: var(--cp-link); clip-path: polygon(0 0, 71% 0, 82% 100%, 0 100%); }
 .train-nose-shell { fill: var(--cp-surface); stroke: var(--cp-text); stroke-width: 2; }
 .train-windscreen { fill: var(--cp-link); stroke: var(--cp-text); stroke-width: 2; }
 .train-headlight { fill: var(--cp-warning); stroke: var(--cp-text); stroke-width: 1.5; }
@@ -679,7 +685,11 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 
 @media (prefers-reduced-motion: no-preference) {
   .route-train-scene.motion-active .train-wheels { animation: train-ride 3.2s ease-in-out infinite; }
-  .route-train-landscape, .route-train-rails { transition: transform .16s ease-out; }
+  .route-train-scene.motion-active .route-train-landscape { animation: train-landscape-pass 28s linear infinite; }
+  .route-train-scene.motion-active .route-train-rails { animation: train-sleepers-pass 1s linear infinite; }
+  .route-train-scenery, .route-train-rails { transition: transform .16s ease-out; }
+  @keyframes train-landscape-pass { to { transform: translateX(-50%); } }
+  @keyframes train-sleepers-pass { to { background-position-x: -84px; } }
   @keyframes train-ride {
     0%, 100% { transform: translateY(0); }
     35% { transform: translateY(-1px); }
@@ -771,14 +781,7 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
   .vietnam-title { font-size: 2.3rem; }
   .year-stamp { width: 48px; height: 48px; font-size: 1.6rem; }
   .hero-art { margin-left: -10px; margin-right: -16px; }
-  .route-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; border-right: 2px solid var(--cp-text); border-radius: 22px 22px 12px 12px; background: transparent; border: 0; }
-  .route-stop { padding: 16px 12px 38px; background-color: var(--cp-surface); border-block: 2px solid var(--cp-text); }
-  .route-stop:nth-child(odd) { border-left: 2px solid var(--cp-text); border-radius: 18px 0 0 12px; }
-  .route-stop:nth-child(even) { border-right: 2px solid var(--cp-text); border-radius: 0 36px 12px 0; }
-  .route-stop:nth-child(2)::after { display: none; }
-  .route-train { padding-right: 0; }
-  .route-train-nose { display: none; }
-  .route-train-rails { inset-inline: 0; }
+  .route-stop { padding: 16px 12px 38px; }
   .stop-art { width: 48px; }
   .stop-name { font-size: 1.2rem; }
   .planner-tabs { gap: 22px; }
@@ -981,7 +984,6 @@ progress::-moz-progress-bar { background: var(--cp-danger); border-radius: 10px;
 
 @media (max-width: 360px) {
   .countdown { display: none; }
-  .stop-art { display: none; }
   .japan-title { gap: 10px; font-size: 4.4rem; }
   .year-stamp { width: 48px; height: 48px; font-size: 1.6rem; }
 }
