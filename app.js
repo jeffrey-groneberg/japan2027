@@ -14,6 +14,7 @@ import { buildDayLanes, formatLaneTime } from "./lane-data.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const views = ["itinerary", "travel", "stays", "bases", "dining", "festivals", "checklist"];
+const mobileItineraryQuery = matchMedia("(max-width: 600px)");
 const accommodationTransportNote = "Die Anfahrten im Tagesplan beziehen sich weiterhin auf die ursprünglichen Hauptunterkünfte; eine andere Auswahl ändert sie nicht automatisch.";
 const mapContexts = new Map();
 let mapsPermitted = false;
@@ -23,6 +24,8 @@ let selectedLaneBlock = null;
 let state = defaultState(trip);
 let currentView = "itinerary";
 let selectedDate = trip.startDate;
+let mobileDayOpen = false;
+let focusDayListAfterNavigation = false;
 let filters = { destination: "all", query: "", savedOnly: false };
 const diningFilters = { destination: "all", category: "all", spontaneous: false };
 
@@ -155,9 +158,17 @@ function applyPreferredTheme() {
   updateTheme();
 }
 
-function writeLocation() {
-  const hash = new URLSearchParams({ view: currentView, day: selectedDate });
-  history.replaceState(null, "", `${location.pathname}${location.search}#${hash}`);
+function writeLocation(mode = "replace", statePatch = {}) {
+  const hash = new URLSearchParams({ view: currentView });
+  if (currentView !== "itinerary" || !mobileItineraryQuery.matches || mobileDayOpen) hash.set("day", selectedDate);
+  if (currentView === "itinerary" && mobileItineraryQuery.matches && mobileDayOpen) hash.set("screen", "day");
+  const nextState = {
+    ...(history.state ?? {}),
+    ...statePatch,
+    plannerScreen: currentView === "itinerary" && mobileItineraryQuery.matches ? (mobileDayOpen ? "day" : "list") : null,
+  };
+  if (!mobileDayOpen) nextState.mobileDayEntry = false;
+  history[mode === "push" ? "pushState" : "replaceState"](nextState, "", `${location.pathname}${location.search}#${hash}`);
 }
 
 function setView(view, updateLocation = true) {
@@ -186,14 +197,31 @@ function setView(view, updateLocation = true) {
   if (updateLocation) writeLocation();
 }
 
+function activatePlannerView(view) {
+  if (view === "itinerary" && mobileItineraryQuery.matches) {
+    mobileDayOpen = false;
+    setView(view, false);
+    renderItinerary();
+    $("#panel-itinerary").scrollIntoView({ block: "start" });
+    return;
+  }
+  setView(view);
+}
+
 function readLocation() {
   if (location.hash === "#planner") {
+    mobileDayOpen = false;
     setView("itinerary", false);
     return;
   }
   const params = new URLSearchParams(location.hash.slice(1));
   const requestedView = params.get("view");
   const requestedDate = params.get("day");
+  const requestedScreen = params.get("screen");
+  const resolvedView = views.includes(requestedView) ? requestedView : "itinerary";
+  mobileDayOpen = resolvedView === "itinerary"
+    && requestedScreen !== "list"
+    && (requestedScreen === "day" || Boolean(requestedDate));
   if (requestedDate) {
     if (trip.days.some((day) => day.date === requestedDate)) selectedDate = requestedDate;
     else {
@@ -204,7 +232,7 @@ function readLocation() {
   if (requestedView && !views.includes(requestedView)) {
     announce("Dieser Bereich ist nicht im Reiseplan. Die Tagesplanung wird angezeigt.");
   }
-  setView(views.includes(requestedView) ? requestedView : "itinerary", false);
+  setView(resolvedView, false);
 }
 
 function resetFilters() {
@@ -216,6 +244,7 @@ function resetFilters() {
 
 function selectDestination(id) {
   filters = { destination: id, query: "", savedOnly: false };
+  mobileDayOpen = false;
   $("#day-search").value = "";
   updateFilterControls();
   setView("itinerary");
@@ -283,19 +312,48 @@ function revealSelectedDay() {
   }
 }
 
+function focusMobileDayList() {
+  requestAnimationFrame(() => {
+    $("#panel-itinerary").scrollIntoView({ block: "start" });
+    const selected = $(`[data-date="${selectedDate}"]`, $("#day-list"));
+    selected?.focus({ preventScroll: true });
+    revealSelectedDay();
+  });
+}
+
+function showMobileDayList() {
+  if (!mobileItineraryQuery.matches) return;
+  if (history.state?.mobileDayEntry) {
+    focusDayListAfterNavigation = true;
+    history.back();
+    return;
+  }
+  mobileDayOpen = false;
+  renderItinerary(false);
+  writeLocation();
+  focusMobileDayList();
+  announce("Alle Reisetage");
+}
+
 function chooseDay(day, focusTarget = "list") {
   selectedDate = day.date;
   selectedDaySection = "plan";
   selectedLaneBlock = null;
-  renderItinerary();
-  if (focusTarget === "list") $(`[data-date="${day.date}"]`, $("#day-list"))?.focus({ preventScroll: true });
+  const opensMobileDay = mobileItineraryQuery.matches && focusTarget === "list";
+  if (opensMobileDay) mobileDayOpen = true;
+  renderItinerary(false);
+  writeLocation(opensMobileDay ? "push" : "replace", opensMobileDay ? { mobileDayEntry: true } : {});
+  if (opensMobileDay) {
+    $("#panel-itinerary").scrollIntoView({ block: "start" });
+    $("#day-title").focus({ preventScroll: true });
+  } else if (focusTarget === "list") $(`[data-date="${day.date}"]`, $("#day-list"))?.focus({ preventScroll: true });
   else {
     const nextFocus = $(`.day-navigation [data-direction="${focusTarget}"]:not(:disabled)`) ?? $("#day-title");
     nextFocus.focus({ preventScroll: true });
   }
   revealSelectedDay();
   const detail = $("#day-detail");
-  if (detail.getBoundingClientRect().top < 74 || matchMedia("(max-width: 600px)").matches) {
+  if (!opensMobileDay && (detail.getBoundingClientRect().top < 74 || mobileItineraryQuery.matches)) {
     detail.scrollIntoView({ block: "start" });
   }
   announce(`${formatDate(day.date)}: ${day.title}`);
@@ -783,6 +841,8 @@ function renderDayDetail(day, days) {
   const points = laneMapPoints(laneSchedule);
   const blocksByKey = new Map(laneSchedule.lanes.flatMap((lane) => lane.blocks.map((block) => [block.key, block])));
   let openDayMap = () => {};
+  const mobileBack = button("Alle Reisetage", "button button-secondary mobile-day-back", showMobileDayList);
+  mobileBack.prepend(graphic("icon-chevron", "icon previous-icon"));
   const topline = element("div", "day-topline");
   const location = element("div", "day-location");
   const city = element("span", "destination-label");
@@ -821,7 +881,7 @@ function renderDayDetail(day, days) {
   const title = element("h3", "", day.title);
   title.id = "day-title";
   title.tabIndex = -1;
-  detail.append(topline, element("p", "day-date", formatDate(day.date)), title);
+  detail.append(mobileBack, topline, element("p", "day-date", formatDate(day.date)), title);
   const daySections = new Map();
   const dayTabs = element("div", "day-tabs");
   dayTabs.setAttribute("role", "tablist");
@@ -982,16 +1042,17 @@ function renderDayDetail(day, days) {
   selectSection(selectedDaySection);
 }
 
-function renderItinerary() {
+function renderItinerary(updateLocation = true) {
   const days = filterDays(trip.days, filters, state.favorites);
   if (!days.some((day) => day.date === selectedDate) && days.length) {
     selectedDate = days[0].date;
     selectedDaySection = "plan";
     selectedLaneBlock = null;
   }
+  $("#panel-itinerary").dataset.mobileScreen = mobileDayOpen ? "day" : "list";
   renderDayList(days);
   renderDayDetail(days.find((day) => day.date === selectedDate), days);
-  writeLocation();
+  if (updateLocation) writeLocation();
 }
 
 function renderTravel() {
@@ -1356,22 +1417,40 @@ function bindEvents() {
     }
   });
   for (const tab of document.querySelectorAll('.planner-tabs [role="tab"]')) {
-    tab.addEventListener("click", () => setView(tab.dataset.view));
+    tab.addEventListener("click", () => activatePlannerView(tab.dataset.view));
     tab.addEventListener("keydown", (event) => {
       const index = views.indexOf(tab.dataset.view);
       const target = { ArrowRight: views[(index + 1) % views.length], ArrowLeft: views[(index + views.length - 1) % views.length], Home: views[0], End: views.at(-1) }[event.key];
       if (target) {
         event.preventDefault();
-        setView(target);
+        activatePlannerView(target);
         $(`#tab-${target}`).focus();
       }
     });
   }
   for (const control of document.querySelectorAll(".calendar-download")) control.addEventListener("click", downloadCalendar);
   window.addEventListener("hashchange", () => {
+    const params = new URLSearchParams(location.hash.slice(1));
+    const wasMobileDayOpen = mobileDayOpen;
     readLocation();
-    if (location.hash !== "#planner") resetFilters();
+    if (location.hash !== "#planner") {
+      const requestedDate = params.get("day");
+      const visibleDays = filterDays(trip.days, filters, state.favorites);
+      if (requestedDate && !visibleDays.some(({ date }) => date === requestedDate)) {
+        filters = { destination: "all", query: "", savedOnly: false };
+        $("#day-search").value = "";
+        updateFilterControls();
+      }
+      renderItinerary();
+    }
     revealSelectedDay();
+    if ((focusDayListAfterNavigation || wasMobileDayOpen) && !mobileDayOpen && currentView === "itinerary") {
+      focusDayListAfterNavigation = false;
+      focusMobileDayList();
+    }
+  });
+  mobileItineraryQuery.addEventListener("change", () => {
+    if (currentView === "itinerary") renderItinerary();
   });
 }
 
