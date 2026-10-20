@@ -316,7 +316,7 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-corner, .lane-header { position: sticky; top: 0; z-index: 5; min-height: 98px; padding: 10px; border-bottom: 1px solid var(--cp-border); background: var(--cp-bg-elevated); }
 .lane-corner { left: 0; z-index: 7; display: flex; align-items: end; color: var(--cp-text-soft); font-size: .68rem; font-weight: 700; }
 .lane-header { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-content: start; gap: 9px; min-width: 0; border-top: 4px solid var(--lane-accent); background: var(--cp-bg-elevated); }
-.lane-route-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 4px double var(--lane-accent); border-radius: 50%; background: var(--cp-surface); color: var(--cp-text); font-family: var(--font-display); font-size: 1rem; line-height: 1; transform: rotate(-4deg); }
+.lane-header .lane-route-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 4px double var(--lane-accent); border-radius: 50%; background: var(--cp-surface); color: var(--cp-text); font-family: var(--font-display); font-size: 1rem; line-height: 1; }
 .lane-header-copy { min-width: 0; }
 .lane-header strong, .lane-header span { display: block; }
 .lane-header strong { color: var(--cp-text); font-size: .7rem; }
@@ -341,7 +341,7 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-block-activity[aria-pressed="true"] { border-color: var(--lane-accent); background: color-mix(in srgb, var(--lane-accent) 12%, var(--cp-surface)); }
 .lane-block .poi-thumb { width: 48px; height: 34px; flex-basis: 48px; }
 .lane-block-number { display: grid; place-items: center; flex: 0 0 26px; height: 26px; border: 2px solid var(--lane-accent); border-radius: 50%; background: var(--cp-surface); font-size: .65rem; font-weight: 800; }
-.lane-block .poi-thumb + .lane-block-number { position: absolute; left: 40px; bottom: 4px; width: 22px; height: 22px; font-size: .58rem; }
+.lane-block .poi-thumb + .lane-block-number { position: absolute; left: 6px; bottom: 4px; width: 22px; height: 22px; font-size: .58rem; }
 .lane-block-mode { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border-radius: 50%; background: var(--cp-surface); border: 1px solid var(--cp-border); color: var(--cp-link); }
 .lane-block-mode .icon { width: 16px; height: 16px; }
 .lane-block-travel { padding-block: 3px; }
