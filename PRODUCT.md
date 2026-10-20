@@ -63,6 +63,8 @@ The people planning and taking the trip described in the supplied itinerary.
   the default Reiseplan screen contains tools and the day list; selecting a day
   opens a dedicated full-width detail screen with a clear back action. Existing
   day deep links and browser Back must open/close that detail state correctly.
+  Put the route board before summaries and optional event notes, hide redundant
+  lane instructions there and size the board to the remaining dynamic viewport.
 - The user explicitly chose a culinary recommendation for every individual
   sightseeing place or district, not only one per city. Explain what makes it
   worthwhile, what may suit children, practical access restrictions and links.

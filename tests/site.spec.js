@@ -499,6 +499,16 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.locator("#day-title")).toHaveText("Akihabara & Tsukiji");
   await expect(page.locator("#day-title")).toBeFocused();
   await expect(page).toHaveURL(/view=itinerary&day=2027-07-10&screen=day/);
+  await expect(page.locator(".lane-intro")).toBeHidden();
+  await expect(page.locator(".lane-detail-empty-state")).toBeHidden();
+  const compactLayout = await page.evaluate(() => {
+    const board = document.querySelector(".lane-board-scroll").getBoundingClientRect();
+    const summary = document.querySelector(".day-summary").getBoundingClientRect();
+    return { boardTop: board.top, boardBottom: board.bottom, summaryTop: summary.top, viewportHeight: innerHeight };
+  });
+  expect(compactLayout.boardTop).toBeLessThan(compactLayout.viewportHeight * 0.62);
+  expect(compactLayout.boardBottom).toBeLessThanOrEqual(compactLayout.viewportHeight + 4);
+  expect(compactLayout.summaryTop).toBeGreaterThanOrEqual(compactLayout.boardBottom);
 
   await page.goBack();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
@@ -511,6 +521,8 @@ test("mobile navigates from the day list into a dedicated day screen and back", 
   await expect(page.locator("#startup-notice")).toBeHidden();
   await expect(panel).toHaveAttribute("data-mobile-screen", "day");
   await expect(page.locator("#day-title")).toHaveText("Shibuya & Harajuku");
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
+  await expect.poll(() => page.locator(".lane-board-scroll").evaluate((board) => board.getBoundingClientRect().top / innerHeight)).toBeLessThan(0.62);
   await page.getByRole("button", { name: "Alle Reisetage" }).click();
   await expect(panel).toHaveAttribute("data-mobile-screen", "list");
   await expect(page).not.toHaveURL(/day=/);

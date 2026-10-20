@@ -23,7 +23,9 @@ vendored locally; optional background maps come from OpenStreetMap.
 - The mobile itinerary uses a list/detail flow: the Reiseplan tab first shows
   search, filters and the compact day list. Selecting a day opens a dedicated
   full-width day screen with an “Alle Reisetage” back action. Browser Back and
-  direct day links preserve the same navigation model.
+  direct day links preserve the same navigation model. On that screen the lane
+  board comes immediately after title/tabs and fits the remaining Pro-Max
+  viewport with internal scrolling; summaries and festival notes follow below.
 - Select a numbered stop to open descriptions, official links, Google Maps and
   culinary advice directly below the lanes.
   Compact photo thumbnails and larger, credited local photos make places
