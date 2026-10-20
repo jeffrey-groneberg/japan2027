@@ -6,7 +6,7 @@ export const destinations = [
   { id: "tokyo", name: "Tokyo", japanese: "東京", dates: "4.–11. Juli", nights: 7, country: "Japan", symbol: "city-tokyo" },
   { id: "kyoto", name: "Kyoto", japanese: "京都", dates: "11.–15. Juli", nights: 4, country: "Japan", symbol: "city-kyoto" },
   { id: "osaka", name: "Osaka", japanese: "大阪", dates: "15.–20. Juli", nights: 5, country: "Japan", symbol: "city-osaka" },
-  { id: "vietnam", name: "Da Nang & Hoi An", japanese: "ベトナム", dates: "20.–31. Juli", nights: 11, country: "Vietnam", symbol: "city-vietnam" },
+  { id: "vietnam", name: "Da Nang & Hoi An", japanese: "ダナン", dates: "20.–31. Juli", nights: 11, country: "Vietnam", symbol: "city-vietnam" },
 ];
 
 export const STORAGE_KEY = "japan-vietnam-2027:planner:v1";
@@ -132,6 +132,7 @@ export function defaultState(trip) {
     completed: [],
     stays: Object.fromEntries(trip.accommodations.map((city) => [city.id, city.options[0].id])),
     theme: null,
+    trainHintDismissed: false,
   };
 }
 
@@ -146,10 +147,11 @@ export function parseState(raw, trip) {
     || !validIds(state.completed, trip.checklist.map((task) => task.id))
     || !state.stays || typeof state.stays !== "object"
     || !trip.accommodations.every((city) => city.options.some((option) => option.id === state.stays[city.id]))
-    || ![null, "light", "dark"].includes(state.theme)) {
+    || ![null, "light", "dark"].includes(state.theme)
+    || (state.trainHintDismissed !== undefined && typeof state.trainHintDismissed !== "boolean")) {
     throw new Error("Saved planner data does not match the current itinerary.");
   }
-  return { version: 2, favorites: state.favorites, completed: state.completed, stays: state.stays, theme: state.theme };
+  return { version: 2, favorites: state.favorites, completed: state.completed, stays: state.stays, theme: state.theme, trainHintDismissed: state.trainHintDismissed ?? false };
 }
 
 function escapeCalendar(value) {
