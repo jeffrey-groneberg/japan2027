@@ -219,6 +219,12 @@ Tiny logo lettering, artwork labels and narrow metadata are not a reusable minim
 
 ## Layout
 
+The desktop/tablet tab rail is overflow-free: real rendered tab widths plus
+gaps determine how many fit beside “Mehr”. Remaining destinations appear as
+standard buttons in its disclosure. Resizing restores inline destinations;
+selection in overflow marks “Mehr” and focus follows relocated controls.
+Phone navigation remains the full compact sitemap.
+
 Home is now the default eighth main destination and alone contains the banner
 and station strip. Shared navigation precedes all panels, so operational panels
 start directly below it. On phones the horizontal tab rail is replaced by a

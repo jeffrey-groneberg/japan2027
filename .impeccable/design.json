@@ -204,6 +204,7 @@
       "Credited archive photos and explicit illustration labels, with booking/date status visible before expansion.",
       "One-lane mobile routes switched only by visible buttons, plus dedicated day and lane-item detail screens.",
       "A dedicated Home destination owns the banner and station strip; a compact animated mobile sitemap replaces the horizontal menu.",
+      "Measured desktop/tablet navigation overflow moves into a More disclosure rather than a horizontal scrollbar.",
       "Controls remain self-explanatory without tutorial or hand-holding copy."
     ],
     "rules": [

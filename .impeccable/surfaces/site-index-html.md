@@ -11,6 +11,9 @@ Current navigation: Home is the default eighth main destination, owning the
 animated hero and station strip exclusively. Shared navigation sits above all
 panels. Mobile uses a compact sticky menu button that animates the full sitemap
 open/closed; focused day/item screens still use only their back controls.
+On desktop/tablet only destinations that fit stay inline; real measured
+overflow moves to “Mehr”, never a horizontal scrollbar. Resize/font changes
+restore items while preserving active state and keyboard focus.
 
 Scope: site/index.html, site/styles.css and site/app.js.
 

@@ -22,6 +22,9 @@ The people planning and taking the trip described in the supplied itinerary.
 
 ## Capabilities and constraints
 
+- Desktop/tablet navigation must not scroll horizontally: measure the real
+  menu widths and move only overflowing destinations into a “Mehr” disclosure.
+  Restore them on resize/font load and preserve selection and keyboard focus.
 - Home is the default main-menu destination and exclusively contains the
   animated banner and four-station overview. All planning panels open directly
   beneath the shared navigation without the banner. On mobile a compact sticky

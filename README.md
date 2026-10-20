@@ -312,6 +312,9 @@ whenever either core asset changes.
 
 Home (`#view=home`, also the default URL) owns the animated banner and station
 overview. The other seven panels omit both and begin below the shared menu.
+When the desktop/tablet menu cannot fit, measured overflow destinations move
+into “Mehr” instead of creating a horizontal scrollbar. They return as space
+becomes available; an active overflow destination marks the “Mehr” button.
 On phones, the compact menu button opens an animated two-column sitemap;
 Escape, selection or an outside click closes it. Existing day/item deep links
 still open the focused mobile detail screens.

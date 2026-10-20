@@ -32,7 +32,12 @@ async function ready(page, url = "/?clawpilotTheme=light#view=itinerary") {
 async function show(page, view) {
   const menu = page.locator("#mobile-menu-toggle");
   if (await menu.isVisible() && await menu.getAttribute("aria-expanded") === "false") await menu.click();
-  await page.getByRole("tab", { name: tabs[view], exact: typeof tabs[view] === "string" }).click();
+  const tab = page.locator(`#tab-${view}`);
+  if (await tab.isVisible()) await tab.click();
+  else {
+    await page.locator("#nav-more").click();
+    await page.locator(`#nav-overflow [data-view="${view}"]`).click();
+  }
   await expect(page.locator(`#panel-${view}`)).toBeVisible();
 }
 
@@ -98,6 +103,43 @@ test("mobile menu expands the full sitemap and closes on selection or Escape", a
   await page.emulateMedia({ reducedMotion: "reduce" });
   await menu.click();
   await expect(rail).toHaveCSS("animation-name", "none");
+});
+
+test("navigation moves only overflowing destinations into More and restores them on resize", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await ready(page, "/?clawpilotTheme=light#view=home");
+  await page.evaluate(() => document.fonts.ready);
+  const more = page.locator("#nav-more");
+  for (const width of [700, 900, 1100, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect.poll(() => page.locator(".planner-tabs").evaluate((rail) => rail.scrollWidth - rail.clientWidth)).toBeLessThanOrEqual(1);
+    if (await more.isVisible()) {
+      await more.click();
+      const visible = await page.locator('.planner-tabs [role="tab"]:visible').count();
+      expect(await page.locator("#nav-overflow button").count()).toBe(8 - visible);
+      await page.keyboard.press("Escape");
+      await expect(page.locator("#nav-overflow")).toBeHidden();
+      await expect(more).toBeFocused();
+    }
+  }
+  await page.setViewportSize({ width: 900, height: 900 });
+  await expect(more).toBeVisible();
+  await more.click();
+  await page.locator('#nav-overflow [data-view="checklist"]').click();
+  await expect(page.locator("#panel-checklist")).toBeVisible();
+  await expect(page.locator("#nav-overflow")).toBeHidden();
+  await expect(more).toBeFocused();
+  await expect(more).toHaveClass(/nav-more-selected/);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await expect(more).toBeHidden();
+  await expect(page.locator('.planner-tabs [role="tab"]:visible')).toHaveCount(8);
+  await expect(page.locator("#tab-checklist")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#tab-checklist")).toBeFocused();
+  await page.setViewportSize({ width: 430, height: 844 });
+  await expect(more).toBeHidden();
+  await page.locator("#mobile-menu-toggle").click();
+  await expect(page.locator('.planner-tabs [role="tab"]:visible')).toHaveCount(8);
+  await expect(page.locator('.planner-tabs [role="tab"][tabindex="0"]')).toHaveCount(1);
 });
 
 test("all destinations, date navigation, practical transport and search work", async ({ page }) => {
@@ -179,7 +221,7 @@ test("deep links, keyboard tabs, theme persistence and external links are correc
   await expect(page.locator("#day-title")).toHaveText("USJ & Super Nintendo World");
   await page.getByRole("tab", { name: "Reiseplan", exact: true }).focus();
   await page.keyboard.press("End");
-  await expect(page.locator("#tab-checklist")).toBeFocused();
+  await expect(page.locator("#tab-checklist").or(page.locator("#nav-more")).filter({ visible: true })).toBeFocused();
   await expect(page.locator("#panel-checklist")).toBeVisible();
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator("#panel-festivals")).toBeVisible();
