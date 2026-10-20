@@ -837,8 +837,10 @@ function renderLaneBoard(schedule, selectBlock, { initialBlockKey = null, initia
       const control = button("", `lane-block lane-block-${block.source} lane-block-${block.kind}`, () => selectBlock(block.key, true));
       const slotHeight = block.duration * scale;
       const inset = Math.min(4, slotHeight / 5);
+      const renderedHeight = Math.max(18, slotHeight - inset * 2);
       control.style.top = `${(block.start - schedule.start) * scale + inset}px`;
-      control.style.height = `${Math.max(18, slotHeight - inset * 2)}px`;
+      control.style.height = `${renderedHeight}px`;
+      if (block.kind !== "activity" && renderedHeight < 34) control.classList.add("lane-block-compact");
       control.dataset.laneBlock = block.key;
       if (block.placeId) control.dataset.placeId = block.placeId;
       control.setAttribute("aria-pressed", String(selectedLaneBlock === block.key));

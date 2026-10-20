@@ -648,6 +648,13 @@ test("all lane headers use the same opaque surface in light and dark mode", asyn
   }));
   expect(Math.max(...headerGeometry.map(({ bottom }) => bottom)) - Math.min(...headerGeometry.map(({ bottom }) => bottom))).toBeLessThan(1);
   expect(Math.max(...headerGeometry.map(({ height }) => height)) - Math.min(...headerGeometry.map(({ height }) => height))).toBeLessThan(1);
+  const compactBuffer = page.locator(".lane-track").nth(1).locator(".lane-block-buffer").first();
+  await expect(compactBuffer).toHaveClass(/lane-block-compact/);
+  expect(await compactBuffer.evaluate((block) => {
+    const blockRect = block.getBoundingClientRect();
+    const titleRect = block.querySelector(".lane-block-title").getBoundingClientRect();
+    return titleRect.top >= blockRect.top - 1 && titleRect.bottom <= blockRect.bottom + 1;
+  })).toBe(true);
 
   await page.setViewportSize({ width: 390, height: 844 });
   for (const theme of ["light", "dark"]) {

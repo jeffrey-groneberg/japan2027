@@ -350,6 +350,10 @@ input::placeholder { color: var(--cp-text-soft); opacity: 1; }
 .lane-block-travel .lane-block-time { display: none; }
 .lane-block-travel .lane-block-title { margin-top: 0; font-size: .66rem; -webkit-line-clamp: 1; }
 .lane-block-buffer .lane-block-mode { color: var(--cp-text-soft); }
+.lane-block-compact { gap: 4px; padding: 1px 5px; }
+.lane-block-compact .lane-block-mode,
+.lane-block-compact .lane-block-time { display: none; }
+.lane-block-compact .lane-block-title { display: block; margin: 0; overflow: hidden; font-size: .58rem; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
 .lane-inline-connector { position: absolute; left: 12px; right: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 14px; color: var(--cp-link); font-size: .58rem; font-weight: 700; line-height: 1; pointer-events: none; }
 .lane-inline-connector::before, .lane-inline-connector::after { content: ""; flex: 1; border-top: 1px dashed color-mix(in srgb, var(--cp-link) 55%, var(--cp-border)); }
 .lane-inline-connector .icon { width: 12px; height: 12px; }
