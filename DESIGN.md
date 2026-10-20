@@ -330,7 +330,7 @@ Real places are credited; drawings never stand in as photographic evidence.
 
 Optional, practical dinner ideas rather than a second itinerary.
 
-- Kulinarik contains eight family options, only in Tokyo, Kyoto and Osaka. City and category pills combine with the spontaneous-only checkbox. The checkbox includes only entries with explicit walk-in evidence; a recommended reservation does not by itself prove walk-in access or a free table. A day alternative may deep-link and focus one exact dining disclosure, as the 18 July Sumo dinner does.
+- Kulinarik contains nine family options, only in Tokyo, Kyoto and Osaka. City and category pills combine with the spontaneous-only checkbox. The checkbox includes only entries with explicit walk-in evidence; a recommended reservation does not by itself prove walk-in access or a free table. Day routes may deep-link and focus one exact dining disclosure, as the 10 July Ginza and 18 July Osaka Sumo choices do.
 - Native accordion summaries expose the name, city/category and one of “Nur mit Vorbuchung”, “Reservierung empfohlen” or “Spontan versuchbar” before opening. “Auch spontan versuchbar” appears separately when a recommended-reservation entry also has walk-in evidence.
 - Surface-filled outlined cards use the existing card radius (16px), summary padding (18px), a (16px) gap and larger scene thumbnails (96 × 72px). At (760px) and below, summary padding becomes (16px), the gap (12px) and thumbnails (80 × 60px).
 - Expanded content uses the shared figure/credit treatment, followed by reasons, child-aware advice, booking, location/access caveats and independently usable links. Body padding is (0 22px 22px), tightening to (0 18px 18px) at the same breakpoint.

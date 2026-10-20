@@ -38,7 +38,7 @@ vendored locally; optional background maps come from OpenStreetMap.
 - Vietnam contains only the three chosen excursions (Hoi An, Marble Mountains
   and Ba Na Hills); all other resort days are intentionally simple hotel,
   pool and beach days without invented replacement outings.
-- Open the general **Kulinarik** section for eight family-oriented dinner
+- Open the general **Kulinarik** section for nine family-oriented dinner
   ideas in Tokyo, Kyoto and Osaka, including interactive meals and skyline
   buffets. City/category filters compose with an evidence-based
   “Nur spontan versuchbar” filter; reservation-only cafés are excluded from it.
@@ -79,7 +79,7 @@ OpenStreetMap objects. Every location records its coordinate evidence. Broad
 districts, mountains and festival areas are explicitly orientation points, not
 guaranteed entrances or current walking / transit routes.
 
-On **19 October 2026**, all **253 distinct published external URL targets** were
+On **20 October 2026**, all **259 distinct published external URL targets** were
 checked individually, including **48 coordinate-based sightseeing Google Maps
 links**, **33 per-place culinary map searches**, the separate dinner/festival
 targets, and every displayed photo-source/license link. HTTP responses, redirects,
@@ -130,12 +130,12 @@ Room / 3D Ninja Fort are separate products. The alternative records the
 hidden mechanisms/passages, physical maze restrictions, transit via Uzumasa
 Tenjingawa, child-aware food break and official calendar/ticket sources.
 
-HIRAKUZA Osaka is included as an **entertainment Sumo dinner**, not a claim
-of professional tournament attendance. It is available in the Kulinarik
-section and directly from the 18 July route. The current operator rules
-distinguish the child bento, a roughly two-hour evening block including the
-meal, the approximately 60–70 minute show, same-day residual tickets and the
-earlier purchase deadline for a full bento.
+HIRAKUZA is included in **Tokyo and Osaka** as entertainment Sumo, not a claim
+of professional tournament attendance. The 10 July Tokyo route replaces
+Akihabara with a two-hour English show and formal Kaiseki in Ginza; the 18 July
+Osaka route keeps the more casual Bento version after Den Den Town. Both have
+child rates and child meals. The planner explicitly recommends choosing only
+one location and keeps each venue's separate booking rules and official links.
 
 Ghibli Museum is a **reserved-ticket alternative** to Mount Takao on 8 July,
 not an additional excursion or spontaneously available rainy-day substitute.

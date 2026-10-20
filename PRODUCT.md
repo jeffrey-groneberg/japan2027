@@ -84,9 +84,11 @@ The people planning and taking the trip described in the supplied itinerary.
 - UZUMASA Kyoto Village is explicitly selected as a Ninja alternative replacing
   the 13 July Nara day. Include the hidden-mechanism house and physical ninja
   maze with separate ticket/safety/transit facts; never stack both day trips.
-- Include HIRAKUZA Osaka as a family Sumo dinner experience linked from
-  18 July and Kulinarik. Identify it as an English-language entertainment show,
-  not professional Grand Sumo, and preserve the child-bento/reservation caveats.
+- Include HIRAKUZA as family Sumo entertainment in both cities: formal Kaiseki
+  in Ginza as a 10 July route replacing Akihabara, and the casual Bento version
+  in Osaka on 18 July. Identify both as English-language entertainment rather
+  than professional Grand Sumo, preserve each child-meal/booking rule and tell
+  the family to choose one location rather than scheduling both.
 - In Vietnam, retain only Hoi An, Marble Mountains and Ba Na Hills as external
   excursions. All other resort days are intentionally unstructured hotel,
   pool and beach days rather than optional replacement trips.

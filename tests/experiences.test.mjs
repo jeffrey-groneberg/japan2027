@@ -58,6 +58,28 @@ test("spontaneous dining uses verified walk-in rules and does not include reserv
   assert.ok(diningOptions.filter(({ id }) => id.startsWith("pokemon-cafe")).every(({ booking }) => booking === "required"));
 });
 
+test("Tokyo offers its own HIRAKUZA route without turning both sumo shows into obligations", () => {
+  const entry = diningOptions.find(({ id }) => id === "hirakuza-tokyo");
+  assert.ok(entry);
+  assert.equal(entry.destination, "tokyo");
+  assert.equal(entry.booking, "required");
+  assert.equal(entry.walkIn, false);
+  assert.match(entry.why, /kein offizielles Profi-Sumo-Turnier/);
+  assert.match(entry.children, /8 und 11/);
+  assert.match(entry.practical, /Nur eine der beiden HIRAKUZA-Shows/);
+  assert.match(entry.bookingNote, /17.000 ¥/);
+  assert.equal(entry.bookingUrl, "https://ars-hirakuzat.triplabo.com/home?lang=en");
+  const option = alternatives["2027-07-10"].find(({ dining }) => dining === entry.id);
+  assert.ok(option);
+  assert.match(option.title, /statt Akihabara/);
+  assert.match(option.text, /nicht beide/);
+  assert.match(option.transit, /Yurakucho/);
+  assert.deepEqual(filterDays(trip.days, { query: "HIRAKUZA Ginza" }).map(({ date }) => date), ["2027-07-10"]);
+  const event = buildCalendar(trip).replaceAll("\r\n ", "").split("BEGIN:VEVENT")
+    .find((calendarEntry) => calendarEntry.includes("DTSTART;VALUE=DATE:20270710"));
+  assert.match(event, /Route: HIRAKUZA Ginza statt Akihabara/);
+});
+
 test("UZUMASA replaces Nara as a complete ninja day and keeps child safety explicit", () => {
   const option = alternatives["2027-07-13"].find(({ places: ids }) => ids.includes("uzumasa"));
   assert.ok(option);

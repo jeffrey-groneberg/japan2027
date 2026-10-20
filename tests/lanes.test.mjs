@@ -73,6 +73,15 @@ test("travel blocks describe the actual previous location and named transport", 
   assert.match(sumoTrip.journey.steps.join(" "), /Namba Parks/);
   assert.match(sumoTrip.journey.steps.join(" "), /8\. Stock/);
 
+  const tokyoSumo = buildDayLanes("2027-07-10").lanes.find(({ title }) => /HIRAKUZA Ginza/.test(title));
+  assert.ok(tokyoSumo);
+  assert.deepEqual(activityLocations(tokyoSumo), ["tsukiji", "ginza", "hirakuza-tokyo"]);
+  assert.match(tokyoSumo.difference, /Dazu: HIRAKUZA · Ginza Tokyo/);
+  assert.match(tokyoSumo.difference, /Entfällt: Akihabara/);
+  const tokyoReturn = tokyoSumo.blocks.find(({ kind, locationId }) => kind === "travel" && locationId === "tokyo-home");
+  assert.match(tokyoReturn.journey.steps.join(" "), /JR-Bahnhof Yurakucho/);
+  assert.match(tokyoReturn.journey.steps.join(" "), /Yamanote Line/);
+
   const kibune = buildDayLanes("2027-07-14").lanes.find(({ title }) => /Kibune ohne/.test(title));
   const busTrip = kibune.blocks.find(({ kind, locationId }) => kind === "travel" && locationId === "kifune");
   assert.match(busTrip.journey.steps.join(" "), /Kyoto Bus 33/);

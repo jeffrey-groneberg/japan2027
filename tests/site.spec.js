@@ -575,7 +575,7 @@ test("DisneySea is later, teamLab is Tuesday and Miraikan is not falsely offered
 
 test("the dining rubric filters city, experience and verified spontaneous options", async ({ page }) => {
   await ready(page, "/?clawpilotTheme=light#view=dining&day=2027-07-05");
-  await expect(page.locator("#dining-list .dining-option")).toHaveCount(8);
+  await expect(page.locator("#dining-list .dining-option")).toHaveCount(9);
   await expect(page.locator("#dining-destinations")).not.toContainText("Vietnam");
   await page.getByRole("checkbox", { name: "Nur spontan versuchbar", exact: true }).check();
   await expect(page.locator("#dining-list .dining-option")).toHaveCount(3);
@@ -654,7 +654,7 @@ test("the dinner shortcut opens ideas for the selected Japanese city", async ({ 
   await page.getByRole("button", { name: "Abendideen in Tokyo", exact: true }).click();
   await expect(page.locator("#panel-dining")).toBeVisible();
   await expect(page.locator('[data-dining-destination="tokyo"]')).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#dining-list .dining-option")).toHaveCount(3);
+  await expect(page.locator("#dining-list .dining-option")).toHaveCount(4);
   await expect(page.locator("#tab-dining")).toBeFocused();
   expect(await page.locator("#tab-dining").evaluate((tab) => {
     const rect = tab.getBoundingClientRect();
@@ -691,4 +691,24 @@ test("the July 18 sumo dinner alternative opens HIRAKUZA with honest family book
   await expect(page.locator("#dining-hirakuza-osaka")).toContainText("keine offizielle Sumo-Veranstaltung");
   await expect(page.locator("#dining-hirakuza-osaka .poi-figure svg use")).toHaveAttribute("href", /poi-illustrations\.svg#scene-sumo$/);
   await expect(page.locator("#dining-hirakuza-osaka").getByRole("link", { name: "Offizielle Tischreservierung" })).toHaveAttribute("href", "https://ars-hirakuza.triplabo.com/home?lang=en");
+});
+
+test("the July 10 Tokyo sumo route replaces Akihabara and opens HIRAKUZA Ginza", async ({ page }) => {
+  await ready(page, "/?clawpilotTheme=light#view=itinerary&day=2027-07-10");
+  const route = page.locator(".lane-header").filter({ hasText: "HIRAKUZA Ginza statt Akihabara" });
+  await expect(route).toContainText("Dazu: HIRAKUZA · Ginza Tokyo");
+  await expect(route).toContainText("Entfällt: Akihabara");
+  const block = page.locator(".lane-block-activity").filter({ hasText: "HIRAKUZA Ginza statt Akihabara" });
+  await block.click();
+  const detail = page.locator("#lane-detail");
+  await expect(detail).toContainText("wählt eine der beiden HIRAKUZA-Shows, nicht beide");
+  await expect(detail.locator(".lane-inline-arrival")).toContainText("Prime Ginza Yanagidori Building");
+  await detail.getByRole("button", { name: "Sumo-Essen in Kulinarik öffnen" }).click();
+  await expect(page.locator("#panel-dining")).toBeVisible();
+  await expect(page.locator("#dining-hirakuza-tokyo")).toHaveAttribute("open", "");
+  await expect(page.locator("#dining-hirakuza-tokyo > summary")).toBeFocused();
+  await expect(page.locator("#dining-hirakuza-tokyo")).toContainText("Kinder-Set im Schlossdesign");
+  await expect(page.locator("#dining-hirakuza-tokyo")).toContainText("kein offizielles Profi-Sumo-Turnier");
+  await expect(page.locator("#dining-hirakuza-tokyo .poi-figure svg use")).toHaveAttribute("href", /poi-illustrations\.svg#scene-sumo$/);
+  await expect(page.locator("#dining-hirakuza-tokyo").getByRole("link", { name: "Offizielle Tischreservierung" })).toHaveAttribute("href", "https://ars-hirakuzat.triplabo.com/home?lang=en");
 });

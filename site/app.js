@@ -576,6 +576,13 @@ function renderLaneDetail(container, block, showOnMap) {
   heading.append(copy, element("span", `lane-source lane-source-${block.source}`, laneSourceLabel(block)));
   container.append(heading);
   const option = block.source === "alternative" ? block.option : null;
+  if (block.arrivalJourney) {
+    const arrival = element("div", "lane-inline-arrival");
+    const arrivalCopy = element("div");
+    arrivalCopy.append(element("strong", "", "Kurzer Weg vom vorherigen Punkt"), element("p", "", block.arrivalJourney.summary));
+    arrival.append(graphic(journeyIcon(block.arrivalJourney.mode)), arrivalCopy);
+    container.append(arrival);
+  }
   if (block.kind === "travel") {
     if (block.journey.summary !== block.text) container.append(element("p", "lane-detail-text", block.journey.summary));
     if (block.text) container.append(element("p", "lane-detail-text", block.text));
@@ -592,13 +599,6 @@ function renderLaneDetail(container, block, showOnMap) {
     container.append(element("p", "lane-detail-text", block.text));
   } else if (block.placeId) {
     const point = { id: block.placeId, ...places[block.placeId] };
-    if (block.arrivalJourney) {
-      const arrival = element("div", "lane-inline-arrival");
-      const arrivalCopy = element("div");
-      arrivalCopy.append(element("strong", "", "Kurzer Weg vom vorherigen Punkt"), element("p", "", block.arrivalJourney.summary));
-      arrival.append(graphic(journeyIcon(block.arrivalJourney.mode)), arrivalCopy);
-      container.append(arrival);
-    }
     container.append(
       element("p", "place-kind", `${point.kind} · ${point.suggestedTime}`),
       placeContent(point, showOnMap, "Auf Tageskarte zeigen", block.text || option?.text, block.mapKey),

@@ -15,6 +15,7 @@ export const locationLabels = {
   "kyoto-home": "Unterkunft in Kyoto",
   "osaka-home": "Unterkunft bei Ebisucho",
   hirakuza: "HIRAKUZA · Namba Parks",
+  "hirakuza-tokyo": "HIRAKUZA · Ginza Tokyo",
   "kansai-airport": "Flughafen Kansai",
   "danang-airport": "Flughafen Da Nang",
   "saigon-airport": "Flughafen Ho-Chi-Minh-Stadt",
@@ -23,6 +24,7 @@ export const locationLabels = {
 
 export const optionLocations = {
   "Sumo-Show mit Abendessen": "hirakuza",
+  "HIRAKUZA Ginza statt Akihabara": "hirakuza-tokyo",
 };
 
 export const journeyProfiles = {
@@ -239,6 +241,16 @@ const connections = [
     "Hibiya Line Richtung Kita-senju bis Akihabara nehmen.",
     "Den passenden Ausgang für den ausgewählten Laden wählen.",
   ]),
+  connection("ginza", "hirakuza-tokyo", "walk", 15, "Zu Fuß vom Ginza-Bummel zum HIRAKUZA im Prime Ginza Yanagidori Building.", [
+    "Als Ziel 1-9-13 Ginza, Prime Ginza Yanagidori Building öffnen.",
+    "Vom Ginza-Umfeld in Richtung Ginza-itchome gehen.",
+    "Das Restaurant liegt im 1. Untergeschoss; genug Zeit für Einlass und Sitzplatzsuche lassen.",
+  ], { verify: "Der Betreiber nennt eine Minute ab Ginza-itchome Ausgang 10 und vier Minuten ab Ginza Ausgang A13. Den tatsächlich genutzten Ausgang am Besuchstag prüfen." }),
+  connection("hirakuza-tokyo", "tokyo-home", "train", 45, "Zu Fuß zum JR-Bahnhof Yurakucho und mit der Yamanote Line direkt nach Komagome.", [
+    "Nach der Show zum JR-Bahnhof Yurakucho, Zentral-Ausgang, gehen; der Betreiber nennt etwa sieben Minuten Fußweg.",
+    "Die JR Yamanote Line Richtung Tokyo / Ueno / Komagome nehmen.",
+    "In Komagome zur bestätigten Unterkunft zurückgehen.",
+  ], { ticket: "Normale JR-Stadtfahrt mit aufgeladener Suica/PASMO.", verify: "Die konkrete Bahnsteiganzeige und letzte passende Verbindung am Abend vor Ort prüfen." }),
   connection("tsukiji", "akihabara", "train", 20, "Tokyo Metro Hibiya Line von Tsukiji direkt nach Akihabara.", [
     "Zur Hibiya-Line-Station Tsukiji gehen.",
     "Hibiya Line Richtung Kita-senju bis Akihabara nehmen.",

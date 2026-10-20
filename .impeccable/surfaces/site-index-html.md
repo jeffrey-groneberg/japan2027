@@ -113,9 +113,12 @@ filterable by city, experience/view/casual category and verified walk-in access.
 Mandatory booking and our recommendation to book are not the same state.
 A per-day dinner shortcut opens the selected Japanese city; the main tab rail
 reveals the active tab horizontally without forcing a vertical page jump.
-The panel now contains eight options. HIRAKUZA Osaka uses a dedicated Sumo
-scene and is linked directly from the 18 July alternative; its copy states
-that it is an English entertainment show rather than official Grand Sumo.
+The panel now contains nine options. HIRAKUZA Tokyo and Osaka share the
+dedicated Sumo scene but keep separate official links, menus and reservation
+rules. Tokyo is a formal Kaiseki route replacing Akihabara on 10 July; Osaka
+is the more casual Bento route on 18 July. Both state that they are English
+entertainment shows rather than official Grand Sumo, and the family should
+choose one location.
 
 UZUMASA Kyoto Village is an alternative replacing Nara on 13 July. Its
 dedicated ninja illustration, direct official links, exact map point, park-food
