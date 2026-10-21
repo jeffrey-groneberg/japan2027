@@ -7,6 +7,13 @@ related_targets: ["site/styles.css","site/app.js","site/guide-data.js","site/map
 
 Mode: Operate.
 
+Home fits the first visible viewport: reserve the complete train and rails at
+their natural size, then adapt the hero to the remaining measured height.
+Use actual Visual Viewport height and header/menu layout, safe-area padding
+and an innerHeight fallback. Compact or reflow the hero on short screens; in
+very short landscape mode keep title/action/menu and train, omitting the
+masthead and decorative hero illustration. Never auto-scroll to fake the fit.
+
 The Home station selector is an original Shinkansen: four clickable carriages,
 landmark windows, blue waist stripe, wheels, rails and mountain scenery. Subtle
 scroll/pointer parallax separates the layers, pauses offscreen/hidden and

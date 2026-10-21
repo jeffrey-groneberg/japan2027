@@ -22,6 +22,12 @@ The people planning and taking the trip described in the supplied itinerary.
 
 ## Capabilities and constraints
 
+- Home must show the entire train down to the rails in its first viewport
+  without automatic scrolling. Measure the visible viewport and actual
+  header/menu height; reserve full-size train controls before sizing the hero.
+  Reflow the hero on short displays, including landscape, and respond to font,
+  browser-chrome and orientation changes. Keep safe-area spacing and the
+  `innerHeight` fallback; do not affect the operational panels.
 - Home's four-destination selector uses an original Japanese bullet-train
   silhouette with restrained parallax. All destination controls stay usable;
   decorative motion stops offscreen/hidden and respects Reduce Motion.

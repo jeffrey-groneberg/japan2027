@@ -219,6 +219,17 @@ Tiny logo lettering, artwork labels and narrow metadata are not a reusable minim
 
 ## Layout
 
+Home is a viewport-budgeted composition: the full-size train and rails receive
+their natural height first; the hero fills the remaining area below the actual
+masthead/navigation. `visualViewport.height` (or `innerHeight`) and the Home
+panel's document offset set `--home-height`, capped at 840px on tall screens.
+Safe-area padding remains inside that budget. Short displays reflow the hero
+into a compact two-column composition; extremely short landscape screens omit
+the masthead and decorative hero illustration in favor of the title, primary
+action, global navigation and complete train. No automatic scrolling or train
+scaling is used. Resize, font readiness and chrome-height changes recalculate
+the budget; other app panels keep their previous behavior.
+
 Home's station strip is now an original Shinkansen composition. Four buttons
 form the carriages with blue side bands, wheel pairs and landmark windows;
 a separate SVG nose completes the silhouette, with roof, floor and stripe

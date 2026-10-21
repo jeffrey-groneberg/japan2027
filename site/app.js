@@ -32,6 +32,7 @@ let focusDayListAfterNavigation = false;
 let focusLaneBlockAfterNavigation = false;
 let mobileLaneScrollTop = 0;
 let mobileLaneFitFrame;
+let homeFitFrame;
 let filters = { destination: "all", query: "", savedOnly: false };
 const diningFilters = { destination: "all", category: "all", spontaneous: false };
 
@@ -355,8 +356,21 @@ function focusActiveNavigation() {
   control.focus({ preventScroll: true });
 }
 
+function fitHomeViewport() {
+  cancelAnimationFrame(homeFitFrame);
+  homeFitFrame = requestAnimationFrame(() => {
+    if (currentView !== "home") return;
+    const home = $("#panel-home");
+    const height = window.visualViewport?.height ?? innerHeight;
+    document.body.classList.toggle("home-tiny", height <= 500);
+    home.dataset.layout = height <= 500 ? "tiny" : height <= 820 ? "short" : height <= 1000 ? "compact" : "full";
+    home.style.setProperty("--home-height", `${Math.max(0, Math.floor(height - home.offsetTop - 8))}px`);
+  });
+}
+
 function setView(view, updateLocation = true) {
   currentView = view;
+  document.body.classList.toggle("home-view", view === "home");
   syncMobileDayView();
   for (const id of views) {
     const selected = id === view;
@@ -367,6 +381,7 @@ function setView(view, updateLocation = true) {
   }
   toggleOverflowMenu(false);
   fitPlannerNavigation();
+  fitHomeViewport();
   document.title = `${$(`#tab-${view}`).textContent.trim()} · Japan & Vietnam 2027`;
   $("#mobile-menu-label").textContent = `Menü · ${$(`#tab-${view}`).textContent.trim()}`;
   toggleMobileMenu(false);
@@ -1733,6 +1748,15 @@ function bindEvents() {
   }
   window.addEventListener("resize", resizeNavigation);
   document.fonts?.ready.then(resizeNavigation);
+  window.addEventListener("resize", fitHomeViewport);
+  window.visualViewport?.addEventListener("resize", fitHomeViewport);
+  document.fonts?.ready.then(fitHomeViewport);
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(fitHomeViewport);
+    observer.observe($(".masthead"));
+    observer.observe($(".planner-nav"));
+    observer.observe($("#storage-notice"));
+  }
   $(".planner-tabs").addEventListener("animationend", (event) => {
     if (event.target === $(".planner-tabs")) $(".planner-nav").classList.remove("menu-closing");
   });

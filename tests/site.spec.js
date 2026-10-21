@@ -80,6 +80,70 @@ test("Home owns the banner while task panels open directly below navigation", as
   }
 });
 
+test("Home keeps the full train and rails in the first viewport without scrolling", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  for (const [width, height] of [[320, 568], [375, 667], [430, 760], [430, 932], [768, 1024], [844, 390], [900, 360], [1440, 720], [1440, 900], [2560, 1440]]) {
+    await page.setViewportSize({ width, height });
+    await ready(page, "/?clawpilotTheme=light#view=home");
+    await page.evaluate(() => document.fonts.ready);
+    await expect.poll(() => page.locator(".route-train-scene").evaluate((scene) => {
+      const rect = scene.getBoundingClientRect();
+      return rect.bottom;
+    }), `${width}x${height}: train bottom`).toBeLessThanOrEqual(height);
+    expect(await page.evaluate(() => scrollY), `${width}x${height}`).toBe(0);
+    const visible = await page.evaluate(() => {
+      const rect = (selector) => document.querySelector(selector).getBoundingClientRect();
+      const hero = rect(".hero");
+      const title = rect(".hero-copy h1");
+      const action = rect(".hero-actions");
+      const train = rect(".route-train");
+      const scene = rect(".route-train-scene");
+      const rails = rect(".route-train-rails");
+      return {
+        titleFits: title.top >= hero.top && title.bottom <= hero.bottom,
+        actionFits: action.top >= hero.top && action.bottom <= hero.bottom,
+        trainFits: train.top >= 0 && train.bottom <= innerHeight,
+        wheelsFit: train.bottom + 9 <= scene.bottom,
+        railsFit: rails.top >= 0 && rails.bottom <= innerHeight,
+        fullSizeCarriage: document.querySelector(".route-stop").offsetHeight >= 180,
+        noPageOverflow: document.documentElement.scrollWidth <= innerWidth,
+      };
+    });
+    expect(visible, `${width}x${height}`).toEqual({
+      titleFits: true, actionFits: true, trainFits: true, wheelsFit: true,
+      railsFit: true, fullSizeCarriage: true, noPageOverflow: true,
+    });
+  }
+});
+
+test("Home adapts to browser chrome height changes and works without Visual Viewport", async ({ page }) => {
+  await page.addInitScript(() => {
+    const viewport = new EventTarget();
+    Object.assign(viewport, { height: 760, offsetTop: 0 });
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: viewport });
+  });
+  await page.setViewportSize({ width: 430, height: 932 });
+  await ready(page, "/?clawpilotTheme=light#view=home");
+  for (const height of [760, 620, 932]) {
+    await page.evaluate((height) => {
+      window.visualViewport.height = height;
+      window.visualViewport.dispatchEvent(new Event("resize"));
+    }, height);
+    await expect.poll(() => page.locator(".route-train-scene").evaluate((node) => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(height);
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+  }
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: undefined });
+  });
+  await page.setViewportSize({ width: 430, height: 760 });
+  await page.reload();
+  await expect(page.locator("#startup-notice")).toBeHidden();
+  await expect.poll(() => page.locator(".route-train-scene").evaluate((node) => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(760);
+  await show(page, "stays");
+  await show(page, "home");
+  await expect.poll(() => page.locator(".route-train-scene").evaluate((node) => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(760);
+});
+
 test("mobile menu expands the full sitemap and closes on selection or Escape", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 430, height: 760 });
