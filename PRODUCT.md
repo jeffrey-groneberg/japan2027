@@ -28,6 +28,9 @@ The people planning and taking the trip described in the supplied itinerary.
   Reflow the hero on short displays, including landscape, and respond to font,
   browser-chrome and orientation changes. Keep safe-area spacing and the
   `innerHeight` fallback; do not affect the operational panels.
+- Group the Home title/action and illustration within a bounded centered
+  composition; do not stretch equal columns across the screen or create a
+  large empty gutter between them.
 - Home's four-destination selector uses an original Japanese bullet-train
   silhouette with restrained parallax. All destination controls stay usable;
   decorative motion stops offscreen/hidden and respects Reduce Motion.

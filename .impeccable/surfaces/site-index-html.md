@@ -13,6 +13,9 @@ Use actual Visual Viewport height and header/menu layout, safe-area padding
 and an innerHeight fallback. Compact or reflow the hero on short screens; in
 very short landscape mode keep title/action/menu and train, omitting the
 masthead and decorative hero illustration. Never auto-scroll to fake the fit.
+The hero's text and illustration share a centered 1040px maximum group with
+an intrinsic text column and 24–64px gap, not equal-width stretched columns.
+Keep the visible SVG artwork near the text even when height constrains it.
 
 The Home station selector is an original Shinkansen: four clickable carriages,
 landmark windows, blue waist stripe, wheels, rails and mountain scenery. Subtle

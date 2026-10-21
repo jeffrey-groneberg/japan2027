@@ -230,6 +230,13 @@ action, global navigation and complete train. No automatic scrolling or train
 scaling is used. Resize, font readiness and chrome-height changes recalculate
 the budget; other app panels keep their previous behavior.
 
+Inside the hero, title/action and illustration form one centered group capped
+at 1040px, rather than occupying equal stretched columns. The text column uses
+its intrinsic content width; the illustration receives up to 560px, with a
+24–64px fluid gap. The SVG is left-aligned to its column and retains its natural
+aspect ratio so height constraints do not add a large invisible horizontal
+gutter. Phone portrait stacking and compact landscape behavior remain intact.
+
 Home's station strip is now an original Shinkansen composition. Four buttons
 form the carriages with blue side bands, wheel pairs and landmark windows;
 a separate SVG nose completes the silhouette, with roof, floor and stripe

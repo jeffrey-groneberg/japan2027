@@ -208,6 +208,7 @@
       "A left-facing single-row Shinkansen with stationary hover targets, panoramic parallax windows, fixed full-width rails and four-pixel SVG sleepers.",
       "Full-bleed train scenery around centered carriages, Japanese destination labels and a once-only curved CTA arrow without tinted label panels.",
       "A viewport-budgeted Home composition keeps the full train and rails visible on opening, adapting the hero rather than shrinking carriage controls.",
+      "Home title and illustration form a centered, content-sized group with a bounded gap instead of stretched equal columns.",
       "Controls remain self-explanatory without tutorial or hand-holding copy."
     ],
     "rules": [

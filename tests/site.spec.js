@@ -144,6 +144,37 @@ test("Home adapts to browser chrome height changes and works without Visual View
   await expect.poll(() => page.locator(".route-train-scene").evaluate((node) => node.getBoundingClientRect().bottom)).toBeLessThanOrEqual(760);
 });
 
+test("Home groups title and illustration without stretching empty desktop columns", async ({ page }) => {
+  for (const [width, height] of [[768, 1024], [841, 779], [1440, 720], [1440, 900], [2000, 900], [2560, 1440]]) {
+    await page.setViewportSize({ width, height });
+    await ready(page, "/?clawpilotTheme=light#view=home");
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator("#panel-home")).toHaveAttribute("data-layout", /./);
+    const layout = await page.evaluate(() => {
+      const inner = document.querySelector(".hero-inner").getBoundingClientRect();
+      const copy = document.querySelector(".hero-copy").getBoundingClientRect();
+      const art = document.querySelector(".hero-art").getBoundingClientRect();
+      const svg = document.querySelector(".festival-scene");
+      const bounds = svg.getBBox();
+      const transform = svg.getScreenCTM();
+      const drawnLeft = bounds.x * transform.a + transform.e;
+      return {
+        contentWidth: inner.width,
+        layoutGap: art.left - copy.right,
+        drawnGap: drawnLeft - copy.right,
+        titleFits: document.querySelector(".hero-copy h1").scrollWidth <= copy.width + 1,
+        railsBottom: document.querySelector(".route-train-rails").getBoundingClientRect().bottom,
+      };
+    });
+    expect(layout.contentWidth, `${width}x${height}`).toBeLessThanOrEqual(1040);
+    expect(layout.layoutGap).toBeGreaterThanOrEqual(24);
+    expect(layout.layoutGap).toBeLessThanOrEqual(65);
+    expect(layout.drawnGap, `${width}x${height}`).toBeLessThanOrEqual(110);
+    expect(layout.titleFits).toBe(true);
+    expect(layout.railsBottom).toBeLessThanOrEqual(height);
+  }
+});
+
 test("mobile menu expands the full sitemap and closes on selection or Escape", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 430, height: 760 });
